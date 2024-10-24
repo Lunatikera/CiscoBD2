@@ -75,7 +75,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
         tblStudent = new javax.swing.JTable();
         menuButton13 = new utilities.MenuButton();
         lblStudent = new javax.swing.JLabel();
-        lblDegreeFilter1 = new javax.swing.JLabel();
+        lblPage = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         lblDegreeFilter = new javax.swing.JLabel();
         cbDegrees = new javax.swing.JComboBox<>();
@@ -83,6 +83,8 @@ public class FrmStudentManager extends javax.swing.JFrame {
         btnAdd = new utilities.MenuButton();
         btnEdit = new utilities.MenuButton();
         btnDelete = new utilities.MenuButton();
+        menuButton1 = new utilities.MenuButton();
+        menuButton2 = new utilities.MenuButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -294,9 +296,11 @@ public class FrmStudentManager extends javax.swing.JFrame {
         lblStudent.setText("Estudiantes");
         jPanel4.add(lblStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, -1, -1));
 
-        lblDegreeFilter1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblDegreeFilter1.setText("Pagina 01");
-        jPanel4.add(lblDegreeFilter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 640, -1, -1));
+        lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblPage.setText("Pagina 01");
+        jPanel4.add(lblPage, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 640, 120, -1));
+
+        jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
         lblDegreeFilter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDegreeFilter.setText("Filtrar por Carrera");
@@ -329,6 +333,8 @@ public class FrmStudentManager extends javax.swing.JFrame {
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
 
+        jPanel2.setBackground(new java.awt.Color(208, 216, 232));
+
         btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -352,6 +358,19 @@ public class FrmStudentManager extends javax.swing.JFrame {
         jPanel2.add(btnDelete);
 
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
+
+        menuButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
+        menuButton1.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
+        jPanel4.add(menuButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 630, -1, -1));
+
+        menuButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rightSelected.png"))); // NOI18N
+        menuButton2.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right.png"))); // NOI18N
+        menuButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuButton2ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(menuButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 630, -1, -1));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -435,6 +454,10 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void menuButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuButton2ActionPerformed
  
 
 
@@ -487,9 +510,11 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDegreeFilter;
-    private javax.swing.JLabel lblDegreeFilter1;
+    private javax.swing.JLabel lblPage;
     private javax.swing.JLabel lblStudent;
+    private utilities.MenuButton menuButton1;
     private utilities.MenuButton menuButton13;
+    private utilities.MenuButton menuButton2;
     private panels.PanelMenu panelMenu2;
     private javax.swing.JTable tblStudent;
     // End of variables declaration//GEN-END:variables
