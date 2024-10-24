@@ -22,6 +22,7 @@ public class DegreeMapper {
         return GenericMapper.map(degreeDTO, DegreeEntity.class);
     }
 
+
     public static List<DegreeDTO> toDTOList(List<DegreeEntity> degreeEntities) {
         return GenericMapper.mapList(degreeEntities, DegreeDTO.class);
     }
