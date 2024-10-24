@@ -17,7 +17,7 @@ public class ConnectionDB implements IConnectionBD {
 
     public ConnectionDB() {
         try {
-            this.entityManagerFactory = Persistence.createEntityManagerFactory("PacganBD");
+            this.entityManagerFactory = Persistence.createEntityManagerFactory("CiscoJPA");
         } catch (Exception e) {
             System.err.println("Error al inicializar el EntityManagerFactory: " + e.getMessage());
             e.printStackTrace();
