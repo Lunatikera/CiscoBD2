@@ -36,26 +36,28 @@ public class FrmStudentManager extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         btnMenuStudents = new utilities.MenuButton();
         jLabel24 = new javax.swing.JLabel();
-        btnMenuDegrees = new utilities.MenuButton();
+        btnMenuComputers = new utilities.MenuButton();
         jLabel25 = new javax.swing.JLabel();
-        btnMenuLabs = new utilities.MenuButton();
+        btnMenuDegree = new utilities.MenuButton();
         jLabel26 = new javax.swing.JLabel();
-        btnMenuBlocks = new utilities.MenuButton();
+        btnMenuLabs = new utilities.MenuButton();
         jLabel27 = new javax.swing.JLabel();
-        btnMenuAcademics = new utilities.MenuButton();
+        btnMenuBlocks = new utilities.MenuButton();
         jLabel28 = new javax.swing.JLabel();
-        btnMenuSoftware = new utilities.MenuButton();
+        btnMenuAcademies = new utilities.MenuButton();
         jLabel29 = new javax.swing.JLabel();
-        btnMenuRules = new utilities.MenuButton();
+        btnMenuSoftwares = new utilities.MenuButton();
         jLabel30 = new javax.swing.JLabel();
-        btnMenuLabReport = new utilities.MenuButton();
+        btnMenuRules = new utilities.MenuButton();
         jLabel31 = new javax.swing.JLabel();
-        btnMenuDegreeReport = new utilities.MenuButton();
+        btnMenuLabReports = new utilities.MenuButton();
         jLabel32 = new javax.swing.JLabel();
-        btnMenuBlockReport = new utilities.MenuButton();
+        btnMenuDegreeReports = new utilities.MenuButton();
         jLabel33 = new javax.swing.JLabel();
-        btnMenuLogOff = new utilities.MenuButton();
+        btnMenuBlockReports = new utilities.MenuButton();
         jLabel34 = new javax.swing.JLabel();
+        btnMenuLogOff = new utilities.MenuButton();
+        jLabel35 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblStudent = new javax.swing.JTable();
@@ -90,18 +92,31 @@ public class FrmStudentManager extends javax.swing.JFrame {
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel24);
 
-        btnMenuDegrees.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuDegrees.setText("Carreras");
-        btnMenuDegrees.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMenuDegrees.addActionListener(new java.awt.event.ActionListener() {
+        btnMenuComputers.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuComputers.setText("Computadora");
+        btnMenuComputers.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuComputers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuDegreesActionPerformed(evt);
+                btnMenuComputersActionPerformed(evt);
             }
         });
-        panelMenu2.add(btnMenuDegrees);
+        panelMenu2.add(btnMenuComputers);
 
         jLabel25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel25);
+
+        btnMenuDegree.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuDegree.setText("Carreras");
+        btnMenuDegree.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuDegree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuDegreeActionPerformed(evt);
+            }
+        });
+        panelMenu2.add(btnMenuDegree);
+
+        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
+        panelMenu2.add(jLabel26);
 
         btnMenuLabs.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuLabs.setText("Laboratorios");
@@ -113,8 +128,8 @@ public class FrmStudentManager extends javax.swing.JFrame {
         });
         panelMenu2.add(btnMenuLabs);
 
-        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel26);
+        jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
+        panelMenu2.add(jLabel27);
 
         btnMenuBlocks.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuBlocks.setText("Bloqueos");
@@ -126,34 +141,34 @@ public class FrmStudentManager extends javax.swing.JFrame {
         });
         panelMenu2.add(btnMenuBlocks);
 
-        jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel27);
-
-        btnMenuAcademics.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuAcademics.setText("Unidad Academica");
-        btnMenuAcademics.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMenuAcademics.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuAcademicsActionPerformed(evt);
-            }
-        });
-        panelMenu2.add(btnMenuAcademics);
-
         jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel28);
 
-        btnMenuSoftware.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuSoftware.setText("Instalar Software");
-        btnMenuSoftware.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMenuSoftware.addActionListener(new java.awt.event.ActionListener() {
+        btnMenuAcademies.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuAcademies.setText("Unidades Academicas");
+        btnMenuAcademies.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuAcademies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuSoftwareActionPerformed(evt);
+                btnMenuAcademiesActionPerformed(evt);
             }
         });
-        panelMenu2.add(btnMenuSoftware);
+        panelMenu2.add(btnMenuAcademies);
 
         jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel29);
+
+        btnMenuSoftwares.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuSoftwares.setText("Softwares");
+        btnMenuSoftwares.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuSoftwares.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuSoftwaresActionPerformed(evt);
+            }
+        });
+        panelMenu2.add(btnMenuSoftwares);
+
+        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
+        panelMenu2.add(jLabel30);
 
         btnMenuRules.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuRules.setText("Reglas");
@@ -165,47 +180,47 @@ public class FrmStudentManager extends javax.swing.JFrame {
         });
         panelMenu2.add(btnMenuRules);
 
-        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel30);
-
-        btnMenuLabReport.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuLabReport.setText("Reporte Laboratotios");
-        btnMenuLabReport.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMenuLabReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuLabReportActionPerformed(evt);
-            }
-        });
-        panelMenu2.add(btnMenuLabReport);
-
         jLabel31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel31);
 
-        btnMenuDegreeReport.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuDegreeReport.setText("Reporte Carreras");
-        btnMenuDegreeReport.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMenuDegreeReport.addActionListener(new java.awt.event.ActionListener() {
+        btnMenuLabReports.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuLabReports.setText("Reporte Laboratorios");
+        btnMenuLabReports.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuLabReports.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuDegreeReportActionPerformed(evt);
+                btnMenuLabReportsActionPerformed(evt);
             }
         });
-        panelMenu2.add(btnMenuDegreeReport);
+        panelMenu2.add(btnMenuLabReports);
 
         jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel32);
 
-        btnMenuBlockReport.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuBlockReport.setText("Reporte Bloqueos");
-        btnMenuBlockReport.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMenuBlockReport.addActionListener(new java.awt.event.ActionListener() {
+        btnMenuDegreeReports.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuDegreeReports.setText("Reporte Carreras");
+        btnMenuDegreeReports.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuDegreeReports.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuBlockReportActionPerformed(evt);
+                btnMenuDegreeReportsActionPerformed(evt);
             }
         });
-        panelMenu2.add(btnMenuBlockReport);
+        panelMenu2.add(btnMenuDegreeReports);
 
         jLabel33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel33);
+
+        btnMenuBlockReports.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuBlockReports.setText("Reporte Bloqueos");
+        btnMenuBlockReports.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuBlockReports.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuBlockReportsActionPerformed(evt);
+            }
+        });
+        panelMenu2.add(btnMenuBlockReports);
+
+        jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
+        panelMenu2.add(jLabel34);
 
         btnMenuLogOff.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuLogOff.setText("Cerrar Sesion");
@@ -217,8 +232,8 @@ public class FrmStudentManager extends javax.swing.JFrame {
         });
         panelMenu2.add(btnMenuLogOff);
 
-        jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel34);
+        jLabel35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
+        panelMenu2.add(jLabel35);
 
         jPanel4.setBackground(new java.awt.Color(208, 216, 232));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -366,9 +381,13 @@ public class FrmStudentManager extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuButton2ActionPerformed
 
-    private void btnMenuDegreesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreesActionPerformed
+    private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMenuDegreesActionPerformed
+    }//GEN-LAST:event_btnMenuComputersActionPerformed
+
+    private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
         // TODO add your handling code here:
@@ -378,29 +397,29 @@ public class FrmStudentManager extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuBlocksActionPerformed
 
-    private void btnMenuAcademicsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuAcademicsActionPerformed
+    private void btnMenuAcademiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuAcademiesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMenuAcademicsActionPerformed
+    }//GEN-LAST:event_btnMenuAcademiesActionPerformed
 
-    private void btnMenuSoftwareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwareActionPerformed
+    private void btnMenuSoftwaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwaresActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMenuSoftwareActionPerformed
+    }//GEN-LAST:event_btnMenuSoftwaresActionPerformed
 
     private void btnMenuRulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuRulesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuRulesActionPerformed
 
-    private void btnMenuLabReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabReportActionPerformed
+    private void btnMenuLabReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabReportsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMenuLabReportActionPerformed
+    }//GEN-LAST:event_btnMenuLabReportsActionPerformed
 
-    private void btnMenuDegreeReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeReportActionPerformed
+    private void btnMenuDegreeReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeReportsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMenuDegreeReportActionPerformed
+    }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
 
-    private void btnMenuBlockReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportActionPerformed
+    private void btnMenuBlockReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMenuBlockReportActionPerformed
+    }//GEN-LAST:event_btnMenuBlockReportsActionPerformed
 
     private void btnMenuLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLogOffActionPerformed
         // TODO add your handling code here:
@@ -412,16 +431,17 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private utilities.MenuButton btnAdd;
     private utilities.MenuButton btnDelete;
     private utilities.MenuButton btnEdit;
-    private utilities.MenuButton btnMenuAcademics;
-    private utilities.MenuButton btnMenuBlockReport;
+    private utilities.MenuButton btnMenuAcademies;
+    private utilities.MenuButton btnMenuBlockReports;
     private utilities.MenuButton btnMenuBlocks;
-    private utilities.MenuButton btnMenuDegreeReport;
-    private utilities.MenuButton btnMenuDegrees;
-    private utilities.MenuButton btnMenuLabReport;
+    private utilities.MenuButton btnMenuComputers;
+    private utilities.MenuButton btnMenuDegree;
+    private utilities.MenuButton btnMenuDegreeReports;
+    private utilities.MenuButton btnMenuLabReports;
     private utilities.MenuButton btnMenuLabs;
     private utilities.MenuButton btnMenuLogOff;
     private utilities.MenuButton btnMenuRules;
-    private utilities.MenuButton btnMenuSoftware;
+    private utilities.MenuButton btnMenuSoftwares;
     private utilities.MenuButton btnMenuStudents;
     private javax.swing.JComboBox<DegreeDTO> cbDegrees;
     private javax.swing.JLabel jLabel18;
@@ -437,6 +457,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
