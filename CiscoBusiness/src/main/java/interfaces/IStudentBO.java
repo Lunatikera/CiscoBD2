@@ -21,8 +21,6 @@ public interface IStudentBO {
     public List<StudentDTO> studentListByDegreePaginated(String degree, int offset, int limit) throws BusinessException;
 
     public void updateStudent(StudentDTO student) throws BusinessException;
-
-    public void deleteStudent(Long studentId) throws BusinessException;
     
     public StudentDTO login(LogInDTO loginDTO) throws BusinessException;
     

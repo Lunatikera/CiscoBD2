@@ -97,19 +97,19 @@ public class StudentBO implements IStudentBO {
         }
     }
 
-    @Override
-    public void deleteStudent(Long studentId) throws BusinessException {
-        if (studentId <= 0) {
-            throw new BusinessException("Invalid student ID.");
-        }
-
-        try {
-            studentDAO.deleteStudent(studentId);
-        } catch (PersistenceException ex) {
-            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new BusinessException("Error deleting student.");
-        }
-    }
+//    @Override
+//    public void deleteStudent(Long studentId) throws BusinessException {
+//        if (studentId <= 0) {
+//            throw new BusinessException("Invalid student ID.");
+//        }
+//
+//        try {
+//            studentDAO.deleteStudent(studentId);
+//        } catch (PersistenceException ex) {
+//            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
+//            throw new BusinessException("Error deleting student.");
+//        }
+//    }
 
     @Override
     public StudentDTO login(LogInDTO loginDTO) throws BusinessException {

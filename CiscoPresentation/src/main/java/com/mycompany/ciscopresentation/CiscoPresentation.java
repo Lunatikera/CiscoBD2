@@ -4,6 +4,8 @@
 
 package com.mycompany.ciscopresentation;
 
+import frames.FrmStudentManager;
+
 /**
  *
  * @author carli
@@ -11,6 +13,7 @@ package com.mycompany.ciscopresentation;
 public class CiscoPresentation {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        FrmStudentManager frmStudentManager= new FrmStudentManager();
+        frmStudentManager.setVisible(true);
     }
 }
