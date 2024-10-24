@@ -99,15 +99,15 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         });
     }
 
-    private int getSelectedIdTableLaboratory() {
+    private Long getSelectedIdTableLaboratory() {
         int selectedIndex = this.tblLaboratory.getSelectedRow();
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblLaboratory.getModel();
             int idIndexRow = 0;
-            int idSelectedStudent = (int) model.getValueAt(selectedIndex, idIndexRow);
+            Long idSelectedStudent = (Long) model.getValueAt(selectedIndex, idIndexRow);
             return idSelectedStudent;
         } else {
-            return 0;
+            return null;
         }
     }
 
@@ -404,6 +404,11 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
         btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
         btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEdit);
 
         btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
@@ -533,6 +538,19 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         this.pageStatus();
         
     }//GEN-LAST:event_btnLeftActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        if (this.getSelectedIdTableLaboratory() == null) {
+            return ;
+        }
+        try {
+            // TODO add your handling code here:
+            LaboratoryDTO laboratory = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
+            System.out.println(laboratory.getLabName());
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
 
     public void pageStatus() {
         String pageNumber = String.valueOf(page);

@@ -532,6 +532,9 @@
                           <Image iconType="3" name="/images/editNormal.png"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="utilities.MenuButton" name="btnDelete">
                       <Properties>
