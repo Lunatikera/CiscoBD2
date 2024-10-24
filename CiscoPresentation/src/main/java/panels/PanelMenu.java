@@ -20,7 +20,7 @@ public class PanelMenu extends JPanel{
         // Load the image from the specified path
         ImageIcon icon = new ImageIcon(getClass().getResource("/images/menu.png"));
         image = icon.getImage();
-        this.setSize(400, 1080);
+        this.setSize(250, 1080);
     }
 
     @Override

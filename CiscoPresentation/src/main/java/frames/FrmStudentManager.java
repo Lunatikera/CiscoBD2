@@ -18,7 +18,6 @@ public class FrmStudentManager extends javax.swing.JFrame {
      */
     public FrmStudentManager() {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -33,21 +32,8 @@ public class FrmStudentManager extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         panelMenu2 = new panels.PanelMenu();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
         btnMenuStudents = new utilities.MenuButton();
         jLabel24 = new javax.swing.JLabel();
         btnMenuDegrees = new utilities.MenuButton();
@@ -90,50 +76,11 @@ public class FrmStudentManager extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel9);
-
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel10);
-
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel11);
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel12);
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel13);
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel14);
-
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel15);
-
-        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel16);
-
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel17);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ItsonLogo.png"))); // NOI18N
+        panelMenu2.add(jLabel2);
 
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel18);
-
-        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel19);
-
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel20);
-
-        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel21);
-
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel22);
-
-        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
-        panelMenu2.add(jLabel23);
 
         btnMenuStudents.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuStudents.setText("Estudiantes");
@@ -407,6 +354,18 @@ public class FrmStudentManager extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void menuButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuButton2ActionPerformed
+
     private void btnMenuDegreesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuDegreesActionPerformed
@@ -446,18 +405,6 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private void btnMenuLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLogOffActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddActionPerformed
-
-    private void menuButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuButton2ActionPerformed
  
 
 
@@ -477,20 +424,8 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuSoftware;
     private utilities.MenuButton btnMenuStudents;
     private javax.swing.JComboBox<DegreeDTO> cbDegrees;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -502,7 +437,6 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
