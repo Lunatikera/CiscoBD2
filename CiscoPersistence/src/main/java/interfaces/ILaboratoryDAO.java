@@ -4,10 +4,24 @@
  */
 package interfaces;
 
+import entities.LaboratoryEntity;
+import exception.PersistenceException;
+import java.util.List;
+
 /**
  *
  * @author carli
  */
 public interface ILaboratoryDAO {
-    
+
+    public List<LaboratoryEntity> laboratoryListByAcademyPaginated(Long academyID, int limit, int offset) throws PersistenceException;
+
+    public LaboratoryEntity findLaboratoryByID(Long LaboratoryId) throws PersistenceException;
+
+    public LaboratoryEntity saveLaboratory(LaboratoryEntity laboratory) throws PersistenceException;
+
+    public void updateLaboratory(LaboratoryEntity laboratory) throws PersistenceException;
+
+    public void deleteLaboratory(Long LaboratoryId) throws PersistenceException;
+
 }
