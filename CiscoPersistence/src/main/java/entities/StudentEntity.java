@@ -47,9 +47,6 @@ public class StudentEntity implements Serializable {
     @Column(name = "enrollmentStatus", nullable = false, length = 25)
     private EnrollmentStatus enrollmentStatus;
 
-    @Column(name = "isDeleted", nullable = false)
-    private boolean isDeleted = false;
-
     @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST)
     private List<StudentComputerEntity> studentComputers;
 
@@ -105,14 +102,6 @@ public class StudentEntity implements Serializable {
 
     public void setSecondLastName(String secondLastName) {
         this.secondLastName = secondLastName;
-    }
-
-    public boolean isIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
     }
 
     public EnrollmentStatus getEnrollmentStatus() {
