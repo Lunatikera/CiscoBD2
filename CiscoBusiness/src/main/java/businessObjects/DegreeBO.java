@@ -11,7 +11,10 @@ import exception.PersistenceException;
 import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mappers.DegreeMapper;
+import tools.Tools;
 
 /**
  *
@@ -35,11 +38,13 @@ public class DegreeBO implements IDegreeBO{
 }
 
     @Override
-    public List<DegreeDTO> obterCarrerasPaguinado(int limit, int offtel) throws BusinessException {
+    public List<DegreeDTO> obterCarrerasPaguinado(int limit, int page) throws BusinessException {
         try {
-        List<DegreeEntity> degreeEntities = degreeDAO.obterCarrerasPaguinado(limit, offtel);  // Llama al método paginado en el DAO
+           int offset =  Tools.ReturnOFFSETMySQL(limit, page);
+        List<DegreeEntity> degreeEntities = degreeDAO.obterCarrerasPaguinado(limit, offset);  // Llama al método paginado en el DAO
         return DegreeMapper.toDTOList(degreeEntities);  // Convierte las entidades a DTO
     } catch (PersistenceException e) {
+        Logger.getLogger(DegreeBO.class.getName()).log(Level.SEVERE, "Failed to save student", e);
         throw new BusinessException("Error retrieving paginated degrees", e);
     }
     }

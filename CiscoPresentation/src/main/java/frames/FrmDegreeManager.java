@@ -1,4 +1,4 @@
-   /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -14,35 +14,28 @@ import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 
-
-
-
 /**
  *
  * @author carli
  */
 public class FrmDegreeManager extends javax.swing.JFrame {
+
     private int page = 1;
     private int LIMIT = 10;
     IDegreeBO degreeBO;
-    
-    
 
     /**
      * Creates new form FrmStudentManager
+     *
      * @param degreeBO
      */
     public FrmDegreeManager(IDegreeBO idegreeBO) {
         initComponents();
         this.degreeBO = idegreeBO;
         this.loadInitialMethods();
-       
-        
+
     }
 
-   
-    
-    
     public void loadInitialMethods() {
         this.setTitle("Administracion de Carrera ");
         this.setResizable(false);
@@ -50,10 +43,10 @@ public class FrmDegreeManager extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.loadTableDegree();
         this.pageStatus();
-        
+
     }
-    
- private void leftButonStatus() {
+
+    private void leftButonStatus() {
         if (page > 1) {
             btnLeft.setEnabled(true);
             return;
@@ -73,7 +66,7 @@ public class FrmDegreeManager extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
-    
+
     public void pageStatus() {
         String pageNumber = String.valueOf(page);
         if (pageNumber.length() == 1) {
@@ -84,7 +77,7 @@ public class FrmDegreeManager extends javax.swing.JFrame {
         leftButonStatus();
         rightButonStatus();
     }
-    
+
     private void deleteInfoTableDegree() {
         DefaultTableModel tableModel = (DefaultTableModel) this.tblDegree.getModel();
         if (tableModel.getRowCount() > 0) {
@@ -93,9 +86,7 @@ public class FrmDegreeManager extends javax.swing.JFrame {
             }
         }
     }
-    
-   
-    
+
     private void addInfoTable(List<DegreeDTO> degreeList) {
         if (degreeList == null) {
             return;
@@ -108,11 +99,11 @@ public class FrmDegreeManager extends javax.swing.JFrame {
             row[0] = column.getId();
             row[1] = column.getName();
             row[2] = column.getTimeLimit();
-           
+
             tableModel.addRow(row);
         });
     }
-    
+
     private int getSelectedIdTableDegree() {
         int selectedIndex = this.tblDegree.getSelectedRow();
         if (selectedIndex != -1) {
@@ -125,27 +116,24 @@ public class FrmDegreeManager extends javax.swing.JFrame {
             return 0;
         }
     }
-    
-    public void loadTableDegree(){
-    try {
-    // Borrar registros previos antes de cargar los nuevos
-    deleteInfoTableDegree();
 
-       
-     // Obtén solo los clientes necesarios para la página actual
-     List<DegreeDTO> degreeList = this.degreeBO.obterCarrerasPaguinado(LIMIT, page);
+    public void loadTableDegree() {
+        try {
+            // Borrar registros previos antes de cargar los nuevos
+            deleteInfoTableDegree();
 
-    //Agrega los registros paginados a la tabla
+            // Obtén solo los clientes necesarios para la página actual
+            List<DegreeDTO> degreeList = this.degreeBO.obterCarrerasPaguinado(LIMIT, page);
 
-    this.addInfoTable(degreeList);
-         //Control de botones de navegación
-                    btnLeft.setEnabled(page > 1);
-        
-                } catch (BusinessException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
-                }
+            //Agrega los registros paginados a la tabla
+            this.addInfoTable(degreeList);
+            //Control de botones de navegación
+            btnLeft.setEnabled(page > 1);
+
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
+        }
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -531,7 +519,6 @@ public class FrmDegreeManager extends javax.swing.JFrame {
     private void btnMenuLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLogOffActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
- 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
