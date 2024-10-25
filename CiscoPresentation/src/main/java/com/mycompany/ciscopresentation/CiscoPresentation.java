@@ -16,7 +16,6 @@ import businessObjects.LaboratoryBO;
 import dao.AcademyUnityDAO;
 import dao.LaboratoryDAO;
 import frames.FrmLaboratoryManager;
-import frames.FrmStudentManager;
 import interfaces.IAcademyUnityBO;
 import interfaces.IAcademyUnityDAO;
 import interfaces.ILaboratoryBO;
@@ -35,8 +34,8 @@ public class CiscoPresentation {
         FrmRulesManager frmRulesManager= new FrmRulesManager(ruleBO);
         frmRulesManager.setVisible(true);
 
-        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(conexionBD);
-        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(conexionBD);
+        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
         FrmLaboratoryManager frmLaboratoryManager= new FrmLaboratoryManager(laboratoryBO, academyBO);
