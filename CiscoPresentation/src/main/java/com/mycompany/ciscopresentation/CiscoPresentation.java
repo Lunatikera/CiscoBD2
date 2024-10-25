@@ -4,7 +4,14 @@
 
 package com.mycompany.ciscopresentation;
 
+import businessObjects.RuleBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.RuleDAO;
+import frames.FrmRulesManager;
 import frames.FrmStudentManager;
+import interfaces.IRuleBO;
+import interfaces.IRuleDAO;
 
 /**
  *
@@ -13,7 +20,10 @@ import frames.FrmStudentManager;
 public class CiscoPresentation {
 
     public static void main(String[] args) {
-        FrmStudentManager frmStudentManager= new FrmStudentManager();
-        frmStudentManager.setVisible(true);
+        IConnectionBD connectionBD= new ConnectionDB();
+        IRuleDAO ruleDAO= new RuleDAO(connectionBD);
+        IRuleBO ruleBO= new RuleBO(ruleDAO);
+        FrmRulesManager frmRulesManager= new FrmRulesManager(ruleBO);
+        frmRulesManager.setVisible(true);
     }
 }

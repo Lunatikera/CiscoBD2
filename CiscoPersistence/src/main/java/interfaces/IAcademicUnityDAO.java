@@ -4,10 +4,12 @@
  */
 package interfaces;
 
+import exception.PersistenceException;
+
 /**
  *
  * @author carli
  */
 public interface IAcademicUnityDAO {
-    
+    public void getAcademiesList() throws PersistenceException;
 }

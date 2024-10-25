@@ -24,4 +24,6 @@ public interface IStudentBO {
     
     public StudentDTO login(LogInDTO loginDTO) throws BusinessException;
     
+    
+  
 }
