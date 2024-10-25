@@ -15,6 +15,7 @@ import businessObjects.LaboratoryBO;
 import dao.AcademyUnityDAO;
 import dao.LaboratoryDAO;
 import frames.FrmLaboratoryManager;
+import frames.FrmNewLaboratoryManager;
 import interfaces.IAcademyUnityBO;
 import interfaces.IAcademyUnityDAO;
 import interfaces.ILaboratoryBO;
@@ -28,16 +29,16 @@ public class CiscoPresentation {
 
     public static void main(String[] args) {
         IConnectionBD connectionBD= new ConnectionDB();
-        IRuleDAO ruleDAO= new RuleDAO(connectionBD);
-        IRuleBO ruleBO= new RuleBO(ruleDAO);
-        FrmRulesManager frmRulesManager= new FrmRulesManager(ruleBO);
-        frmRulesManager.setVisible(true);
+//        IRuleDAO ruleDAO= new RuleDAO(connectionBD);
+//        IRuleBO ruleBO= new RuleBO(ruleDAO);
+//        FrmRulesManager frmRulesManager= new FrmRulesManager(ruleBO);
+//        frmRulesManager.setVisible(true);
 
         IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
-        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO);
+        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        FrmNewLaboratoryManager frmnewLaboratoryManager = new FrmNewLaboratoryManager(laboratoryBO, academyBO);
-        frmnewLaboratoryManager.setVisible(true);
+        FrmLaboratoryManager frmLaboratoryManager = new FrmLaboratoryManager(laboratoryBO, academyBO);
+        frmLaboratoryManager.setVisible(true);
     }
 }

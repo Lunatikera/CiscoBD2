@@ -9,6 +9,8 @@ import dto.LaboratoryDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
 import interfaces.ILaboratoryBO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -58,8 +60,25 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.loadTableLaboratory();
         this.pageStatus();
+        this.cbAcademy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               refreshFilter();
+            }
+        });
     }
 
+    private void refreshFilter(){
+        if (cbAcademy.getSelectedItem() != null){
+            this.academyDTO = (AcademyDTO) cbAcademy.getSelectedItem();
+            this.page = 1;
+            this.loadTableLaboratory();
+            this.lblLaboratory.setText(academyDTO.getAcademyName());
+            this.pageStatus();
+            return;
+        }
+        JOptionPane.showMessageDialog(this, "Error al buscar el catalogo, Intente de nuevo ", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     private void loadTableLaboratory() {
 
         if (academyDTO == null) {
@@ -136,6 +155,25 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         }
     }
 
+    private void removeLaboratory() {
+        Long id = this.getSelectedIdTableLaboratory();
+        if (id == 0) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el laboratorio seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                this.laboratoryBO.deleteLaboratory(id);
+                // Recargar la tabla después de eliminar
+                loadTableLaboratory();
+            } catch (BusinessException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -185,8 +223,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         cbAcademy = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new utilities.MenuButton();
-        btnEdit = new utilities.MenuButton();
         btnDelete = new utilities.MenuButton();
+        btnEdit = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
@@ -397,9 +435,9 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(lblAcademyFilter)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbAcademy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 15, Short.MAX_VALUE))
+                .addGap(0, 27, Short.MAX_VALUE))
         );
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
@@ -415,15 +453,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         });
         jPanel2.add(btnAdd);
 
-        btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
-        btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnEdit);
-
         btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
         btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -432,6 +461,15 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnDelete);
+
+        btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
+        btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnEdit);
 
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
@@ -489,27 +527,11 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        Long idSelect = getIdSelectLaboratory();
-        if (idSelect != 0) {
-            int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar este laboratorio?", "Confirmación", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                try {
-                    laboratoryBO.deleteLaboratory(idSelect);
-                    JOptionPane.showMessageDialog(this, "Laboratorio eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    this.setVisible(false);
-
-                } catch (BusinessException e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró el laboratorio para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
+        this.removeLaboratory();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        FrmNewLaboratoryManager laboratory = new FrmNewLaboratoryManager(laboratoryBO, academyBO);
+        FrmNewLaboratoryManager laboratory = new FrmNewLaboratoryManager(laboratoryBO, academyBO, academyDTO);
         laboratory.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -570,8 +592,13 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLeftActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO);
-        laboratory.setVisible(true);
+        try {
+            if(this.getSelectedIdTableLaboratory() == 0){
+                return;
+            }
+            LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
+            FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO, academyDTO);
+            laboratory.setVisible(true);
 //        if (this.getSelectedIdTableLaboratory() == null) {
 //            return;
 //        }
@@ -582,6 +609,9 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 //        } catch (BusinessException ex) {
 //            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     public void pageStatus() {

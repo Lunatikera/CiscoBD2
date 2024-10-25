@@ -174,7 +174,9 @@ public class LaboratoryEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.LaboratoryEntity[ id=" + id + " ]";
+        return "LaboratoryEntity{" + "id=" + id + ", labName=" + labName + ", masterPassword=" + masterPassword + ", startTime=" + startTime + ", endTime=" + endTime + ", isDeleted=" + isDeleted + ", academicUnity=" + academicUnity + ", laboratorieRules=" + laboratorieRules + ", computers=" + computers + '}';
     }
+
+    
 
 }

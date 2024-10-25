@@ -13,21 +13,48 @@ import java.util.Objects;
  */
 public class LaboratoryDTO {
 
+    private Long id;
     private String labName;
     private LocalTime startTime;
     private LocalTime endTime;
     private String masterPassword;
-    private Long id;
+    private Long idAcademy;
 
-    public LaboratoryDTO(String labName, LocalTime startTime, LocalTime endTime, String masterPassword, Long id) {
+    public LaboratoryDTO(Long id, String labName, LocalTime startTime, LocalTime endTime, String masterPassword, Long idAcademy) {
+        this.id = id;
         this.labName = labName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.masterPassword = masterPassword;
-        this.id = id;
+        this.idAcademy = idAcademy;
     }
 
+    public LaboratoryDTO(Long id, String labName, LocalTime startTime, LocalTime endTime, String masterPassword) {
+        this.id = id;
+        this.labName = labName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.masterPassword = masterPassword;
+    }
+
+    public LaboratoryDTO(String labName, LocalTime startTime, LocalTime endTime, String masterPassword, Long idAcademy) {
+        this.labName = labName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.masterPassword = masterPassword;
+        this.idAcademy = idAcademy;
+    }
+
+   
     
+
+    public Long getIdAcademy() {
+        return idAcademy;
+    }
+
+    public void setIdAcademy(Long idAcademy) {
+        this.idAcademy = idAcademy;
+    }
 
     public Long getId() {
         return id;
@@ -96,7 +123,8 @@ public class LaboratoryDTO {
 
     @Override
     public String toString() {
-        return labName;
+        return "LaboratoryDTO{" + "labName=" + labName + ", startTime=" + startTime + ", endTime=" + endTime + ", masterPassword=" + masterPassword + ", id=" + id + ", idAcademy=" + idAcademy + '}';
     }
 
+    
 }

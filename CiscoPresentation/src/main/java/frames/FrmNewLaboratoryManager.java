@@ -30,40 +30,27 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
     ILaboratoryBO laboratoryBO;
     IAcademyUnityBO academyBO;
     AcademyDTO academyDTO;
-    List<AcademyDTO> academyList;
 
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmNewLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO) {
+    
+    public FrmNewLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO, AcademyDTO academyDTO) {
         initComponents();
         this.academyBO = academyBO;
         this.laboratoryBO = laboratoryBO;
-        this.academyList = new ArrayList<>();
+        this.academyDTO= academyDTO;
         this.loadFrame();
     }
 
     public void loadFrame() {
-        this.fillAcademyComboBox();
-        this.academyDTO = cbAcademy.getItemAt(0);
-        this.setTitle("Administracion de Laboratorios ");
+        this.setTitle("Agregar Laboratorios ");
         this.setResizable(false);
         this.setSize(598, 600);
         this.setLocationRelativeTo(null);
 
     }
 
-    private void fillAcademyComboBox() {
-        try {
-            academyList = academyBO.getAllAcademies();
-
-            for (AcademyDTO academy : academyList) {
-                cbAcademy.addItem(academy);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmNewLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -79,11 +66,9 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         menuButton13 = new utilities.MenuButton();
         lbNewLaboratory = new javax.swing.JLabel();
-        cbAcademy = new javax.swing.JComboBox<>();
         lblEndTime = new javax.swing.JLabel();
-        lblStartTime = new javax.swing.JLabel();
+        javax.swing.JLabel lblStartTime = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
-        lblAcademicUnity = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         btnContinue = new javax.swing.JButton();
         txtPassword = new javax.swing.JTextField();
@@ -105,10 +90,6 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
         lbNewLaboratory.setText("Agregar Laboratorio");
         jPanel4.add(lbNewLaboratory, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 340, -1));
 
-        cbAcademy.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        cbAcademy.setForeground(new java.awt.Color(0, 9, 0));
-        jPanel4.add(cbAcademy, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, 250, 30));
-
         lblEndTime.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblEndTime.setForeground(new java.awt.Color(0, 0, 0));
         lblEndTime.setText("Hora de Cierre:");
@@ -123,11 +104,6 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
         lblPassword.setForeground(new java.awt.Color(0, 0, 0));
         lblPassword.setText("Contraseña:");
         jPanel4.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
-
-        lblAcademicUnity.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblAcademicUnity.setForeground(new java.awt.Color(0, 0, 0));
-        lblAcademicUnity.setText("Unidad Academica:");
-        jPanel4.add(lblAcademicUnity, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, -1, -1));
 
         lblName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblName.setForeground(new java.awt.Color(0, 0, 0));
@@ -231,6 +207,7 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
             laboratoryDTO.setStartTime(startTime);
             laboratoryDTO.setEndTime(endTime);
             laboratoryDTO.setMasterPassword(masterPassword);
+            laboratoryDTO.setIdAcademy(academyDTO.getId());
 
             laboratoryBO.saveLaboratory(laboratoryDTO);
 
@@ -253,16 +230,13 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnContinue;
     private javax.swing.JButton btnReturn;
-    private javax.swing.JComboBox<AcademyDTO> cbAcademy;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lbNewLaboratory;
-    private javax.swing.JLabel lblAcademicUnity;
     private javax.swing.JLabel lblEndTime;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPassword;
-    private javax.swing.JLabel lblStartTime;
     private utilities.MenuButton menuButton13;
     private javax.swing.JTextField txtEndTime;
     private javax.swing.JTextField txtName;
