@@ -43,6 +43,9 @@ public class LaboratoryEntity implements Serializable {
     @Column(name = "endTime", nullable = true)
     private LocalTime endTime;
 
+    @Column(name = "isDeleted", nullable = false)
+    private boolean isDeleted = false;
+
     @ManyToOne
     @JoinColumn(name = "idAcademicUnity", nullable = false)
     private AcademicUnityEntity academicUnity;
@@ -53,12 +56,100 @@ public class LaboratoryEntity implements Serializable {
     @OneToMany(mappedBy = "laboratory", cascade = CascadeType.PERSIST)
     private List<ComputerEntity> computers;
 
+    public LaboratoryEntity(Long id, String labName, String masterPassword, LocalTime startTime, LocalTime endTime) {
+        this.id = id;
+        this.labName = labName;
+        this.masterPassword = masterPassword;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLabName() {
+        return labName;
+    }
+
+    public void setLabName(String labName) {
+        this.labName = labName;
+    }
+
+    public String getMasterPassword() {
+        return masterPassword;
+    }
+
+    public void setMasterPassword(String masterPassword) {
+        this.masterPassword = masterPassword;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public AcademicUnityEntity getAcademicUnity() {
+        return academicUnity;
+    }
+
+    public void setAcademicUnity(AcademicUnityEntity academicUnity) {
+        this.academicUnity = academicUnity;
+    }
+
+    public List<LaboratoryRulesEntity> getLaboratorieRules() {
+        return laboratorieRules;
+    }
+
+    public void setLaboratorieRules(List<LaboratoryRulesEntity> laboratorieRules) {
+        this.laboratorieRules = laboratorieRules;
+    }
+
+    public List<ComputerEntity> getComputers() {
+        return computers;
+    }
+
+    public void setComputers(List<ComputerEntity> computers) {
+        this.computers = computers;
+    }
+
+    public LaboratoryEntity(Long id, String labName, String masterPassword, LocalTime startTime, LocalTime endTime, AcademicUnityEntity academicUnity, List<LaboratoryRulesEntity> laboratorieRules, List<ComputerEntity> computers) {
+        this.id = id;
+        this.labName = labName;
+        this.masterPassword = masterPassword;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.academicUnity = academicUnity;
+        this.laboratorieRules = laboratorieRules;
+        this.computers = computers;
+    }
+    
+
+    public LaboratoryEntity() {
     }
 
     @Override

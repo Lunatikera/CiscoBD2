@@ -42,6 +42,24 @@ public class SoftwareEntity implements Serializable {
         this.id = id;
     }
 
+    public String getSoftwareName() {
+        return softwareName;
+    }
+
+    public void setSoftwareName(String softwareName) {
+        this.softwareName = softwareName;
+    }
+
+    public List<ComputerSoftwareEntity> getComputerSoftwares() {
+        return computerSoftwares;
+    }
+
+    public void setComputerSoftwares(List<ComputerSoftwareEntity> computerSoftwares) {
+        this.computerSoftwares = computerSoftwares;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

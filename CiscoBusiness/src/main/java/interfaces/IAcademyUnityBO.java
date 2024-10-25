@@ -4,10 +4,14 @@
  */
 package interfaces;
 
+import dto.AcademyDTO;
+import exception.BusinessException;
+import java.util.List;
+
 /**
  *
- * @author carli
+ * @author aleja
  */
-public interface IAcademicUnityDAO {
-    
+public interface IAcademyUnityBO {
+    public List<AcademyDTO> getAllAcademies() throws BusinessException;
 }

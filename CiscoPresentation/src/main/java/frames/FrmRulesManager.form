@@ -354,21 +354,17 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="110" y="190" width="710" height="440"/>
+                      <AbsoluteConstraints x="110" y="140" width="710" height="490"/>
                     </Constraint>
                   </Constraints>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="tblStudent">
+                    <Component class="javax.swing.JTable" name="tblRules">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="5" rowCount="4">
-                            <Column editable="true" title="ID" type="java.lang.Object"/>
-                            <Column editable="true" title="Nombre" type="java.lang.Object"/>
-                            <Column editable="true" title="Apellido Paterno" type="java.lang.Object"/>
-                            <Column editable="true" title="Apellido Materno" type="java.lang.Object"/>
-                            <Column editable="true" title="Estatus de Inscripcion" type="java.lang.Object"/>
+                          <Table columnCount="1" rowCount="4">
+                            <Column editable="true" title="Descripcion Reglas" type="java.lang.Object"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -419,24 +415,11 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="36" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Estudiantes"/>
+                    <Property name="text" type="java.lang.String" value="Reglas"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="380" y="140" width="-1" height="-1"/>
-                    </Constraint>
-                  </Constraints>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPage">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Pagina 01"/>
-                  </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="420" y="640" width="120" height="-1"/>
+                      <AbsoluteConstraints x="410" y="80" width="-1" height="-1"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -455,57 +438,15 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                      <Component id="cbDegrees" min="-2" pref="230" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="lblDegreeFilter" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <EmptySpace min="0" pref="248" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblDegreeFilter" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cbDegrees" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace pref="10" max="32767" attributes="0"/>
-                          </Group>
+                          <EmptySpace min="0" pref="77" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
-                  <SubComponents>
-                    <Component class="javax.swing.JLabel" name="lblDegreeFilter">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Segoe UI" size="18" style="0"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Filtrar por Carrera"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="cbDegrees">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Segoe UI" size="24" style="0"/>
-                        </Property>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="0"/>
-                        </Property>
-                      </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DegreeDTO&gt;"/>
-                      </AuxValues>
-                    </Component>
-                  </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel2">
                   <Properties>
@@ -515,7 +456,7 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="830" y="270" width="70" height="260"/>
+                      <AbsoluteConstraints x="830" y="270" width="70" height="180"/>
                     </Constraint>
                   </Constraints>
 
@@ -534,16 +475,6 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="utilities.MenuButton" name="btnEdit">
-                      <Properties>
-                        <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/images/edit.png"/>
-                        </Property>
-                        <Property name="simpleIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/images/editNormal.png"/>
-                        </Property>
-                      </Properties>
-                    </Component>
                     <Component class="utilities.MenuButton" name="btnDelete">
                       <Properties>
                         <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -559,42 +490,6 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="utilities.MenuButton" name="btnLeft">
-                  <Properties>
-                    <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/leftSelected.png"/>
-                    </Property>
-                    <Property name="simpleIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/left.png"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLeftActionPerformed"/>
-                  </Events>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="340" y="630" width="-1" height="-1"/>
-                    </Constraint>
-                  </Constraints>
-                </Component>
-                <Component class="utilities.MenuButton" name="btnRight">
-                  <Properties>
-                    <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/rightSelected.png"/>
-                    </Property>
-                    <Property name="simpleIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/right.png"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRightActionPerformed"/>
-                  </Events>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="550" y="630" width="-1" height="-1"/>
-                    </Constraint>
-                  </Constraints>
-                </Component>
               </SubComponents>
             </Container>
           </SubComponents>

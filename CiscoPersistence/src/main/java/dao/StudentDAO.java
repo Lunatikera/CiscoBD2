@@ -37,9 +37,10 @@ public class StudentDAO implements IStudentDAO {
         EntityManager entityManager = connection.getEntityManager();
         try {
             return entityManager.createQuery(
-                    "SELECT s FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
+                    "SELECT s.id, s.firstLastname,s.secondLastName,s.unique_ID,s.password,s.enrollmentStatus FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
                     .setParameter("uniqueID", studentId)
                     .getSingleResult();
+            
         } catch (NoResultException e) {
             return null; // Handle case where no student is found
         } finally {
@@ -97,25 +98,6 @@ public class StudentDAO implements IStudentDAO {
             entityManager.close(); // Close the EntityManager
         }
     }
-
-    @Override
-    public void deleteStudent(Long studentId) throws PersistenceException {
-        EntityManager entityManager = connection.getEntityManager();
-        try {
-            StudentEntity student = entityManager.createQuery("SELECT s FROM StudentEntity s WHERE s.unique_ID = :studentId", StudentEntity.class)
-                    .setParameter("studentId", studentId)
-                    .getSingleResult();
-
-            if (student != null) {
-                student.setIsDeleted(true);
-                entityManager.merge(student);
-            } else {
-                throw new PersistenceException("Student not found.");
-            }
-        } catch (NoResultException e) {
-            throw new PersistenceException("Student not found.", e);
-        } finally {
-            entityManager.close();
-        }
-    }
 }
+
+   

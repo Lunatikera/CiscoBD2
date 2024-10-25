@@ -50,6 +50,40 @@ public class StudentComputerEntity implements Serializable {
         this.id = id;
     }
 
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
+    }
+
+    public ComputerEntity getComputer() {
+        return computer;
+    }
+
+    public void setComputer(ComputerEntity computer) {
+        this.computer = computer;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

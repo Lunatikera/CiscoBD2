@@ -22,7 +22,5 @@ public interface IStudentDAO {
     public List<StudentEntity> studentListByDegreePaginated(String degree, int offset, int limit) throws PersistenceException;
 
     public void updateStudent(StudentEntity student) throws PersistenceException;
-
-    public void deleteStudent(Long studentId) throws PersistenceException;
     
 }
