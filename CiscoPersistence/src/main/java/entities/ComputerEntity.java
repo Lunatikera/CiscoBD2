@@ -54,6 +54,30 @@ public class ComputerEntity implements Serializable {
       @OneToMany(mappedBy = "computer", cascade = CascadeType.PERSIST)
     private List<StudentComputerEntity> studentComputers;
 
+    public ComputerEntity(Long id, String ipAdress, Integer machineNumber, ComputerStatus status, ComputerTypes computerType) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.status = status;
+        this.computerType = computerType;
+    }
+
+    public ComputerEntity(Long id, String ipAdress, Integer machineNumber, ComputerStatus status, ComputerTypes computerType, LaboratoryEntity laboratory, List<ComputerSoftwareEntity> computerSoftwares, List<StudentComputerEntity> studentComputers) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.status = status;
+        this.computerType = computerType;
+        this.laboratory = laboratory;
+        this.computerSoftwares = computerSoftwares;
+        this.studentComputers = studentComputers;
+    }
+
+    public ComputerEntity() {
+    }
+
+      
+      
     public Long getId() {
         return id;
     }

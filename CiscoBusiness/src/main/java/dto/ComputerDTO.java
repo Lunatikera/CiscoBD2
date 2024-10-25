@@ -19,6 +19,19 @@ public class ComputerDTO {
     private ComputerTypes computerType;
     private ComputerStatus status;
 
+    public ComputerDTO(Long id, String ipAdress, Integer machineNumber, ComputerTypes computerType, ComputerStatus status) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.computerType = computerType;
+        this.status = status;
+    }
+
+    public ComputerDTO() {
+    }
+
+    
+    
     public Long getId() {
         return id;
     }

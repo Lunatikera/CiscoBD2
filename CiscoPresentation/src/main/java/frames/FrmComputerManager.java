@@ -4,11 +4,16 @@
  */
 package frames;
 
+
 import dto.ComputerDTO;
 import dto.DegreeDTO;
+import dto.LaboratoryDTO;
 import exception.BusinessException;
 import interfaces.IComputerBO;
+import interfaces.ILaboratoryBO;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,27 +25,42 @@ import javax.swing.table.DefaultTableModel;
 public class FrmComputerManager extends javax.swing.JFrame {
     
     private IComputerBO computerBO;
-    //private ILaboratoryBO laboratoryBO;
+    private ILaboratoryBO laboratoryBO;
+    private LaboratoryDTO laboratoryDTO;
+    private List<LaboratoryDTO> laboratoryList;
     private int page = 1;
     private int limit = 10;
     private Long lab = 1L;
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmComputerManager(IComputerBO computerBO) {
+    public FrmComputerManager(IComputerBO computerBO,ILaboratoryBO laboratoryBO) {
         initComponents();
         this.computerBO = computerBO;
+        this.laboratoryBO = laboratoryBO;
         loadInitialComponents();
     }
 
     public void loadInitialComponents() {
-//        this.cargarConfiguracionInicialTablaComputadoras();
         this.setTitle("Administracion de Computadoras");
+//        this.laboratoryDTO = cbLaboratory.getItemAt(0);
         this.setResizable(false);
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
         this.loadTableComputer();
         this.pageStatus();
+    }
+    
+    private void fillLaboratoryComboBox() {
+//        try {
+//            laboratoryList = laboratoryBO.findLaboratoryByID(lab);
+//
+//            for (LaboratoryDTO laboratory : laboratoryList) {
+//                cbLaboratory.addItem(laboratory);
+//            }
+//        } catch (BusinessException ex) {
+//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     private void deleteInfoTableComputers() {
@@ -83,7 +103,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         try {
             btnRight.setEnabled(true);
             if (this.computerBO.computerListByAcademyPaginated(page, limit, lab) == null
-                    || this.computerBO.computerListByAcademyPaginated(page + 1, limit, lab).isEmpty()) {
+                    || this.computerBO.computerListByAcademyPaginated(page+1, limit, lab).isEmpty()) {
                 btnRight.setEnabled(false);
             }
         } catch (BusinessException ex) {
@@ -132,17 +152,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         }
     }
     
-    private void fillLaboratoryComboBox() {
-//        try {
-//            academyList = academyBO.getAllAcademies();
-//
-//            for (AcademyDTO academy : academyList) {
-//                cbAcademy.addItem(academy);
-//            }
-//        } catch (BusinessException ex) {
-//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
+    
     
     
     /**
@@ -592,7 +602,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuStudents;
     private utilities.MenuButton btnRight;
     private javax.swing.JComboBox<DegreeDTO> cbAcademy;
-    private javax.swing.JComboBox<DegreeDTO> cbLaboratory;
+    private javax.swing.JComboBox<LaboratoryDTO> cbLaboratory;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;

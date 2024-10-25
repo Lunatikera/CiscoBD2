@@ -21,5 +21,5 @@ public interface IComputerBO {
     
     public ComputerDTO findByIPComputer(String computerIp)throws BusinessException;
     
-    public List<ComputerDTO> computerListByAcademyPaginated(int offset,int limit,long IdLab)throws BusinessException;
+    public List<ComputerDTO> computerListByAcademyPaginated(int offset,int limit,Long IdLab)throws BusinessException;
 }
