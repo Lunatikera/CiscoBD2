@@ -217,7 +217,7 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnContinueActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        FrmLaboratoryManager laboratory = new FrmLaboratoryManager();
+        FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
         laboratory.setVisible(true);
     }//GEN-LAST:event_btnReturnActionPerformed
 

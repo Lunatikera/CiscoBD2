@@ -26,7 +26,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     private int page = 1;
     private int limit = 10;
-    private Long idLaboratory;
     ILaboratoryBO laboratoryBO;
     IAcademyUnityBO academyBO;
     AcademyDTO academyDTO;
@@ -43,18 +42,11 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         this.loadFrame();
     }
 
-    public FrmLaboratoryManager() {
-        initComponents();
-        this.academyBO = academyBO;
-        this.laboratoryBO = laboratoryBO;
-        this.academyList = new ArrayList<>();
-        this.loadFrame();
-    }
-
     public void loadFrame() {
         this.fillAcademyComboBox();
         this.academyDTO = cbAcademy.getItemAt(0);
         this.setTitle("Administracion de Laboratorios ");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
@@ -63,13 +55,13 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         this.cbAcademy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               refreshFilter();
+                refreshFilter();
             }
         });
     }
 
-    private void refreshFilter(){
-        if (cbAcademy.getSelectedItem() != null){
+    private void refreshFilter() {
+        if (cbAcademy.getSelectedItem() != null) {
             this.academyDTO = (AcademyDTO) cbAcademy.getSelectedItem();
             this.page = 1;
             this.loadTableLaboratory();
@@ -79,6 +71,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(this, "Error al buscar el catalogo, Intente de nuevo ", "Error", JOptionPane.ERROR_MESSAGE);
     }
+
     private void loadTableLaboratory() {
 
         if (academyDTO == null) {
@@ -99,10 +92,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         } catch (BusinessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    private Long getIdSelectLaboratory() {
-        return this.idLaboratory;
     }
 
     private void deleteInfoTableLaboratory() {
@@ -157,7 +146,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     private void removeLaboratory() {
         Long id = this.getSelectedIdTableLaboratory();
-        if (id == 0) {
+        if (id == null) {
             JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -174,6 +163,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         }
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -228,7 +218,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -593,7 +583,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
-            if(this.getSelectedIdTableLaboratory() == 0){
+            if (this.getSelectedIdTableLaboratory() == null) {
+                JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
