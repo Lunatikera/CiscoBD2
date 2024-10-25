@@ -4,12 +4,14 @@
  */
 package interfaces;
 
-import exception.PersistenceException;
+import dto.AcademyDTO;
+import exception.BusinessException;
+import java.util.List;
 
 /**
  *
- * @author carli
+ * @author aleja
  */
-public interface IAcademicUnityDAO {
-    public void getAcademiesList() throws PersistenceException;
+public interface IAcademyUnityBO {
+    public List<AcademyDTO> getAllAcademies() throws BusinessException;
 }
