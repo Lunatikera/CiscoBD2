@@ -43,6 +43,22 @@ public class AcademicUnityEntity implements Serializable {
         this.laboratories = laboratories;
     }
 
+    public String getAcademicUnityName() {
+        return academicUnityName;
+    }
+
+    public void setAcademicUnityName(String academicUnityName) {
+        this.academicUnityName = academicUnityName;
+    }
+
+    public List<LaboratoryEntity> getLaboratories() {
+        return laboratories;
+    }
+
+    public void setLaboratories(List<LaboratoryEntity> laboratories) {
+        this.laboratories = laboratories;
+    }
+
     public Long getId() {
         return id;
     }
