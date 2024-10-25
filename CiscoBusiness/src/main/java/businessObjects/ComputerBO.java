@@ -94,7 +94,7 @@ public class ComputerBO implements IComputerBO{
     }
 
     @Override
-    public List<ComputerDTO> computerListByAcademyPaginated(int offset, int limit, long IdLab) throws BusinessException {
+    public List<ComputerDTO> computerListByAcademyPaginated(int offset, int limit, Long IdLab) throws BusinessException {
         if (offset < 0 || limit <= 0) {
             throw new BusinessException("Invalid pagination parameters.");
         }
@@ -104,7 +104,7 @@ public class ComputerBO implements IComputerBO{
             return ComputerMapper.toDTOList(computer);
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new BusinessException("Error retrieving student list by degree.");
+            throw new BusinessException("Error retrieving computer list by Laboratory.");
         }
     }
     

@@ -51,7 +51,7 @@ public class ComputerDAO implements IComputerDAO{
     public void deleteComputer(String computerIp) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            ComputerEntity computerDe = entityManager.createQuery("SELECT c.id,c.ipAdress,c.laboratory,c.machineNumber,c.status FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
+            ComputerEntity computerDe = entityManager.createQuery("SELECT c.id,c.ipAdress,c.machineNumber,c.status,c.computerType FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
                     .setParameter("ipAdress", computerIp)
                     .getSingleResult();
 
@@ -73,7 +73,7 @@ public class ComputerDAO implements IComputerDAO{
         EntityManager entityManager = connection.getEntityManager();
         try {
             // Check if the student exists
-            ComputerEntity existingComputer = entityManager.createQuery("SELECT c.id,c.ipAdress,c.laboratory,c.machineNumber,c.status FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
+            ComputerEntity existingComputer = entityManager.createQuery("SELECT c.id,c.ipAdress,c.machineNumber,c.status,c.computerType FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
                     .setParameter("ipAdress", computer.getIpAdress())
                     .getSingleResult();
 
@@ -100,7 +100,7 @@ public class ComputerDAO implements IComputerDAO{
         EntityManager entityManager = connection.getEntityManager();
         try {
             return entityManager.createQuery(
-                    "SELECT c.id,c.ipAdress,c.laboratory,c.machineNumber,c.status FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
+                    "SELECT c.id,c.ipAdress,c.machineNumber,c.status,c.computerType FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
                     .setParameter("ipAdress", computerIp)
                     .getSingleResult();
         } catch (NoResultException e) {
@@ -111,15 +111,15 @@ public class ComputerDAO implements IComputerDAO{
     }
 
     @Override
-    public List<ComputerEntity> computerListByAcademyPaginated(int offset, int limit,long IdLab) throws PersistenceException {
+    public List<ComputerEntity> computerListByAcademyPaginated(int offset, int limit,Long IdLab) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l FROM LaboratoryEntity l WHERE l.id = :labId", LaboratoryEntity.class)
-                    .setParameter("labId", IdLab)
-                    .getSingleResult();
+//            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l.id,l.labName,l.masterPassword,l.startTime,l.endTime,l.isDeleted FROM LaboratoryEntity l WHERE l.id = :labId", LaboratoryEntity.class)
+//                    .setParameter("labId", IdLab)
+//                    .getSingleResult();
 
-            return entityManager.createQuery("SELECT c FROM ComputerEntity c WHERE c.laboratory = :laboratory AND c.status = Disponible", ComputerEntity.class)
-                    .setParameter("laboratory", laboratory)
+            return entityManager.createQuery("SELECT new entities.ComputerEntity(c.id,c.ipAdress,c.machineNumber,c.status,c.computerType) FROM ComputerEntity c WHERE c.laboratory.id = :laboratory", ComputerEntity.class)
+                    .setParameter("laboratory", IdLab)
                     .setFirstResult(offset)
                     .setMaxResults(limit)
                     .getResultList();
