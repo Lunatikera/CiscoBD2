@@ -4,11 +4,13 @@
  */
 package entities;
 
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,11 +34,21 @@ public class DegreeEntity implements Serializable {
     @Column(name = "degreeName", nullable = false, length = 25)
     private String degreeName;
 
-    @Column(name = "timeLimit", nullable = false)
-      private Duration timeLimit;;
     
+    @Column(name = "timeLimit")
+    private Long timeLimit;
+
     @OneToMany(mappedBy = "degree", cascade = CascadeType.PERSIST)
     private List<StudentDegreeEntity> studentDegrees;
+
+    public DegreeEntity() {
+    }
+
+    public DegreeEntity(Long id, String degreeName, Long timeLimit) {
+        this.id = id;
+        this.degreeName = degreeName;
+        this.timeLimit = timeLimit;
+    }
 
     public Long getId() {
         return id;
@@ -61,11 +73,11 @@ public class DegreeEntity implements Serializable {
         this.degreeName = degreeName;
     }
 
-    public Duration getTimeLimit() {
+    public Long getTimeLimit() {
         return timeLimit;
     }
 
-    public void setTimeLimit(Duration timeLimit) {
+    public void setTimeLimit(Long timeLimit) {
         this.timeLimit = timeLimit;
     }
 

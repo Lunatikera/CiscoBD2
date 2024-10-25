@@ -5,6 +5,7 @@
 package entities;
 
 import enums.ComputerStatus;
+import enums.ComputerTypes;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -40,6 +41,9 @@ public class ComputerEntity implements Serializable {
     @Column(name = "status", nullable = false, length = 25)
     private ComputerStatus status;
     
+    @Column(name = "computerType", nullable = false, length = 25)
+    private ComputerTypes computerType;
+    
     @ManyToOne
     @JoinColumn(name = "idLaboratory", nullable = false)
     private LaboratoryEntity laboratory;
@@ -50,6 +54,30 @@ public class ComputerEntity implements Serializable {
       @OneToMany(mappedBy = "computer", cascade = CascadeType.PERSIST)
     private List<StudentComputerEntity> studentComputers;
 
+    public ComputerEntity(Long id, String ipAdress, Integer machineNumber, ComputerStatus status, ComputerTypes computerType) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.status = status;
+        this.computerType = computerType;
+    }
+
+    public ComputerEntity(Long id, String ipAdress, Integer machineNumber, ComputerStatus status, ComputerTypes computerType, LaboratoryEntity laboratory, List<ComputerSoftwareEntity> computerSoftwares, List<StudentComputerEntity> studentComputers) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.status = status;
+        this.computerType = computerType;
+        this.laboratory = laboratory;
+        this.computerSoftwares = computerSoftwares;
+        this.studentComputers = studentComputers;
+    }
+
+    public ComputerEntity() {
+    }
+
+      
+      
     public Long getId() {
         return id;
     }
@@ -58,6 +86,64 @@ public class ComputerEntity implements Serializable {
         this.id = id;
     }
 
+    public String getIpAdress() {
+        return ipAdress;
+    }
+
+    public void setIpAdress(String ipAdress) {
+        this.ipAdress = ipAdress;
+    }
+
+    public Integer getMachineNumber() {
+        return machineNumber;
+    }
+
+    public void setMachineNumber(Integer machineNumber) {
+        this.machineNumber = machineNumber;
+    }
+
+    public ComputerStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ComputerStatus status) {
+        this.status = status;
+    }
+
+    public LaboratoryEntity getLaboratory() {
+        return laboratory;
+    }
+
+    public void setLaboratory(LaboratoryEntity laboratory) {
+        this.laboratory = laboratory;
+    }
+
+    public List<ComputerSoftwareEntity> getComputerSoftwares() {
+        return computerSoftwares;
+    }
+
+    public void setComputerSoftwares(List<ComputerSoftwareEntity> computerSoftwares) {
+        this.computerSoftwares = computerSoftwares;
+    }
+
+    public List<StudentComputerEntity> getStudentComputers() {
+        return studentComputers;
+    }
+
+    public void setStudentComputers(List<StudentComputerEntity> studentComputers) {
+        this.studentComputers = studentComputers;
+    }
+
+    public ComputerTypes getComputerType() {
+        return computerType;
+    }
+
+    public void setComputerType(ComputerTypes computerType) {
+        this.computerType = computerType;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

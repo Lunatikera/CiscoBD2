@@ -3,7 +3,8 @@
  */
 package com.mycompany.ciscopresentation;
 
-import businessObjects.RuleBO;
+
+import businessObjects.DegreeBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
 import dao.RuleDAO;
@@ -20,6 +21,12 @@ import interfaces.IAcademyUnityBO;
 import interfaces.IAcademyUnityDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
+import dao.DegreeDAO;
+import frames.FrmDegreeManager;
+import frames.FrmStudentManager;
+import interfaces.IDegreeBO;
+import interfaces.IDegreeDAO;
+
 
 /**
  *
@@ -40,5 +47,13 @@ public class CiscoPresentation {
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
         FrmLaboratoryManager frmLaboratoryManager = new FrmLaboratoryManager(laboratoryBO, academyBO);
         frmLaboratoryManager.setVisible(true);
+
+        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+        frmDegreeManager.setVisible(true);
+//        FrmStudentManager frmStudentManager= new FrmStudentManager();
+//        frmStudentManager.setVisible(true);
+
     }
 }
