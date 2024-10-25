@@ -8,6 +8,7 @@ import businessObjects.DegreeBO;
 import dto.DegreeDTO;
 import exception.BusinessException;
 import interfaces.IDegreeBO;
+import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -23,18 +24,24 @@ import javax.swing.table.DefaultTableModel;
 public class FrmDegreeManager extends javax.swing.JFrame {
     private int page = 1;
     private int LIMIT = 10;
-    DegreeBO degreeBO;
-    IDegreeBO iDegreeBO;
+    IDegreeBO degreeBO;
     
     
 
     /**
      * Creates new form FrmStudentManager
+     * @param degreeBO
      */
-    public FrmDegreeManager(IDegreeBO degreeBO) {
+    public FrmDegreeManager(IDegreeBO idegreeBO) {
         initComponents();
+        this.degreeBO = idegreeBO;
         this.loadInitialMethods();
+       
+        
     }
+
+   
+    
     
     public void loadInitialMethods() {
         this.setTitle("Administracion de Carrera ");
@@ -43,6 +50,7 @@ public class FrmDegreeManager extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.loadTableDegree();
         this.pageStatus();
+        
     }
     
  private void leftButonStatus() {
@@ -96,7 +104,7 @@ public class FrmDegreeManager extends javax.swing.JFrame {
         DefaultTableModel tableModel = (DefaultTableModel) this.tblDegree.getModel();
         degreeList.forEach(column
                 -> {
-            Object[] row = new Object[2];
+            Object[] row = new Object[3];
             row[0] = column.getId();
             row[1] = column.getName();
             row[2] = column.getTimeLimit();

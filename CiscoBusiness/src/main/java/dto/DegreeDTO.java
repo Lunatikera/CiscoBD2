@@ -17,6 +17,17 @@ public class DegreeDTO {
     private String degreeName;
     private Duration timeLimit;
 
+    public DegreeDTO() {
+    }
+
+    public DegreeDTO(Long id, String degreeName, Duration timeLimit) {
+        this.id = id;
+        this.degreeName = degreeName;
+        this.timeLimit = timeLimit;
+    }
+
+    
+    
     public Long getId() {
         return id;
     }

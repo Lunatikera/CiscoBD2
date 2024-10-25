@@ -26,7 +26,7 @@ public class CiscoPresentation {
         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
         frmDegreeManager.setVisible(true);
-        FrmStudentManager frmStudentManager= new FrmStudentManager();
-        frmStudentManager.setVisible(true);
+//        FrmStudentManager frmStudentManager= new FrmStudentManager();
+//        frmStudentManager.setVisible(true);
     }
 }

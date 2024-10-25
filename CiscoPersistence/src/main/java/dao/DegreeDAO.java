@@ -129,7 +129,7 @@ public class DegreeDAO implements IDegreeDAO {
         EntityManager entityManager = connection.getEntityManager();
         try {
             
-            return entityManager.createQuery("SELECT s.id,S.degreeName,S.timeLimit FROM DegreeEntity s ", DegreeEntity.class)
+            return entityManager.createQuery("SELECT new entities.DegreeEntity(s.id,s.degreeName,s.timeLimit) FROM DegreeEntity s ", DegreeEntity.class)
                     .setFirstResult(offtel)
                     .setMaxResults(limit)
                     .getResultList();
