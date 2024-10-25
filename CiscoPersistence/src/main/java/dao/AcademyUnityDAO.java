@@ -15,27 +15,37 @@ import javax.persistence.EntityManager;
  *
  * @author carli
  */
-public class AcademyUnityDAO implements IAcademyUnityDAO{
+public class AcademyUnityDAO implements IAcademyUnityDAO {
 
-     IConnectionBD connectionBD;
+    IConnectionBD connectionBD;
 
     public AcademyUnityDAO(IConnectionBD connectionBD) {
         this.connectionBD = connectionBD;
     }
-     
+
     @Override
     public List<AcademicUnityEntity> getAllAcademies() throws PersistenceException {
-    EntityManager entityManager = connectionBD.getEntityManager(); // Obtain the EntityManager
-    try {
-        // Create a query to retrieve all DegreeEntity instances
-        return entityManager.createQuery("SELECT a FROM AcademicUnityEntity a", AcademicUnityEntity.class)
-                .getResultList(); // Execute the query and return the results
-    } catch (Exception e) {
-        throw new PersistenceException("Error retrieving all academy", e); // Handle any exceptions that may occur
-    } finally {
-        entityManager.close(); // Ensure the EntityManager is closed to free resources
-    }    }
-    
-    
-    
+        EntityManager entityManager = connectionBD.getEntityManager(); // Obtain the EntityManager
+        try {
+            // Create a query to retrieve all DegreeEntity instances
+            return entityManager.createQuery("SELECT a FROM AcademicUnityEntity a", AcademicUnityEntity.class)
+                    .getResultList(); // Execute the query and return the results
+        } catch (Exception e) {
+            throw new PersistenceException("Error retrieving all academy", e); // Handle any exceptions that may occur
+        } finally {
+            entityManager.close(); // Ensure the EntityManager is closed to free resources
+        }
+    }
+
+    public AcademicUnityEntity findAcademyByID(Long academyId) throws PersistenceException {
+        EntityManager entityManager = connectionBD.getEntityManager();
+
+        
+        try {
+            return entityManager.find(AcademicUnityEntity.class, academyId);
+        } catch (Exception e) {
+            throw new PersistenceException("Error finding Academy by ID", e);
+        }
+    }
+
 }

@@ -4,7 +4,6 @@
  */
 package interfaces;
 
-
 import entities.AcademicUnityEntity;
 import exception.PersistenceException;
 import java.util.List;
@@ -13,7 +12,9 @@ import java.util.List;
  *
  * @author carli
  */
-
 public interface IAcademyUnityDAO {
+
     public List<AcademicUnityEntity> getAllAcademies() throws PersistenceException;
+
+    public AcademicUnityEntity findAcademyByID(Long academyId) throws PersistenceException;
 }

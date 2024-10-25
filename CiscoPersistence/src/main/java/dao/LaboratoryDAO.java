@@ -11,6 +11,7 @@ import exception.PersistenceException;
 import interfaces.ILaboratoryDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 
 /**
@@ -30,9 +31,8 @@ public class LaboratoryDAO implements ILaboratoryDAO {
 
         EntityManager entityManager = connectionBD.getEntityManager();
         try {
-            
 
-            return entityManager.createQuery("SELECT new entities.LaboratoryEntity(l.id, l.labName, l.masterPassword, l.startTime, l.endTime)  FROM LaboratoryEntity l WHERE l.academicUnity.id = :idAcademicUnity ", LaboratoryEntity.class)
+            return entityManager.createQuery("SELECT l   FROM LaboratoryEntity l WHERE l.academicUnity.id = :idAcademicUnity and l.isDeleted = 0", LaboratoryEntity.class)
                     .setParameter("idAcademicUnity", academyID)
                     .setFirstResult(offset)
                     .setMaxResults(limit)
@@ -60,50 +60,57 @@ public class LaboratoryDAO implements ILaboratoryDAO {
     @Override
     public void updateLaboratory(LaboratoryEntity laboratory) throws PersistenceException {
         EntityManager entityManager = connectionBD.getEntityManager();
+        EntityTransaction entityTrans = entityManager.getTransaction();
         try {
-            // Check if the Laboratory exists
-            LaboratoryEntity existingLaboratory = entityManager.createQuery("SELECT l FROM LaboratoryEntity l WHERE l.id : idLaboratory", LaboratoryEntity.class)
-                    .setParameter("uniqueId", laboratory.getId())
-                    .getSingleResult();
+            entityTrans.begin();
+            entityManager.merge(laboratory);
+            entityTrans.commit();
 
-            if (existingLaboratory != null) {
-                // Update fields as needed
-                existingLaboratory.setLabName(laboratory.getLabName());
-                existingLaboratory.setStartTime(laboratory.getStartTime());
-                existingLaboratory.setEndTime(laboratory.getEndTime());
-                existingLaboratory.setMasterPassword(laboratory.getMasterPassword());
-                existingLaboratory.setAcademicUnity(laboratory.getAcademicUnity());
-
-                // Add other fields to update as necessary
-                entityManager.merge(existingLaboratory);
-            } else {
-                throw new PersistenceException("Laboratory not found.");
+        } catch (Exception e) {
+            if(entityTrans.isActive()){
+                entityTrans.rollback();
             }
-        } catch (NoResultException e) {
-            throw new PersistenceException("Laboratory not found.", e);
-        } finally {
-            entityManager.close(); // Close the EntityManager
+            
+           throw new PersistenceException("Error al editar el laboratorio", e);
+        }finally{
+            entityManager.close();
         }
+        
+        
     }
 
     @Override
-    public void deleteLaboratory(Long LaboratoryId) throws PersistenceException {
-        EntityManager entityManager = connectionBD.getEntityManager();
-        try {
-            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l FROM LaboratoryEntity l WHERE l.id = : idLaboratory", LaboratoryEntity.class)
-                    .setParameter("idLaboratory", LaboratoryId)
-                    .getSingleResult();
-            if (laboratory != null) {
-                laboratory.setIsDeleted(true);
-                entityManager.merge(laboratory);
-            } else {
-                throw new PersistenceException("Laboratory not found.");
-            }
-        } catch (NoResultException e) {
-            throw new PersistenceException("Laboratory not found.", e);
-        } finally {
-            entityManager.close();
+    public void deleteLaboratory(Long laboratoryId) throws PersistenceException {
+    EntityManager entityManager = connectionBD.getEntityManager();
+    EntityTransaction transaction = null;
+    
+    try {
+        // Iniciar una transacción
+        transaction = entityManager.getTransaction();
+        transaction.begin();
+        
+        // Buscar el laboratorio por ID
+        LaboratoryEntity laboratory = entityManager.find(LaboratoryEntity.class, laboratoryId);
+        
+        if (laboratory != null) {
+            laboratory.setIsDeleted(true); // Marcar como eliminado
+            entityManager.merge(laboratory); // Guardar cambios
+        } else {
+            throw new PersistenceException("Laboratory not found.");
         }
+        
+        // Confirmar la transacción
+        transaction.commit();
+    } catch (NoResultException e) {
+        throw new PersistenceException("Laboratory not found.", e);
+    } catch (Exception e) {
+        if (transaction != null && transaction.isActive()) {
+            transaction.rollback(); // Revertir si hay un error
+        }
+        throw new PersistenceException("Error deleting laboratory.", e);
+    } finally {
+        entityManager.close(); // Asegúrate de cerrar el EntityManager
+    }
     }
 
     @Override
@@ -111,6 +118,7 @@ public class LaboratoryDAO implements ILaboratoryDAO {
         EntityManager entityManager = connectionBD.getEntityManager();
         try {
             entityManager.getTransaction().begin();
+
             // Guardar el laboratorio en la base de datos
             entityManager.persist(laboratory);
             entityManager.getTransaction().commit();
