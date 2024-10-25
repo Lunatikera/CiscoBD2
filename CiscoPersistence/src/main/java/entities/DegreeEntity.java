@@ -38,6 +38,19 @@ public class DegreeEntity implements Serializable {
     @OneToMany(mappedBy = "degree", cascade = CascadeType.PERSIST)
     private List<StudentDegreeEntity> studentDegrees;
 
+    public DegreeEntity() {
+    }
+
+    
+    
+    public DegreeEntity(Long id, String degreeName, Duration timeLimit) {
+        this.id = id;
+        this.degreeName = degreeName;
+        this.timeLimit = timeLimit;
+    }
+    
+    
+
     public Long getId() {
         return id;
     }
