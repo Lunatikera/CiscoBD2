@@ -597,7 +597,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
                 return;
             }
             LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
-            FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO, academyDTO);
+            FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO, laboratoryDTO);
             laboratory.setVisible(true);
 //        if (this.getSelectedIdTableLaboratory() == null) {
 //            return;

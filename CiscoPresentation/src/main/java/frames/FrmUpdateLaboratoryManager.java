@@ -31,16 +31,16 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
 
     ILaboratoryBO laboratoryBO;
     IAcademyUnityBO academyBO;
-    AcademyDTO academyDTO;
+    LaboratoryDTO laboratorioDTO;
 
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmUpdateLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO, AcademyDTO academyDTO ) {
+    public FrmUpdateLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO, LaboratoryDTO laboratorioDTO ) {
         initComponents();
         this.academyBO = academyBO;
         this.laboratoryBO = laboratoryBO;
-        this.academyDTO=academyDTO;
+        this.laboratorioDTO=laboratorioDTO;
         this.loadFrame();
     }
 
@@ -203,8 +203,9 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
             return;
         }
 
-        LaboratoryDTO laboratoryDTO = new LaboratoryDTO(labName, startTime, endTime, masterPassword, Long.MIN_VALUE);
+        LaboratoryDTO laboratoryDTO = new LaboratoryDTO(laboratorioDTO.getId(), labName, startTime, endTime, masterPassword, laboratorioDTO.getIdAcademy());
 
+        
         try {
             laboratoryBO.updateLaboratory(laboratoryDTO);
         } catch (BusinessException ex) {
