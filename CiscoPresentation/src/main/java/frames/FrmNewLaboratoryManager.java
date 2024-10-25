@@ -71,11 +71,11 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         btnContinue = new javax.swing.JButton();
-        txtPassword = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
         txtStartTime = new javax.swing.JTextField();
         txtEndTime = new javax.swing.JTextField();
         btnReturn = new javax.swing.JButton();
+        txtPasswordMaster = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,7 +119,6 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnContinue, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, -1, -1));
-        jPanel4.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 250, 30));
 
         txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,6 +138,7 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnReturn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel4.add(txtPasswordMaster, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 250, 30));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -179,7 +179,7 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
             String labName = txtName.getText().trim();
             String startTimeTexto = txtStartTime.getText().trim();
             String endTimeTexto = txtEndTime.getText().trim();
-            String masterPassword = txtPassword.getText().trim();
+            String masterPassword = txtPasswordMaster.getText().trim();
 
             if (labName.isEmpty() || startTimeTexto.isEmpty() || endTimeTexto.isEmpty() || masterPassword.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -240,7 +240,7 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
     private utilities.MenuButton menuButton13;
     private javax.swing.JTextField txtEndTime;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtPasswordMaster;
     private javax.swing.JTextField txtStartTime;
     // End of variables declaration//GEN-END:variables
 }

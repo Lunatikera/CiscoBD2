@@ -31,7 +31,7 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
 
     ILaboratoryBO laboratoryBO;
     IAcademyUnityBO academyBO;
-    LaboratoryDTO laboratorioDTO;
+    LaboratoryDTO laboratoryDTO;
 
     /**
      * Creates new form FrmStudentManager
@@ -40,7 +40,7 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
         initComponents();
         this.academyBO = academyBO;
         this.laboratoryBO = laboratoryBO;
-        this.laboratorioDTO=laboratorioDTO;
+        this.laboratoryDTO=laboratorioDTO;
         this.loadFrame();
     }
 
@@ -49,9 +49,16 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
         this.setResizable(false);
         this.setSize(598, 600);
         this.setLocationRelativeTo(null);
+        this.fillFields();
 
     }
 
+    private void fillFields(){
+        txtName.setText(laboratoryDTO.getLabName());
+        txtStartTime.setText(laboratoryDTO.getStartTime().toString());
+        txtEndTime.setText(laboratoryDTO.getEndTime().toString());
+        txtPasswordMaster.setText(laboratoryDTO.getMasterPassword());
+    }
     
 
     /**
@@ -73,11 +80,11 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         btnContinue = new javax.swing.JButton();
-        txtPassword = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
         txtStartTime = new javax.swing.JTextField();
         txtEndTime = new javax.swing.JTextField();
         btnReturn = new javax.swing.JButton();
+        txtPasswordMaster = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,7 +128,6 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnContinue, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, -1, -1));
-        jPanel4.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 250, 30));
 
         txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,6 +147,7 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnReturn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel4.add(txtPasswordMaster, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 250, 30));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -180,7 +187,7 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
         String labName = txtName.getText().trim();
         String startTimeTexto = txtStartTime.getText().trim();
         String endTimeTexto = txtEndTime.getText().trim();
-        String masterPassword = txtPassword.getText().trim();
+        String masterPassword = txtPasswordMaster.getText().trim();
 
         if (labName.isEmpty() || startTimeTexto.isEmpty() || endTimeTexto.isEmpty() || masterPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -203,11 +210,11 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
             return;
         }
 
-        LaboratoryDTO laboratoryDTO = new LaboratoryDTO(laboratorioDTO.getId(), labName, startTime, endTime, masterPassword, laboratorioDTO.getIdAcademy());
+        LaboratoryDTO newLaboratoryDTO = new LaboratoryDTO(this.laboratoryDTO.getId(), labName, startTime, endTime, masterPassword, this.laboratoryDTO.getIdAcademy());
 
         
         try {
-            laboratoryBO.updateLaboratory(laboratoryDTO);
+            laboratoryBO.updateLaboratory(newLaboratoryDTO);
         } catch (BusinessException ex) {
             Logger.getLogger(FrmUpdateLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -237,7 +244,7 @@ public class FrmUpdateLaboratoryManager extends javax.swing.JFrame {
     private utilities.MenuButton menuButton13;
     private javax.swing.JTextField txtEndTime;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtPasswordMaster;
     private javax.swing.JTextField txtStartTime;
     // End of variables declaration//GEN-END:variables
 }

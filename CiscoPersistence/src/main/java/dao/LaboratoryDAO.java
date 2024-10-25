@@ -32,7 +32,7 @@ public class LaboratoryDAO implements ILaboratoryDAO {
         EntityManager entityManager = connectionBD.getEntityManager();
         try {
 
-            return entityManager.createQuery("SELECT l   FROM LaboratoryEntity l WHERE l.academicUnity.id = :idAcademicUnity ", LaboratoryEntity.class)
+            return entityManager.createQuery("SELECT l   FROM LaboratoryEntity l WHERE l.academicUnity.id = :idAcademicUnity and l.isDeleted = 0", LaboratoryEntity.class)
                     .setParameter("idAcademicUnity", academyID)
                     .setFirstResult(offset)
                     .setMaxResults(limit)
