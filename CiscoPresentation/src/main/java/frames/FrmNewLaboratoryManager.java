@@ -86,39 +86,32 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
         lbNewLaboratory.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lbNewLaboratory.setForeground(new java.awt.Color(0, 0, 0));
         lbNewLaboratory.setText("Agregar Laboratorio");
         jPanel4.add(lbNewLaboratory, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 340, -1));
 
         lblEndTime.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblEndTime.setForeground(new java.awt.Color(0, 0, 0));
         lblEndTime.setText("Hora de Cierre:");
         jPanel4.add(lblEndTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, -1, -1));
 
         lblStartTime.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblStartTime.setForeground(new java.awt.Color(0, 0, 0));
         lblStartTime.setText("Hora de Apertura:");
         jPanel4.add(lblStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPassword.setForeground(new java.awt.Color(0, 0, 0));
         lblPassword.setText("Contraseña:");
         jPanel4.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
 
         lblName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblName.setForeground(new java.awt.Color(0, 0, 0));
         lblName.setText("Nombre:");
         jPanel4.add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
 
-        btnContinue.setBackground(new java.awt.Color(255, 255, 255));
-        btnContinue.setForeground(new java.awt.Color(0, 0, 0));
         btnContinue.setText("Continuar");
         btnContinue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnContinueActionPerformed(evt);
             }
         });
-        jPanel4.add(btnContinue, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, -1, -1));
+        jPanel4.add(btnContinue, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 390, 180, 40));
 
         txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,15 +122,13 @@ public class FrmNewLaboratoryManager extends javax.swing.JFrame {
         jPanel4.add(txtStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 250, 30));
         jPanel4.add(txtEndTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 250, 30));
 
-        btnReturn.setBackground(new java.awt.Color(255, 255, 255));
-        btnReturn.setForeground(new java.awt.Color(0, 0, 0));
         btnReturn.setText("Regresar");
         btnReturn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReturnActionPerformed(evt);
             }
         });
-        jPanel4.add(btnReturn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel4.add(btnReturn, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, 180, 40));
         jPanel4.add(txtPasswordMaster, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 250, 30));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);

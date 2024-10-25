@@ -223,8 +223,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         cbAcademy = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new utilities.MenuButton();
-        btnDelete = new utilities.MenuButton();
         btnEdit = new utilities.MenuButton();
+        btnDelete = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
@@ -453,15 +453,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         });
         jPanel2.add(btnAdd);
 
-        btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
-        btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnDelete);
-
         btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
         btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -470,6 +461,15 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnEdit);
+
+        btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
+        btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnDelete);
 
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
