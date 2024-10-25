@@ -124,7 +124,7 @@ public class FrmDegreeManager extends javax.swing.JFrame {
     deleteInfoTableDegree();
 
        
-            // Obtén solo los clientes necesarios para la página actual
+     // Obtén solo los clientes necesarios para la página actual
      List<DegreeDTO> degreeList = this.degreeBO.obterCarrerasPaguinado(LIMIT, page);
 
     //Agrega los registros paginados a la tabla
