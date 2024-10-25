@@ -24,6 +24,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     private int page = 1;
     private int limit = 10;
+    private Long idLaboratory;
     ILaboratoryBO laboratoryBO;
     IAcademyUnityBO academyBO;
     AcademyDTO academyDTO;
@@ -34,15 +35,23 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
      */
     public FrmLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO) {
         initComponents();
-        this.academyBO=academyBO;
-        this.laboratoryBO=laboratoryBO;
-        this.academyList= new ArrayList<>();
+        this.academyBO = academyBO;
+        this.laboratoryBO = laboratoryBO;
+        this.academyList = new ArrayList<>();
+        this.loadFrame();
+    }
+
+    public FrmLaboratoryManager() {
+        initComponents();
+        this.academyBO = academyBO;
+        this.laboratoryBO = laboratoryBO;
+        this.academyList = new ArrayList<>();
         this.loadFrame();
     }
 
     public void loadFrame() {
         this.fillAcademyComboBox();
-        this.academyDTO= cbAcademy.getItemAt(0);
+        this.academyDTO = cbAcademy.getItemAt(0);
         this.setTitle("Administracion de Laboratorios ");
         this.setResizable(false);
         this.setSize(1280, 780);
@@ -52,7 +61,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }
 
     private void loadTableLaboratory() {
-        
+
         if (academyDTO == null) {
             return;
         }
@@ -71,6 +80,10 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         } catch (BusinessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private Long getIdSelectLaboratory() {
+        return this.idLaboratory;
     }
 
     private void deleteInfoTableLaboratory() {
@@ -476,11 +489,28 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        Long idSelect = getIdSelectLaboratory();
+        if (idSelect != 0) {
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar este laboratorio?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    laboratoryBO.deleteLaboratory(idSelect);
+                    JOptionPane.showMessageDialog(this, "Laboratorio eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);
+
+                } catch (BusinessException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró el laboratorio para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        FrmNewLaboratoryManager laboratory = new FrmNewLaboratoryManager(laboratoryBO, academyBO);
+        laboratory.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
@@ -536,20 +566,22 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
         page--;
         this.pageStatus();
-        
+
     }//GEN-LAST:event_btnLeftActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        if (this.getSelectedIdTableLaboratory() == null) {
-            return ;
-        }
-        try {
-            // TODO add your handling code here:
-            LaboratoryDTO laboratory = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
-            System.out.println(laboratory.getLabName());
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO);
+        laboratory.setVisible(true);
+//        if (this.getSelectedIdTableLaboratory() == null) {
+//            return;
+//        }
+//        try {
+//            // TODO add your handling code here:
+//            LaboratoryDTO laboratory = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
+//            System.out.println(laboratory.getLabName());
+//        } catch (BusinessException ex) {
+//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     public void pageStatus() {
@@ -579,8 +611,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         }
         try {
             btnRight.setEnabled(true);
-            if (this.laboratoryBO.laboratoryListByAcademyPaginated(academyDTO.getId(), limit, page +1) == null
-                    || this.laboratoryBO.laboratoryListByAcademyPaginated(academyDTO.getId(), limit, page +1).isEmpty()) {
+            if (this.laboratoryBO.laboratoryListByAcademyPaginated(academyDTO.getId(), limit, page + 1) == null
+                    || this.laboratoryBO.laboratoryListByAcademyPaginated(academyDTO.getId(), limit, page + 1).isEmpty()) {
                 btnRight.setEnabled(false);
             }
         } catch (BusinessException ex) {

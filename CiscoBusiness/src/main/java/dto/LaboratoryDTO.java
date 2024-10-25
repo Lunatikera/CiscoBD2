@@ -16,14 +16,18 @@ public class LaboratoryDTO {
     private String labName;
     private LocalTime startTime;
     private LocalTime endTime;
+    private String masterPassword;
     private Long id;
 
-    public LaboratoryDTO(String labName, LocalTime startTime, LocalTime endTime, Long id) {
+    public LaboratoryDTO(String labName, LocalTime startTime, LocalTime endTime, String masterPassword, Long id) {
         this.labName = labName;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.masterPassword = masterPassword;
         this.id = id;
     }
+
+    
 
     public Long getId() {
         return id;
@@ -31,6 +35,14 @@ public class LaboratoryDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getMasterPassword() {
+        return masterPassword;
+    }
+
+    public void setMasterPassword(String masterPassword) {
+        this.masterPassword = masterPassword;
     }
 
     public LaboratoryDTO() {
