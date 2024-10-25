@@ -43,6 +43,24 @@ public class ComputerSoftwareEntity implements Serializable {
         this.id = id;
     }
 
+    public ComputerEntity getComputer() {
+        return computer;
+    }
+
+    public void setComputer(ComputerEntity computer) {
+        this.computer = computer;
+    }
+
+    public SoftwareEntity getSoftware() {
+        return software;
+    }
+
+    public void setSoftware(SoftwareEntity software) {
+        this.software = software;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
