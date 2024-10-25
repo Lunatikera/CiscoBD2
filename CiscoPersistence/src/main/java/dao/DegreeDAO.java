@@ -9,6 +9,8 @@ import entities.DegreeEntity;
 import exception.PersistenceException;
 import interfaces.IDegreeDAO;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -129,7 +131,7 @@ public class DegreeDAO implements IDegreeDAO {
         EntityManager entityManager = connection.getEntityManager();
         try {
             
-            return entityManager.createQuery("SELECT new entities.DegreeEntity(s.id,s.degreeName,s.timeLimit) FROM DegreeEntity s ", DegreeEntity.class)
+            return entityManager.createQuery("SELECT s FROM DegreeEntity s ", DegreeEntity.class)
                     .setFirstResult(offtel)
                     .setMaxResults(limit)
                     .getResultList();
@@ -137,6 +139,7 @@ public class DegreeDAO implements IDegreeDAO {
         } catch (NoResultException e) {
             throw new PersistenceException("Degree not found", e);
         } catch (Exception e) {
+            Logger.getLogger(DegreeDAO.class.getName()).log(Level.SEVERE, "Failed to save student", e);
             throw new PersistenceException("Error retrieving Degree List", e);
         } finally {
             entityManager.close();

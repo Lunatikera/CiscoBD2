@@ -15,12 +15,12 @@ public class DegreeDTO {
 
     private Long id;
     private String degreeName;
-    private Duration timeLimit;
+    private Long timeLimit;
 
     public DegreeDTO() {
     }
 
-    public DegreeDTO(Long id, String degreeName, Duration timeLimit) {
+    public DegreeDTO(Long id, String degreeName, Long timeLimit) {
         this.id = id;
         this.degreeName = degreeName;
         this.timeLimit = timeLimit;
@@ -44,11 +44,11 @@ public class DegreeDTO {
         this.degreeName = degreeName;
     }
 
-    public Duration getTimeLimit() {
+    public Long getTimeLimit() {
         return timeLimit;
     }
 
-    public void setTimeLimit(Duration timeLimit) {
+    public void setTimeLimit(Long timeLimit) {
         this.timeLimit = timeLimit;
     }
 
