@@ -3,7 +3,6 @@
  */
 package com.mycompany.ciscopresentation;
 
-
 import businessObjects.DegreeBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
@@ -13,6 +12,7 @@ import interfaces.IRuleBO;
 import interfaces.IRuleDAO;
 import businessObjects.AcademyUnityBO;
 import businessObjects.LaboratoryBO;
+import businessObjects.SoftwareBO;
 import dao.AcademyUnityDAO;
 import dao.LaboratoryDAO;
 import frames.FrmLaboratoryManager;
@@ -22,11 +22,15 @@ import interfaces.IAcademyUnityDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
 import dao.DegreeDAO;
+import dao.SoftwareDAO;
+import dto.SoftwareDTO;
 import frames.FrmDegreeManager;
+import frames.FrmSoftwareManager;
 import frames.FrmStudentManager;
 import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
-
+import interfaces.ISoftwareBO;
+import interfaces.ISoftwareDAO;
 
 /**
  *
@@ -35,25 +39,29 @@ import interfaces.IDegreeDAO;
 public class CiscoPresentation {
 
     public static void main(String[] args) {
-        IConnectionBD connectionBD= new ConnectionDB();
+        IConnectionBD connectionBD = new ConnectionDB();
 //        IRuleDAO ruleDAO= new RuleDAO(connectionBD);
 //        IRuleBO ruleBO= new RuleBO(ruleDAO);
 //        FrmRulesManager frmRulesManager= new FrmRulesManager(ruleBO);
 //        frmRulesManager.setVisible(true);
 
-        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
-        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
-        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
-        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        FrmLaboratoryManager frmLaboratoryManager = new FrmLaboratoryManager(laboratoryBO, academyBO);
-        frmLaboratoryManager.setVisible(true);
+        ISoftwareDAO softwareDAO = new SoftwareDAO(connectionBD);
+        ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
 
-        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-        frmDegreeManager.setVisible(true);
+        FrmSoftwareManager frmSoftwareManager = new FrmSoftwareManager(softwareBO);
+        frmSoftwareManager.setVisible(true);
+
+//        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
+//        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
+//        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+//        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
+//        FrmLaboratoryManager frmLaboratoryManager = new FrmLaboratoryManager(laboratoryBO, academyBO);
+//        frmLaboratoryManager.setVisible(true);
+//        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
+//        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+//        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+//        frmDegreeManager.setVisible(true);
 //        FrmStudentManager frmStudentManager= new FrmStudentManager();
 //        frmStudentManager.setVisible(true);
-
     }
 }

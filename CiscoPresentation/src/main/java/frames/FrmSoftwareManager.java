@@ -4,11 +4,16 @@
  */
 package frames;
 
+import businessObjects.ComputerBO;
+import businessObjects.SoftwareBO;
 import dto.AcademyDTO;
+import dto.ComputerDTO;
 import dto.LaboratoryDTO;
+import dto.SoftwareDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
 import interfaces.ILaboratoryBO;
+import interfaces.ISoftwareBO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,80 +27,63 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aleja
  */
-public class FrmLaboratoryManager extends javax.swing.JFrame {
+public class FrmSoftwareManager extends javax.swing.JFrame {
 
+    SoftwareDTO softwareDTO;
+    ISoftwareBO softwareBO;
+    List<SoftwareDTO> softwareList;
     private int page = 1;
     private int limit = 10;
-    ILaboratoryBO laboratoryBO;
-    IAcademyUnityBO academyBO;
-    AcademyDTO academyDTO;
-    List<AcademyDTO> academyList;
 
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO) {
+    public FrmSoftwareManager(ISoftwareBO softwareBO) {
+        this.softwareBO = softwareBO;
         initComponents();
-        this.academyBO = academyBO;
-        this.laboratoryBO = laboratoryBO;
-        this.academyList = new ArrayList<>();
         this.loadFrame();
     }
 
     public void loadFrame() {
-        this.fillAcademyComboBox();
-        this.academyDTO = cbAcademy.getItemAt(0);
-        this.setTitle("Administracion de Laboratorios ");
+        this.setTitle("Administracion de Software ");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setSize(1280, 780);
+        this.loadTableSoftware();
         this.setLocationRelativeTo(null);
-        this.loadTableLaboratory();
         this.pageStatus();
-        this.cbAcademy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshFilter();
-            }
-        });
     }
 
-    private void refreshFilter() {
-        if (cbAcademy.getSelectedItem() != null) {
-            this.academyDTO = (AcademyDTO) cbAcademy.getSelectedItem();
-            this.page = 1;
-            this.loadTableLaboratory();
-            this.lblLaboratory.setText(academyDTO.getAcademyName());
-            this.pageStatus();
-            return;
-        }
-        JOptionPane.showMessageDialog(this, "Error al buscar el catalogo, Intente de nuevo ", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void loadTableLaboratory() {
-
-        if (academyDTO == null) {
-            return;
-        }
+    private void loadTableSoftware() {
         try {
             // Borrar registros previos antes de cargar los nuevos
-            deleteInfoTableLaboratory();
+            deleteInfoTableSoftware();
 
             // Obtén solo los clientes necesarios para la página actual
-            List<LaboratoryDTO> laboratoryList = this.laboratoryBO.laboratoryListByAcademyPaginated(academyDTO.getId(), limit, page);
+            List<SoftwareDTO> ruleList = this.softwareBO.softwareListPaginated(limit, page);
 
 //         Agrega los registros paginados a la tabla
-            this.addInfoTable(laboratoryList);
+            this.addInfoTable(ruleList);
 //         Control de botones de navegación
-            btnLeft.setEnabled(page > 1);
 
         } catch (BusinessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
         }
-    }
+//    try {
+//        List<SoftwareDTO> softwareList = softwareBO.softwareListPaginated(limit, page);
+//        DefaultTableModel model = (DefaultTableModel) tblSoftware.getModel();
+//        model.setRowCount(0); // Limpia la tabla
+//
+//        for (SoftwareDTO software : softwareList) {
+//            model.addRow(new Object[]{software.getId(), software.getSoftwareName() /* otros campos */});
+//        }
+//    } catch (BusinessException e) {
+//        System.out.println("Error al cargar la tabla: " + e.getMessage());
+//    }
+}
 
-    private void deleteInfoTableLaboratory() {
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblLaboratory.getModel();
+    private void deleteInfoTableSoftware() {
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblSoftware.getModel();
         if (tableModel.getRowCount() > 0) {
             for (int row = tableModel.getRowCount() - 1; row > -1; row--) {
                 tableModel.removeRow(row);
@@ -103,65 +91,31 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         }
     }
 
-    private void addInfoTable(List<LaboratoryDTO> laboratoryList) {
-        if (laboratoryList == null) {
+    private void addInfoTable(List<SoftwareDTO> softwareList) {
+        if (softwareList == null) {
             return;
         }
 
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblLaboratory.getModel();
-        laboratoryList.forEach(column
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblSoftware.getModel();
+        softwareList.forEach(softwareDTO
                 -> {
-            Object[] row = new Object[4];
-            row[0] = column.getId();
-            row[1] = column.getLabName();
-            row[2] = column.getStartTime();
-            row[3] = column.getEndTime();
+            Object[] row = new Object[1];
+            row[0] = softwareDTO;
             tableModel.addRow(row);
         });
     }
 
-    private Long getSelectedIdTableLaboratory() {
-        int selectedIndex = this.tblLaboratory.getSelectedRow();
+    private Long getSelectedIdTableSoftware() {
+        int selectedIndex = this.tblSoftware.getSelectedRow();
         if (selectedIndex != -1) {
-            DefaultTableModel model = (DefaultTableModel) this.tblLaboratory.getModel();
+            DefaultTableModel model = (DefaultTableModel) this.tblSoftware.getModel();
             int idIndexRow = 0;
-            Long idSelectedLaboratory = (Long) model.getValueAt(selectedIndex, idIndexRow);
-            return idSelectedLaboratory;
+            SoftwareDTO selectedSoftware = (SoftwareDTO) model.getValueAt(selectedIndex, idIndexRow);
+            Long idSelectedSoftware = selectedSoftware.getId();
+            return idSelectedSoftware;
         } else {
             return null;
         }
-    }
-
-    private void fillAcademyComboBox() {
-        try {
-            academyList = academyBO.getAllAcademies();
-
-            for (AcademyDTO academy : academyList) {
-                cbAcademy.addItem(academy);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void removeLaboratory() {
-        Long id = this.getSelectedIdTableLaboratory();
-        if (id == null) {
-            JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el laboratorio seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-                this.laboratoryBO.deleteLaboratory(id);
-                // Recargar la tabla después de eliminar
-                loadTableLaboratory();
-            } catch (BusinessException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
     }
 
     /**
@@ -204,17 +158,13 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblLaboratory = new javax.swing.JTable();
+        tblSoftware = new javax.swing.JTable();
         menuButton13 = new utilities.MenuButton();
-        lblLaboratory = new javax.swing.JLabel();
+        lblSoftware = new javax.swing.JLabel();
         lblPage = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        lblAcademyFilter = new javax.swing.JLabel();
-        cbAcademy = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        btnAdd = new utilities.MenuButton();
-        btnEdit = new utilities.MenuButton();
         btnDelete = new utilities.MenuButton();
+        btnAdd = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
@@ -382,75 +332,29 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(208, 216, 232));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblLaboratory.setModel(new javax.swing.table.DefaultTableModel(
+        tblSoftware.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tblSoftware.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nombre", "Hora de Apertura", "Hora de Cierre"
+                "Nombre"
             }
         ));
-        jScrollPane1.setViewportView(tblLaboratory);
+        jScrollPane1.setViewportView(tblSoftware);
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 710, 440));
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
-        lblLaboratory.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblLaboratory.setText("Laboratorio");
-        jPanel4.add(lblLaboratory, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, 210, -1));
+        lblSoftware.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblSoftware.setText("Software");
+        jPanel4.add(lblSoftware, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, 210, -1));
 
         lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblPage.setText("Pagina 01");
         jPanel4.add(lblPage, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 640, 120, -1));
 
-        jPanel5.setBackground(new java.awt.Color(208, 216, 232));
-
-        lblAcademyFilter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblAcademyFilter.setText("Filtrar por Academia");
-
-        cbAcademy.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        cbAcademy.setForeground(new java.awt.Color(0, 9, 0));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAcademyFilter)
-                    .addComponent(cbAcademy, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 18, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(lblAcademyFilter)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbAcademy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 27, Short.MAX_VALUE))
-        );
-
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
-
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
-
-        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdd);
-
-        btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
-        btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnEdit);
 
         btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
         btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
@@ -461,7 +365,16 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         });
         jPanel2.add(btnDelete);
 
-        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
+        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnAdd);
+
+        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 320, 70, 170));
 
         btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
         btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
@@ -517,12 +430,27 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        this.removeLaboratory();
+        Long id = this.getSelectedIdTableSoftware();
+        if (id == null) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un software", "Información", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el software seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                this.softwareBO.deleteSoftware(id);
+                // Recargar la tabla después de eliminar
+                loadTableSoftware();
+            } catch (BusinessException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        FrmNewLaboratoryManager laboratory = new FrmNewLaboratoryManager(laboratoryBO, academyBO, academyDTO);
-        laboratory.setVisible(true);
+        FrmAddSoftware software = new FrmAddSoftware(this, softwareBO);
+        software.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
@@ -540,7 +468,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnMenuLabsActionPerformed
 
     private void btnMenuBlocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlocksActionPerformed
@@ -581,30 +509,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnLeftActionPerformed
 
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        try {
-            if (this.getSelectedIdTableLaboratory() == null) {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
-            FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO, laboratoryDTO);
-            laboratory.setVisible(true);
-//        if (this.getSelectedIdTableLaboratory() == null) {
-//            return;
-//        }
-//        try {
-//            // TODO add your handling code here:
-//            LaboratoryDTO laboratory = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
-//            System.out.println(laboratory.getLabName());
-//        } catch (BusinessException ex) {
-//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEditActionPerformed
-
     public void pageStatus() {
         String pageNumber = String.valueOf(page);
         if (pageNumber.length() == 1) {
@@ -626,14 +530,14 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     private void rightButonStatus() {
 
-        if (academyDTO == null) {
+        if (softwareDTO == null) {
             btnRight.setEnabled(false);
             return;
         }
         try {
             btnRight.setEnabled(true);
-            if (this.laboratoryBO.laboratoryListByAcademyPaginated(academyDTO.getId(), limit, page + 1) == null
-                    || this.laboratoryBO.laboratoryListByAcademyPaginated(academyDTO.getId(), limit, page + 1).isEmpty()) {
+            if (this.softwareBO.softwareListPaginated(limit, page + 1) == null
+                    || this.softwareBO.softwareListPaginated(limit, page).isEmpty()) {
                 btnRight.setEnabled(false);
             }
         } catch (BusinessException ex) {
@@ -645,7 +549,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private utilities.MenuButton btnAdd;
     private utilities.MenuButton btnDelete;
-    private utilities.MenuButton btnEdit;
     private utilities.MenuButton btnLeft;
     private utilities.MenuButton btnMenuAcademies;
     private utilities.MenuButton btnMenuBlockReports;
@@ -660,7 +563,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuSoftwares;
     private utilities.MenuButton btnMenuStudents;
     private utilities.MenuButton btnRight;
-    private javax.swing.JComboBox<AcademyDTO> cbAcademy;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
@@ -679,13 +581,11 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblAcademyFilter;
-    private javax.swing.JLabel lblLaboratory;
     private javax.swing.JLabel lblPage;
+    private javax.swing.JLabel lblSoftware;
     private utilities.MenuButton menuButton13;
     private panels.PanelMenu panelMenu2;
-    private javax.swing.JTable tblLaboratory;
+    private javax.swing.JTable tblSoftware;
     // End of variables declaration//GEN-END:variables
 }
