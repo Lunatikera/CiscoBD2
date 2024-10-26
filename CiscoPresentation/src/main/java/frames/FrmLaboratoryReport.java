@@ -52,7 +52,7 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
     }
     
     private void customizeTableHeader() {
-        JTableHeader header = tblDegree.getTableHeader();
+        JTableHeader header = tblLaboratoryReport.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 10)); // Cambia el tipo, estilo y tamaño de fuente
     }
 
@@ -61,7 +61,7 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
     
 
     private void deleteInfoTableDegree() {
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblDegree.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblLaboratoryReport.getModel();
         if (tableModel.getRowCount() > 0) {
             for (int row = tableModel.getRowCount() - 1; row > -1; row--) {
                 tableModel.removeRow(row);
@@ -74,7 +74,7 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
             return;
         }
 
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblDegree.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblLaboratoryReport.getModel();
         degreeList.forEach(column
                 -> {
             Object[] row = new Object[3];
@@ -87,9 +87,9 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
     }
 
     private Long getSelectedIdTableDegree() {
-        int selectedIndex = this.tblDegree.getSelectedRow();
+        int selectedIndex = this.tblLaboratoryReport.getSelectedRow();
         if (selectedIndex != -1) {
-            DefaultTableModel model = (DefaultTableModel) this.tblDegree.getModel();
+            DefaultTableModel model = (DefaultTableModel) this.tblLaboratoryReport.getModel();
             int idIndexRow = 0;
             Long idSelectedDegree = (Long) model.getValueAt(selectedIndex,
                     idIndexRow);
@@ -157,7 +157,7 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDegree = new javax.swing.JTable();
+        tblLaboratoryReport = new javax.swing.JTable();
         menuButton13 = new utilities.MenuButton();
         lblDegree = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -339,18 +339,18 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(208, 216, 232));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblDegree.setModel(new javax.swing.table.DefaultTableModel(
+        tblLaboratoryReport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre del centro de computo", "# Computadora", "Cantidad de alumnos", "Minutos de alumnos", "Minutos de uso por dia", "Minutos de inactividad", "Fecha"
+                "Centro de Computo", "# Computadora", "Cantidad de alumnos", "Uso por Dia (Min)", "Inactividad (Min)", "Fecha"
             }
         ));
-        jScrollPane1.setViewportView(tblDegree);
+        jScrollPane1.setViewportView(tblLaboratoryReport);
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 1000, 440));
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
@@ -581,7 +581,7 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
     private javax.swing.JLabel lblDegree;
     private utilities.MenuButton menuButton13;
     private panels.PanelMenu panelMenu2;
-    private javax.swing.JTable tblDegree;
+    private javax.swing.JTable tblLaboratoryReport;
     private com.github.lgooddatepicker.components.TimePicker tpEnd;
     private com.github.lgooddatepicker.components.TimePicker tpStart;
     // End of variables declaration//GEN-END:variables
