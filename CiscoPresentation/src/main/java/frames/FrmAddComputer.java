@@ -52,6 +52,11 @@ public class FrmAddComputer extends javax.swing.JFrame {
         this.setResizable(false);
         this.setSize(992, 720);
         this.setLocationRelativeTo(null);
+        try {
+            this.txtMachineNumber.setText(String.valueOf(computerBO.computerListByAcademyPaginated(page, limit, 0L).size()+1));
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmAddComputer.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
@@ -338,6 +343,7 @@ public class FrmAddComputer extends javax.swing.JFrame {
         jLabel3.setText("Machine Number");
         jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
 
+        txtMachineNumber.setEnabled(false);
         txtMachineNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMachineNumberActionPerformed(evt);
@@ -370,6 +376,11 @@ public class FrmAddComputer extends javax.swing.JFrame {
 
         btnCancel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         btnCancel1.setText("Cancelar");
+        btnCancel1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancel1ActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnCancel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 550, 210, 60));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -463,7 +474,7 @@ public class FrmAddComputer extends javax.swing.JFrame {
         try {
             ComputerDTO computerDto = new ComputerDTO();
         computerDto.setIpAdress(txtIP.getText());
-        computerDto.setMachineNumber(6);
+        computerDto.setMachineNumber(13);
         if (cbStatus.getSelectedItem() == "Disponible") {
             computerDto.setStatus(ComputerStatus.Disponible);
         }else{
@@ -482,6 +493,10 @@ public class FrmAddComputer extends javax.swing.JFrame {
         }
         this.dispose();
     }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancel1ActionPerformed
  
 
 

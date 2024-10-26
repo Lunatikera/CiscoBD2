@@ -170,7 +170,9 @@ public class ComputerEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.ComputerEntity[ id=" + id + " ]";
+        return "ComputerEntity{" + "id=" + id + ", ipAdress=" + ipAdress + ", machineNumber=" + machineNumber + ", status=" + status + ", computerType=" + computerType + ", laboratory=" + laboratory + ", computerSoftwares=" + computerSoftwares + ", studentComputers=" + studentComputers + '}';
     }
+
+    
 
 }

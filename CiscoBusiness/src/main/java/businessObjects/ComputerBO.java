@@ -113,4 +113,15 @@ public class ComputerBO implements IComputerBO{
         }
     }
     
+    public List<ComputerDTO> computerListByAcademy(Long IdLab) throws BusinessException{
+        try {
+            List<ComputerEntity> computer = computerDAO.computerListByAcademy(IdLab);
+            return ComputerMapper.toDTOList(computer);
+        } catch (PersistenceException ex) {
+            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Error retrieving computer list by Laboratory.");
+        }
+    
+    }
+    
 }

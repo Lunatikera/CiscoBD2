@@ -22,4 +22,6 @@ public interface IComputerDAO {
     public ComputerEntity findByIPComputer(String computerIp)throws PersistenceException;
     
     public List<ComputerEntity> computerListByAcademyPaginated(int offset,int limit,Long IdLab)throws PersistenceException;
+    
+    public List<ComputerEntity> computerListByAcademy(Long IdLab) throws PersistenceException;
 }
