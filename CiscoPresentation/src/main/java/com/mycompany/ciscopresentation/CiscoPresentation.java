@@ -12,8 +12,10 @@ import frames.FrmRulesManager;
 import interfaces.IRuleBO;
 import interfaces.IRuleDAO;
 import businessObjects.AcademyUnityBO;
+import businessObjects.ComputerBO;
 import businessObjects.LaboratoryBO;
 import dao.AcademyUnityDAO;
+import dao.ComputerDAO;
 import dao.LaboratoryDAO;
 import frames.FrmLaboratoryManager;
 import frames.FrmNewLaboratoryManager;
@@ -22,8 +24,11 @@ import interfaces.IAcademyUnityDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
 import dao.DegreeDAO;
+import frames.FrmComputerManager;
 import frames.FrmDegreeManager;
 import frames.FrmStudentManager;
+import interfaces.IComputerBO;
+import interfaces.IComputerDAO;
 import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
 
@@ -41,19 +46,28 @@ public class CiscoPresentation {
 //        FrmRulesManager frmRulesManager= new FrmRulesManager(ruleBO);
 //        frmRulesManager.setVisible(true);
 
+//        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
+//        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
+//        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+//        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
+//        FrmLaboratoryManager frmLaboratoryManager = new FrmLaboratoryManager(laboratoryBO, academyBO);
+//        frmLaboratoryManager.setVisible(true);
+//
+//        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
+//        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+//        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+//        frmDegreeManager.setVisible(true);
+//        FrmStudentManager frmStudentManager= new FrmStudentManager();
+//        frmStudentManager.setVisible(true);
+
         IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        FrmLaboratoryManager frmLaboratoryManager = new FrmLaboratoryManager(laboratoryBO, academyBO);
-        frmLaboratoryManager.setVisible(true);
-
-        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-        frmDegreeManager.setVisible(true);
-//        FrmStudentManager frmStudentManager= new FrmStudentManager();
-//        frmStudentManager.setVisible(true);
+        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
+        IComputerBO computerBO = new ComputerBO(computerDAO,laboratoryDAO);
+        FrmComputerManager frmcom = new FrmComputerManager(computerBO, laboratoryBO);
+        frmcom.setVisible(true);
 
     }
 }

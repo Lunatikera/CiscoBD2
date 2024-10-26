@@ -123,5 +123,16 @@ public class LaboratoryBO implements ILaboratoryBO {
         throw new BusinessException("Error deleting laboratory with ID: " + LaboratoryId);
     }
     }
-
+    @Override
+    public List<LaboratoryDTO> laboratoryListByAcademy(Long academyID) throws BusinessException{
+        try {
+            List<LaboratoryEntity> laboratory = laboratoryDAO.laboratoryListByAcademy(academyID);
+            
+            return LaboratoryMapper.toDTOList(laboratory);
+        } catch (PersistenceException ex) {
+            Logger.getLogger(LaboratoryBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Error retrieving laboratory list by academy.");
+        }
+    }
+    
 }

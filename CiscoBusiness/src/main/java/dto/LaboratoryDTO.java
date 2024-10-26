@@ -123,7 +123,7 @@ public class LaboratoryDTO {
 
     @Override
     public String toString() {
-        return "LaboratoryDTO{" + "labName=" + labName + ", startTime=" + startTime + ", endTime=" + endTime + ", masterPassword=" + masterPassword + ", id=" + id + ", idAcademy=" + idAcademy + '}';
+           return labName;
     }
 
     
