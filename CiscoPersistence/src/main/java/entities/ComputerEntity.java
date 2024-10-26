@@ -77,6 +77,17 @@ public class ComputerEntity implements Serializable {
         this.studentComputers = studentComputers;
     }
 
+    public ComputerEntity(Long id, String ipAdress, Integer machineNumber, ComputerStatus status, ComputerTypes computerType, LaboratoryEntity laboratory) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.status = status;
+        this.computerType = computerType;
+        this.laboratory = laboratory;
+    }
+
+     
+    
     public ComputerEntity() {
     }
 
