@@ -23,4 +23,6 @@ public interface ILaboratoryBO {
     public void updateLaboratory(LaboratoryDTO laboratory) throws BusinessException;
 
     public void deleteLaboratory(Long LaboratoryId) throws BusinessException;
+    
+    public List<LaboratoryDTO> laboratoryListByAcademy(Long academyID) throws BusinessException;
 }

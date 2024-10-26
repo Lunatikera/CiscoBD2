@@ -8,6 +8,9 @@ package frames;
 import dto.ComputerDTO;
 import dto.DegreeDTO;
 import dto.LaboratoryDTO;
+import entities.LaboratoryEntity;
+import enums.ComputerStatus;
+import enums.ComputerTypes;
 import exception.BusinessException;
 import interfaces.IComputerBO;
 import interfaces.ILaboratoryBO;
@@ -17,12 +20,13 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import mappers.LaboratoryMapper;
 
 /**
  *
  * @author carli
  */
-public class FrmComputerManager extends javax.swing.JFrame {
+public class FrmAddComputer extends javax.swing.JFrame {
     
     private IComputerBO computerBO;
     private ILaboratoryBO laboratoryBO;
@@ -31,14 +35,14 @@ public class FrmComputerManager extends javax.swing.JFrame {
     private int page = 1;
     private int limit = 10;
     private Long lab = 1L;
-    private Long academy = 1L;
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmComputerManager(IComputerBO computerBO,ILaboratoryBO laboratoryBO) {
+    public FrmAddComputer(IComputerBO computerBO,ILaboratoryBO laboratoryBO,Long lab) {
         initComponents();
         this.computerBO = computerBO;
         this.laboratoryBO = laboratoryBO;
+        this.lab = lab;
         loadInitialComponents();
     }
 
@@ -46,113 +50,25 @@ public class FrmComputerManager extends javax.swing.JFrame {
         this.setTitle("Administracion de Computadoras");
 //        this.laboratoryDTO = cbLaboratory.getItemAt(0);
         this.setResizable(false);
-        this.setSize(1280, 780);
+        this.setSize(992, 720);
         this.setLocationRelativeTo(null);
-        this.loadTableComputer();
-        this.pageStatus();
-        this.fillLaboratoryComboBox();
+        
     }
     
     private void fillLaboratoryComboBox() {
-        try {
-            laboratoryList = laboratoryBO.laboratoryListByAcademy(academy);
-
-            for (LaboratoryDTO laboratory : laboratoryList) {
-                cbLaboratory.addItem(laboratory);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            laboratoryList = laboratoryBO.findLaboratoryByID(lab);
+//
+//            for (LaboratoryDTO laboratory : laboratoryList) {
+//                cbLaboratory.addItem(laboratory);
+//            }
+//        } catch (BusinessException ex) {
+//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
-    private void deleteInfoTableComputers() {
-        DefaultTableModel modeloTabla = (DefaultTableModel) this.tblComputer.getModel();
-        if (modeloTabla.getRowCount() > 0) {
-            for (int row = modeloTabla.getRowCount() - 1; row > -1; row--) {
-                modeloTabla.removeRow(row);
-            }
-        }
-    }
-    private void leftButonStatus() {
-        if (page > 1) {
-            btnLeft.setEnabled(true);
-            return;
-        }
-        btnLeft.setEnabled(false);
-    }
-
-    private void loadTableComputer() {
-        try {
-            // Borrar registros previos antes de cargar los nuevos
-            deleteInfoTableComputers();
-
-
-            // Obtén solo los clientes necesarios para la página actual
-            List<ComputerDTO> computerList = this.computerBO.computerListByAcademyPaginated(page, limit, lab);
-
-         //Agrega los registros paginados a la tabla
-
-    this.addInfoTable(computerList);
-          //Control de botones de navegación
-                    btnLeft.setEnabled(page > 1);
-        
-                } catch (BusinessException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
-                }
-    }
-    private void rightButonStatus() {
-
-        try {
-            btnRight.setEnabled(true);
-            if (this.computerBO.computerListByAcademyPaginated(page, limit, lab) == null
-                    || this.computerBO.computerListByAcademyPaginated(page+1, limit, lab).isEmpty()) {
-                btnRight.setEnabled(false);
-            }
-        } catch (BusinessException ex) {
-            System.out.println(ex);
-        }
-    }
     
-    public void pageStatus() {
-        String pageNumber = String.valueOf(page);
-        if (pageNumber.length() == 1) {
-            pageNumber = "0" + pageNumber;
-        }
-
-        lblPage.setText("Pagina " + pageNumber);
-        leftButonStatus();
-        rightButonStatus();
-    }
-    
-    private void addInfoTable(List<ComputerDTO> computerList) {
-        if (computerList == null) {
-            return;
-        }
-
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblComputer.getModel();
-        computerList.forEach(column
-                -> {
-            Object[] row = new Object[5];
-            row[0] = column.getId();
-            row[1] = column.getIpAdress();
-            row[2] = column.getMachineNumber();
-            row[3] = column.getStatus();
-            row[4] = column.getComputerType();
-            tableModel.addRow(row);
-        });
-    }
-    private int getSelectedIdTableComputer() {
-        int selectedIndex = this.tblComputer.getSelectedRow();
-        if (selectedIndex != -1) {
-            DefaultTableModel model = (DefaultTableModel) this.tblComputer.getModel();
-            int idIndexRow = 1;
-            int idSelectedStudent = (int) model.getValueAt(selectedIndex,
-                    idIndexRow);
-            return idSelectedStudent;
-        } else {
-            return 0;
-        }
-    }
+   
     
     
     
@@ -196,22 +112,20 @@ public class FrmComputerManager extends javax.swing.JFrame {
         btnMenuLogOff = new utilities.MenuButton();
         jLabel35 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblComputer = new javax.swing.JTable();
         menuButton13 = new utilities.MenuButton();
-        lblStudent = new javax.swing.JLabel();
-        lblPage = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        lblDegreeFilter = new javax.swing.JLabel();
-        cbAcademy = new javax.swing.JComboBox<>();
+        lblStudent = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        btnAdd = new utilities.MenuButton();
-        btnEdit = new utilities.MenuButton();
-        btnDelete = new utilities.MenuButton();
-        btnLeft = new utilities.MenuButton();
-        btnRight = new utilities.MenuButton();
-        lblDegreeFilter1 = new javax.swing.JLabel();
-        cbLaboratory = new javax.swing.JComboBox<>();
+        txtIP = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtMachineNumber = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        cbStatus = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        cbType = new javax.swing.JComboBox<>();
+        btnAccept = new javax.swing.JButton();
+        btnCancel1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -376,115 +290,87 @@ public class FrmComputerManager extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(208, 216, 232));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        tblComputer.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Id", "IP Address", "Machine Number", "Status", "Type"
-            }
-        ));
-        jScrollPane1.setViewportView(tblComputer);
-
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 710, 440));
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
-
-        lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblStudent.setText("Computadoras");
-        jPanel4.add(lblStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 130, -1, -1));
-
-        lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPage.setText("Pagina 01");
-        jPanel4.add(lblPage, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 640, 120, -1));
 
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
-        lblDegreeFilter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDegreeFilter.setText("Filtrar por Academia");
+        lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblStudent.setText("Añadir Computadora");
 
-        cbAcademy.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        cbAcademy.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setText("IP");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblDegreeFilter)
-                .addGap(104, 104, 104))
-            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cbAcademy, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblStudent)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblDegreeFilter)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbAcademy, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(lblStudent)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jLabel1))
         );
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
-
-        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdd);
-
-        btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
-        btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
-        jPanel2.add(btnEdit);
-
-        btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
-        btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnDelete);
-
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
-        btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
-        btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
-        btnLeft.addActionListener(new java.awt.event.ActionListener() {
+        txtIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLeftActionPerformed(evt);
+                txtIPActionPerformed(evt);
             }
         });
-        jPanel4.add(btnLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 630, -1, -1));
+        jPanel4.add(txtIP, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 680, 40));
 
-        btnRight.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rightSelected.png"))); // NOI18N
-        btnRight.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right.png"))); // NOI18N
-        btnRight.addActionListener(new java.awt.event.ActionListener() {
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel3.setText("Machine Number");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
+
+        txtMachineNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRightActionPerformed(evt);
+                txtMachineNumberActionPerformed(evt);
             }
         });
-        jPanel4.add(btnRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 630, -1, -1));
+        jPanel4.add(txtMachineNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 680, 40));
 
-        lblDegreeFilter1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDegreeFilter1.setText("Filtrar por Laboratorio");
-        jPanel4.add(lblDegreeFilter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, -1, -1));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel4.setText("Status");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
 
-        cbLaboratory.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        cbLaboratory.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel4.add(cbLaboratory, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 90, 220, 30));
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "No_Disponible" }));
+        jPanel4.add(cbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel5.setText("Type");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, -1, -1));
+
+        cbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Administrativo" }));
+        jPanel4.add(cbType, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, -1, -1));
+
+        btnAccept.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnAccept.setText("Aceptar");
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnAccept, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 550, 210, 60));
+
+        btnCancel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnCancel1.setText("Cancelar");
+        jPanel4.add(btnCancel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 550, 210, 60));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -492,16 +378,16 @@ public class FrmComputerManager extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(panelMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1044, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 743, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 720, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(panelMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -511,7 +397,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 992, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -520,21 +406,6 @@ public class FrmComputerManager extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        FrmAddComputer addComputer = new FrmAddComputer(computerBO, laboratoryBO, this.lab);
-        addComputer.setVisible(true);
-        
-    }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
-        page++;
-        this.pageStatus();
-    }//GEN-LAST:event_btnRightActionPerformed
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
         // TODO add your handling code here:
@@ -580,18 +451,43 @@ public class FrmComputerManager extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
 
-    private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
-       page--;
-       this.pageStatus();
-    }//GEN-LAST:event_btnLeftActionPerformed
+    private void txtIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIPActionPerformed
+
+    private void txtMachineNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMachineNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMachineNumberActionPerformed
+
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        try {
+            ComputerDTO computerDto = new ComputerDTO();
+        computerDto.setIpAdress(txtIP.getText());
+        computerDto.setMachineNumber(6);
+        if (cbStatus.getSelectedItem() == "Disponible") {
+            computerDto.setStatus(ComputerStatus.Disponible);
+        }else{
+        computerDto.setStatus(ComputerStatus.No_Disponible);
+        }
+        
+        if (cbType.getSelectedItem()== "Estudiante") {
+            computerDto.setComputerType(ComputerTypes.Estudiante);
+        }else{
+            computerDto.setComputerType(ComputerTypes.Administrativo);
+            }
+            computerDto.setLabId(lab);
+            computerBO.saveComputer(computerDto);
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmAddComputer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_btnAcceptActionPerformed
  
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private utilities.MenuButton btnAdd;
-    private utilities.MenuButton btnDelete;
-    private utilities.MenuButton btnEdit;
-    private utilities.MenuButton btnLeft;
+    private javax.swing.JButton btnAccept;
+    private javax.swing.JButton btnCancel1;
     private utilities.MenuButton btnMenuAcademies;
     private utilities.MenuButton btnMenuBlockReports;
     private utilities.MenuButton btnMenuBlocks;
@@ -604,9 +500,9 @@ public class FrmComputerManager extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuRules;
     private utilities.MenuButton btnMenuSoftwares;
     private utilities.MenuButton btnMenuStudents;
-    private utilities.MenuButton btnRight;
-    private javax.swing.JComboBox<DegreeDTO> cbAcademy;
-    private javax.swing.JComboBox<LaboratoryDTO> cbLaboratory;
+    private javax.swing.JComboBox<String> cbStatus;
+    private javax.swing.JComboBox<String> cbType;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
@@ -615,24 +511,24 @@ public class FrmComputerManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblDegreeFilter;
-    private javax.swing.JLabel lblDegreeFilter1;
-    private javax.swing.JLabel lblPage;
     private javax.swing.JLabel lblStudent;
     private utilities.MenuButton menuButton13;
     private panels.PanelMenu panelMenu2;
-    private javax.swing.JTable tblComputer;
+    private javax.swing.JTextField txtIP;
+    private javax.swing.JTextField txtMachineNumber;
     // End of variables declaration//GEN-END:variables
 }

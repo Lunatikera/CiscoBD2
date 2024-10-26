@@ -117,7 +117,7 @@ public class ComputerDAO implements IComputerDAO{
 //            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l.id,l.labName,l.masterPassword,l.startTime,l.endTime,l.isDeleted FROM LaboratoryEntity l WHERE l.id = :labId", LaboratoryEntity.class)
 //                    .setParameter("labId", IdLab)
 //                    .getSingleResult();
-
+            
             return entityManager.createQuery("SELECT new entities.ComputerEntity(c.id,c.ipAdress,c.machineNumber,c.status,c.computerType) FROM ComputerEntity c WHERE c.laboratory.id = :laboratory", ComputerEntity.class)
                     .setParameter("laboratory", IdLab)
                     .setFirstResult(offset)

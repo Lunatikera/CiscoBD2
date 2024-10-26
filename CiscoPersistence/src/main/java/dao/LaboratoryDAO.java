@@ -132,4 +132,20 @@ public class LaboratoryDAO implements ILaboratoryDAO {
             entityManager.close();
         }
     }
+    
+     @Override
+     public List<LaboratoryEntity> laboratoryListByAcademy(Long academyID) throws PersistenceException{
+         EntityManager entityManager = connectionBD.getEntityManager();
+        try {
+            return entityManager.createQuery("SELECT l   FROM LaboratoryEntity l WHERE l.academicUnity.id = :idAcademicUnity and l.isDeleted = 0", LaboratoryEntity.class)
+                    .setParameter("idAcademicUnity", academyID)
+                    .getResultList();
+        } catch (NoResultException e) {
+            throw new PersistenceException("Academy not found", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error retrieving laboratory list by academy", e);
+        } finally {
+            entityManager.close();
+        }
+     }
 }
