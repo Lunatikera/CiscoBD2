@@ -4,6 +4,7 @@
  */
 package dto;
 
+import enums.EnrollmentStatus;
 import java.util.Objects;
 
 /**
@@ -12,19 +13,57 @@ import java.util.Objects;
  */
 public class StudentDTO {
  
-    private Long uniqueId;
+    private Long unique_ID;
     private String names;
     private String firstLastname;
     private String secondLastname;
-    private String enrollmentStatus;
+    private String password;
+    private EnrollmentStatus enrollmentStatus;
+
+    public StudentDTO(Long unique_ID, String names, String firstLastname, String secondLastname, String password, EnrollmentStatus enrollmentStatus) {
+        this.unique_ID = unique_ID;
+        this.names = names;
+        this.firstLastname = firstLastname;
+        this.secondLastname = secondLastname;
+        this.password = password;
+        this.enrollmentStatus = enrollmentStatus;
+    }
+
+    public StudentDTO(Long unique_ID, String names, String firstLastname, String secondLastname, String password) {
+        this.unique_ID = unique_ID;
+        this.names = names;
+        this.firstLastname = firstLastname;
+        this.secondLastname = secondLastname;
+        this.password = password;
+    }
+
+    
+    public StudentDTO() {
+    }
+    
+    public Long getUnique_ID() {
+        return unique_ID;
+    }
+
+    public void setUnique_ID(Long unique_ID) {
+        this.unique_ID = unique_ID;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     // Getters and setters for each field
+    public void setPassword(String password) {    
+        this.password = password;
+    }
+
     public Long getUniqueId() {
-        return uniqueId;
+        return unique_ID;
     }
 
     public void setUniqueId(Long uniqueId) {
-        this.uniqueId = uniqueId;
+        this.unique_ID = uniqueId;
     }
 
     public String getNames() {
@@ -51,11 +90,11 @@ public class StudentDTO {
         this.secondLastname = secondLastname;
     }
 
-    public String getEnrollmentStatus() {
+    public EnrollmentStatus getEnrollmentStatus() {
         return enrollmentStatus;
     }
 
-    public void setEnrollmentStatus(String enrollmentStatus) {
+    public void setEnrollmentStatus(EnrollmentStatus enrollmentStatus) {
         this.enrollmentStatus = enrollmentStatus;
     }
 
@@ -77,7 +116,7 @@ public class StudentDTO {
             return false;
         }
         final StudentDTO other = (StudentDTO) obj;
-        return Objects.equals(this.uniqueId, other.uniqueId);
+        return Objects.equals(this.unique_ID, other.unique_ID);
     }
     
     

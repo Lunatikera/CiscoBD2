@@ -19,7 +19,7 @@ public interface IStudentDAO {
 
     public StudentEntity findStudentByUniqueID(Long studentId) throws PersistenceException ;
 
-    public List<StudentEntity> studentListByDegreePaginated(String degree, int offset, int limit) throws PersistenceException;
+    public List<StudentEntity> studentListByDegreePaginated(Long degreeId, int offset, int limit) throws PersistenceException;
 
     public void updateStudent(StudentEntity student) throws PersistenceException;
     
