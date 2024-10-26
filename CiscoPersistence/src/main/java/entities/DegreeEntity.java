@@ -31,7 +31,7 @@ public class DegreeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "degreeName", nullable = false, length = 25)
+    @Column(name = "degreeName", nullable = false, length = 300)
     private String degreeName;
 
     

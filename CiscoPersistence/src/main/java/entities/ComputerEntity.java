@@ -11,6 +11,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,9 +41,11 @@ public class ComputerEntity implements Serializable {
     private Integer machineNumber;
 
     @Column(name = "status", nullable = false, length = 25)
+    @Enumerated(EnumType.STRING) 
     private ComputerStatus status;
     
     @Column(name = "computerType", nullable = false, length = 25)
+    @Enumerated(EnumType.STRING) 
     private ComputerTypes computerType;
     
     @ManyToOne
