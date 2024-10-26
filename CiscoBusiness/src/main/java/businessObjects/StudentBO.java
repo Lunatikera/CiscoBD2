@@ -68,13 +68,15 @@ public class StudentBO implements IStudentBO {
     }
 
     @Override
-    public List<StudentDTO> studentListByDegreePaginated(String degree, int offset, int limit) throws BusinessException {
+    public List<StudentDTO> studentListByDegreePaginated(Long degreeId, int offset, int limit) throws BusinessException {
         if (offset < 0 || limit <= 0) {
             throw new BusinessException("Invalid pagination parameters.");
         }
+       offset = tools.Tools.ReturnOFFSETMySQL(limit, offset);
+        
 
         try {
-            List<StudentEntity> students = studentDAO.studentListByDegreePaginated(degree, offset, limit);
+            List<StudentEntity> students = studentDAO.studentListByDegreePaginated(degreeId, offset, limit);
             return StudentMapper.toDTOList(students);
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,6 +112,7 @@ public class StudentBO implements IStudentBO {
 //            throw new BusinessException("Error deleting student.");
 //        }
 //    }
+    
 
     @Override
     public StudentDTO login(LogInDTO loginDTO) throws BusinessException {

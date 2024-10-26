@@ -4,10 +4,21 @@
  */
 package frames;
 
+import businessObjects.DegreeBO;
 import dto.DegreeDTO;
 import dto.StudentDTO;
+
 import exception.BusinessException;
+import interfaces.IAcademyUnityBO;
+import interfaces.IDegreeBO;
+import interfaces.ILaboratoryBO;
+import interfaces.IStudentBO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -19,21 +30,44 @@ import javax.swing.table.DefaultTableModel;
 public class FrmStudentManager extends javax.swing.JFrame {
 
     private int page = 1;
+    private int limit = 10;
+    IStudentBO studentBO;
+    IDegreeBO degreeBO;
+    DegreeDTO degreeDTO;
+    ILaboratoryBO laboratoryBO;
+    IAcademyUnityBO academyBO;
+    List<DegreeDTO> listDegree;
 
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmStudentManager() {
+    public FrmStudentManager(IStudentBO studentBO, IDegreeBO degreeBO) {
         initComponents();
+        this.academyBO = academyBO;
+        this.laboratoryBO = laboratoryBO;
+        this.studentBO = studentBO;
+        this.degreeBO = degreeBO;
+        this.degreeDTO = degreeDTO;
+        this.listDegree = new ArrayList<>();
+        this.loadFrame();
     }
 
     public void loadFrame() {
+        this.fillDegreeComboBox();
+        this.degreeDTO = cbDegree.getItemAt(0);
         this.setTitle("Administracion de Estudiantes ");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
         this.loadTableStudents();
         this.pageStatus();
+        this.cbDegree.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshFilter();
+            }
+        });
     }
 
     private void deleteInfoTableStudents() {
@@ -45,24 +79,51 @@ public class FrmStudentManager extends javax.swing.JFrame {
         }
     }
 
+//    
+
+    private void refreshFilter() {
+        if (cbDegree.getSelectedItem() != null) {
+            this.degreeDTO = (DegreeDTO) cbDegree.getSelectedItem();
+            this.page = 1;
+            this.loadTableStudents();
+            this.pageStatus();
+            return;
+        }
+        JOptionPane.showMessageDialog(this, "Error al buscar el catalogo, Intente de nuevo ", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void fillDegreeComboBox() {
+
+        try {
+            listDegree = degreeBO.getAllDegrees();
+
+            for (DegreeDTO degree : listDegree) {
+                cbDegree.addItem(degree);
+            }
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void loadTableStudents() {
-//        try {
-//            // Borrar registros previos antes de cargar los nuevos
-//            deleteInfoTableStudents();
-//
-//       
-//            // Obtén solo los clientes necesarios para la página actual
-////            List<StudenDTO> studentList = this..buscarClientes(limite, pagina);
+        if (degreeDTO == null) {
+            return;
+        }
+        try {
+            // Borrar registros previos antes de cargar los nuevos
+            deleteInfoTableStudents();
 
-        // Agrega los registros paginados a la tabla
+            // Obtén solo los clientes necesarios para la página actual
+            List<StudentDTO> studentList = this.studentBO.studentListByDegreePaginated(degreeDTO.getId(), page, limit);
 
-//    this.addInfoTable(studentList);
-        // Control de botones de navegación
-        //            btnAtras.setEnabled(pagina > 1);
-        //
-        //        } catch (NegocioException ex) {
-        //            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
-        //        }
+//         Agrega los registros paginados a la tabla
+            this.addInfoTable(studentList);
+//         Control de botones de navegación
+            btnLeft.setEnabled(page > 1);
+
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void addInfoTable(List<StudentDTO> studentList) {
@@ -83,16 +144,16 @@ public class FrmStudentManager extends javax.swing.JFrame {
         });
     }
 
-    private int getSelectedIdTableStudent() {
+    private Long getSelectedIdTableStudent() {
         int selectedIndex = this.tblStudent.getSelectedRow();
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblStudent.getModel();
             int idIndexRow = 0;
-            int idSelectedStudent = (int) model.getValueAt(selectedIndex,
+            Long idSelectedStudent = (Long) model.getValueAt(selectedIndex,
                     idIndexRow);
             return idSelectedStudent;
         } else {
-            return 0;
+            return null;
         }
     }
 
@@ -142,11 +203,10 @@ public class FrmStudentManager extends javax.swing.JFrame {
         lblPage = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         lblDegreeFilter = new javax.swing.JLabel();
-        cbDegrees = new javax.swing.JComboBox<>();
+        cbDegree = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new utilities.MenuButton();
         btnEdit = new utilities.MenuButton();
-        btnDelete = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
@@ -316,10 +376,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
 
         tblStudent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Estatus de Inscripcion"
@@ -343,21 +400,26 @@ public class FrmStudentManager extends javax.swing.JFrame {
         lblDegreeFilter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDegreeFilter.setText("Filtrar por Carrera");
 
-        cbDegrees.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        cbDegrees.setForeground(new java.awt.Color(255, 255, 255));
+        cbDegree.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        cbDegree.setForeground(new java.awt.Color(0, 0, 0));
+        cbDegree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbDegreeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(cbDegrees, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblDegreeFilter))
+                .addComponent(cbDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(lblDegreeFilter)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -365,7 +427,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblDegreeFilter)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbDegrees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
@@ -384,18 +446,14 @@ public class FrmStudentManager extends javax.swing.JFrame {
 
         btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
         btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
-        jPanel2.add(btnEdit);
-
-        btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
-        btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
-        jPanel2.add(btnDelete);
+        jPanel2.add(btnEdit);
 
-        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
+        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 170));
 
         btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
         btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
@@ -450,12 +508,9 @@ public class FrmStudentManager extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        FrmAddStudent frmAddStudent = new FrmAddStudent(studentBO, degreeBO);
+        frmAddStudent.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
@@ -471,7 +526,8 @@ public class FrmStudentManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
-        // TODO add your handling code here:
+        FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
+        laboratory.setVisible(true);
     }//GEN-LAST:event_btnMenuLabsActionPerformed
 
     private void btnMenuBlocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlocksActionPerformed
@@ -509,6 +565,24 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLeftActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        try {
+            if (this.getSelectedIdTableStudent() == null) {
+                JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            StudentDTO studentDTO = studentBO.findStudentByUniqueID(this.getSelectedIdTableStudent());
+            FrmUpdateStudentManager Study = new FrmUpdateStudentManager(studentDTO, studentBO);
+            Study.setVisible(true);
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void cbDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDegreeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbDegreeActionPerformed
     public void pageStatus() {
         String pageNumber = String.valueOf(page);
         if (pageNumber.length() == 1) {
@@ -529,21 +603,24 @@ public class FrmStudentManager extends javax.swing.JFrame {
     }
 
     private void rightButonStatus() {
-//
-//        try {
-//            btnRight.setEnabled(true);
-//            if (this.clienteBO.buscarClientes(LIMITE, pagina + 1) == null
-//                    || this.clienteBO.buscarClientes(LIMITE, pagina + 1).isEmpty()) {
-//                btnRight.setEnabled(false);
-//            }
-//        } catch (BusinessException ex) {
-//            System.out.println(ex);
-//        }
+
+        if (degreeDTO == null) {
+            btnRight.setEnabled(false);
+            return;
+        }
+        try {
+            btnRight.setEnabled(true);
+            if (this.studentBO.studentListByDegreePaginated(degreeDTO.getId(), page + 1, limit) == null
+                    || this.studentBO.studentListByDegreePaginated(degreeDTO.getId(), page + 1, limit).isEmpty()) {
+                btnRight.setEnabled(false);
+            }
+        } catch (BusinessException ex) {
+            System.out.println(ex);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private utilities.MenuButton btnAdd;
-    private utilities.MenuButton btnDelete;
     private utilities.MenuButton btnEdit;
     private utilities.MenuButton btnLeft;
     private utilities.MenuButton btnMenuAcademies;
@@ -559,7 +636,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuSoftwares;
     private utilities.MenuButton btnMenuStudents;
     private utilities.MenuButton btnRight;
-    private javax.swing.JComboBox<DegreeDTO> cbDegrees;
+    private javax.swing.JComboBox<DegreeDTO> cbDegree;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
