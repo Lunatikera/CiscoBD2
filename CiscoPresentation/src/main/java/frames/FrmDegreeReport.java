@@ -410,10 +410,10 @@ public class FrmDegreeReport extends javax.swing.JFrame {
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
         btnPrint.setText("Imprimir");
-        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 660, 140, 30));
+        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 660, 140, 30));
 
         btnCreate.setText("Generar");
-        jPanel4.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 660, 140, 30));
+        jPanel4.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 660, 140, 30));
 
         LbAddDegree.setText("Agregar Carrera");
         LbAddDegree.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N

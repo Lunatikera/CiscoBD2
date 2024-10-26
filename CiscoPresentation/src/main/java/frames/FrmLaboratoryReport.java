@@ -375,8 +375,8 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Eliminar Carrera");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -412,10 +412,15 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
         btnPrint.setText("Imprimir");
-        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 660, 140, 30));
+        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 660, 140, 30));
 
         btnCreate.setText("Generar");
-        jPanel4.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 660, 140, 30));
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 660, 140, 30));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Agregar Carrera");
@@ -533,6 +538,10 @@ public class FrmLaboratoryReport extends javax.swing.JFrame {
     private void cbxDeleteDegree1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDeleteDegree1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxDeleteDegree1ActionPerformed
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCreateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
