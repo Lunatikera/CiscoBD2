@@ -104,16 +104,16 @@ public class FrmDegreeManager extends javax.swing.JFrame {
         });
     }
 
-    private int getSelectedIdTableDegree() {
+    private Long getSelectedIdTableDegree() {
         int selectedIndex = this.tblDegree.getSelectedRow();
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblDegree.getModel();
             int idIndexRow = 0;
-            int idSelectedDegree = (int) model.getValueAt(selectedIndex,
+            Long idSelectedDegree = (Long) model.getValueAt(selectedIndex,
                     idIndexRow);
             return idSelectedDegree;
         } else {
-            return 0;
+            return null;
         }
     }
 
@@ -473,7 +473,25 @@ public class FrmDegreeManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+                Long id = this.getSelectedIdTableDegree();
+        if (id == null) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un Carrera", "Información", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el Carrera seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                this.degreeBO.deleteDegree(id);
+                // Recargar la tabla después de eliminar
+                loadTableDegree();
+            } catch (BusinessException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        
+        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
