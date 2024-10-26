@@ -80,22 +80,14 @@ public class ComputerDAO implements IComputerDAO{
     public void updateComputer(ComputerEntity computer) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            // Check if the student exists
-            ComputerEntity existingComputer = entityManager.createQuery("SELECT c.id,c.ipAdress,c.machineNumber,c.status,c.computerType FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
-                    .setParameter("ipAdress", computer.getIpAdress())
-                    .getSingleResult();
+            entityManager.getTransaction().begin(); // Start the transaction
 
-            if (existingComputer != null) {
-                // Update fields as needed
-                existingComputer.setComputerType(computer.getComputerType());
-                existingComputer.setMachineNumber(computer.getMachineNumber());
-                existingComputer.setStatus(computer.getStatus());
                 // Add other fields to update as necessary
 
-                entityManager.merge(existingComputer); // Update the entity
-            } else {
-                throw new PersistenceException("Computer not found.");
-            }
+                entityManager.merge(computer); // Update the entity
+                //entityManager.flush();
+
+            entityManager.getTransaction().commit(); // Commit the transaction
         } catch (NoResultException e) {
             throw new PersistenceException("Computer not found.", e);
         } finally {

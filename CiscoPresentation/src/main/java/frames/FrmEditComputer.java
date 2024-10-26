@@ -26,22 +26,23 @@ import mappers.LaboratoryMapper;
  *
  * @author carli
  */
-public class FrmDeleteComputer extends javax.swing.JFrame {
+public class FrmEditComputer extends javax.swing.JFrame {
     
     private IComputerBO computerBO;
     private ILaboratoryBO laboratoryBO;
     private LaboratoryDTO laboratoryDTO;
     private List<LaboratoryDTO> laboratoryList;
     private ComputerDTO computerDTO;
-    private String computerID = null;
+    private FrmComputerManager computerManager;
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmDeleteComputer(IComputerBO computerBO,ILaboratoryBO laboratoryBO,String computerID) throws BusinessException {
+    public FrmEditComputer(IComputerBO computerBO,ILaboratoryBO laboratoryBO,ComputerDTO computerID,FrmComputerManager computerManager) throws BusinessException {
         initComponents();
         this.computerBO = computerBO;
         this.laboratoryBO = laboratoryBO;
-        this.computerID = computerID;
+        this.computerDTO = computerID;
+        this.computerManager = computerManager;
         loadInitialComponents();
     }
 
@@ -68,15 +69,19 @@ public class FrmDeleteComputer extends javax.swing.JFrame {
     }
     
     private void loadTextOnFields() throws BusinessException{
-            this.computerDTO = computerBO.findByIPComputer(computerID);
+            
             txtIP.setText(computerDTO.getIpAdress());
             txtMachineNumber.setText(String.valueOf(computerDTO.getMachineNumber()));
-            txtStatus.setText(computerDTO.getStatus().name());
-            txtType.setText(computerDTO.getComputerType().name());
-            txtIP.setEditable(false);
-            txtMachineNumber.setEditable(false);
-            txtStatus.setEditable(false);
-            txtType.setEditable(false);
+            if (computerDTO.getStatus()== ComputerStatus.Disponible){
+                cbStatus.setSelectedItem(ComputerStatus.Disponible);
+            }else cbStatus.setSelectedItem(ComputerStatus.No_Disponible);
+            
+            if (computerDTO.getComputerType() == ComputerTypes.Estudiante) {
+                cbType.setSelectedItem(ComputerTypes.Estudiante);
+            }else cbType.setSelectedItem(ComputerTypes.Administrativo);
+            txtIP.setEditable(true);
+            txtMachineNumber.setEditable(true);
+            
         }
     
     
@@ -109,8 +114,8 @@ public class FrmDeleteComputer extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         btnAccept = new javax.swing.JButton();
         btnCancel1 = new javax.swing.JButton();
-        txtStatus = new javax.swing.JTextField();
-        txtType = new javax.swing.JTextField();
+        cbStatus = new javax.swing.JComboBox<>();
+        cbType = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,7 +134,7 @@ public class FrmDeleteComputer extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
         lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblStudent.setText("Eliminar Computadora");
+        lblStudent.setText("Editar Computadora");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("IP");
@@ -172,6 +177,7 @@ public class FrmDeleteComputer extends javax.swing.JFrame {
         jLabel3.setText("Machine Number");
         jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
 
+        txtMachineNumber.setEnabled(false);
         txtMachineNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMachineNumberActionPerformed(evt);
@@ -205,19 +211,11 @@ public class FrmDeleteComputer extends javax.swing.JFrame {
         });
         jPanel4.add(btnCancel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 550, 210, 60));
 
-        txtStatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtStatusActionPerformed(evt);
-            }
-        });
-        jPanel4.add(txtStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, 440, 40));
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "No_Disponible" }));
+        jPanel4.add(cbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, -1, -1));
 
-        txtType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTypeActionPerformed(evt);
-            }
-        });
-        jPanel4.add(txtType, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 440, 40));
+        cbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Administrativo" }));
+        jPanel4.add(cbType, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, -1, -1));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -264,30 +262,38 @@ public class FrmDeleteComputer extends javax.swing.JFrame {
 
     private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
         try {
-            computerBO.deleteComputer(computerDTO.getIpAdress());
+            computerDTO.setIpAdress(txtIP.getText());
+            if (cbStatus.getSelectedItem() == "Disponible") {
+                computerDTO.setStatus(ComputerStatus.Disponible);
+        }else{
+            computerDTO.setStatus(ComputerStatus.No_Disponible);
+            }
+            
+            if (cbType.getSelectedItem()== "Estudiante") {
+            computerDTO.setComputerType(ComputerTypes.Estudiante);
+        }else{
+            computerDTO.setComputerType(ComputerTypes.Administrativo);
+            }
+            
+            computerBO.updateComputer(computerDTO);
         } catch (BusinessException ex) {
-            Logger.getLogger(FrmDeleteComputer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrmEditComputer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //this.computerManager.loadInitialComponents();
         this.dispose();
     }//GEN-LAST:event_btnAcceptActionPerformed
 
     private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
        this.dispose();
     }//GEN-LAST:event_btnCancel1ActionPerformed
-
-    private void txtStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtStatusActionPerformed
-
-    private void txtTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTypeActionPerformed
  
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnCancel1;
+    private javax.swing.JComboBox<String> cbStatus;
+    private javax.swing.JComboBox<String> cbType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
@@ -304,7 +310,5 @@ public class FrmDeleteComputer extends javax.swing.JFrame {
     private panels.PanelMenu panelMenu2;
     private javax.swing.JTextField txtIP;
     private javax.swing.JTextField txtMachineNumber;
-    private javax.swing.JTextField txtStatus;
-    private javax.swing.JTextField txtType;
     // End of variables declaration//GEN-END:variables
 }
