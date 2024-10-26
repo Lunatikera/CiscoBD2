@@ -15,6 +15,8 @@ import interfaces.IDegreeDAO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
 
+
+
 /**
  *
  * @author carli
@@ -23,13 +25,7 @@ public class CiscoPresentation {
 
     public static void main(String[] args) {
         
-        IConnectionBD connectionBD= new ConnectionDB();
-        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-        IStudentDAO studentDAO = new StudentDAO(connectionBD);
-        IStudentBO studentBO = new StudentBO(studentDAO);
 
-        FrmStudentManager frmStudenManager = new FrmStudentManager(studentBO, degreeBO);
-        frmStudenManager.setVisible(true);
-    }
+    }     
+
 }

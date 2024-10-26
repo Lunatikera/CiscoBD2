@@ -50,44 +50,44 @@ public class ComputerDAO implements IComputerDAO{
     @Override
     public void deleteComputer(String computerIp) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
-        try {
-            ComputerEntity computerDe = entityManager.createQuery("SELECT c.id,c.ipAdress,c.machineNumber,c.status,c.computerType FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
-                    .setParameter("ipAdress", computerIp)
-                    .getSingleResult();
+    
+    try {
+        entityManager.getTransaction().begin(); // Start the transaction
 
-            if (computerDe != null) {
-                computerDe.setStatus(ComputerStatus.No_Disponible);
-                entityManager.merge(computerDe);
-            } else {
-                throw new PersistenceException("Computer not found.");
-            }
-        } catch (NoResultException e) {
-            throw new PersistenceException("Computer not found.", e);
-        } finally {
-            entityManager.close();
+        ComputerEntity computerDelete = this.findByIPComputer(computerIp);
+        if (computerDelete != null) {
+            computerDelete.setMachineNumber(0);
+            entityManager.merge(computerDelete); // Merge the changes
+            entityManager.flush(); // Ensure changes are flushed to the database
+        } else {
+            throw new PersistenceException("Computer not found.");
         }
+        
+        entityManager.getTransaction().commit(); // Commit the transaction
+    } catch (NoResultException e) {
+        throw new PersistenceException("Computer not found.", e);
+    } catch (Exception e) {
+        if (entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().rollback(); // Rollback in case of an error
+        }
+        throw new PersistenceException("Error while deleting computer.", e);
+    } finally {
+        entityManager.close(); // Always close the entity manager
+    }
     }
 
     @Override
     public void updateComputer(ComputerEntity computer) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            // Check if the student exists
-            ComputerEntity existingComputer = entityManager.createQuery("SELECT c.id,c.ipAdress,c.machineNumber,c.status,c.computerType FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
-                    .setParameter("ipAdress", computer.getIpAdress())
-                    .getSingleResult();
+            entityManager.getTransaction().begin(); // Start the transaction
 
-            if (existingComputer != null) {
-                // Update fields as needed
-                existingComputer.setComputerType(computer.getComputerType());
-                existingComputer.setMachineNumber(computer.getMachineNumber());
-                existingComputer.setStatus(computer.getStatus());
                 // Add other fields to update as necessary
 
-                entityManager.merge(existingComputer); // Update the entity
-            } else {
-                throw new PersistenceException("Computer not found.");
-            }
+                entityManager.merge(computer); // Update the entity
+                //entityManager.flush();
+
+            entityManager.getTransaction().commit(); // Commit the transaction
         } catch (NoResultException e) {
             throw new PersistenceException("Computer not found.", e);
         } finally {
@@ -100,7 +100,7 @@ public class ComputerDAO implements IComputerDAO{
         EntityManager entityManager = connection.getEntityManager();
         try {
             return entityManager.createQuery(
-                    "SELECT c.id,c.ipAdress,c.machineNumber,c.status,c.computerType FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
+                    "SELECT c FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
                     .setParameter("ipAdress", computerIp)
                     .getSingleResult();
         } catch (NoResultException e) {
@@ -117,12 +117,16 @@ public class ComputerDAO implements IComputerDAO{
 //            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l.id,l.labName,l.masterPassword,l.startTime,l.endTime,l.isDeleted FROM LaboratoryEntity l WHERE l.id = :labId", LaboratoryEntity.class)
 //                    .setParameter("labId", IdLab)
 //                    .getSingleResult();
-            
-            return entityManager.createQuery("SELECT new entities.ComputerEntity(c.id,c.ipAdress,c.machineNumber,c.status,c.computerType) FROM ComputerEntity c WHERE c.laboratory.id = :laboratory", ComputerEntity.class)
+            if (offset == 0) {
+            return entityManager.createQuery("SELECT c FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
+                        .setParameter("laboratory", IdLab).getResultList();
+            }else{
+            return entityManager.createQuery("SELECT new entities.ComputerEntity(c.id,c.ipAdress,c.machineNumber,c.status,c.computerType) FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
                     .setParameter("laboratory", IdLab)
                     .setFirstResult(offset)
                     .setMaxResults(limit)
                     .getResultList();
+            }
         } catch (NoResultException e) {
             throw new PersistenceException("Laboratory not found", e);
         } catch (Exception e) {
@@ -132,6 +136,25 @@ public class ComputerDAO implements IComputerDAO{
         }
     }
     
+    @Override
+    public List<ComputerEntity> computerListByAcademy(Long IdLab) throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager();
+        try {
+//            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l.id,l.labName,l.masterPassword,l.startTime,l.endTime,l.isDeleted FROM LaboratoryEntity l WHERE l.id = :labId", LaboratoryEntity.class)
+//                    .setParameter("labId", IdLab)
+//                    .getSingleResult();
+            
+            return entityManager.createQuery("SELECT c FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
+                        .setParameter("laboratory", IdLab).getResultList();
+            
+        } catch (NoResultException e) {
+            throw new PersistenceException("Laboratory not found", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error retrieving computer list by laboratory", e);
+        } finally {
+            entityManager.close();
+        }
+    }
     
 
 }

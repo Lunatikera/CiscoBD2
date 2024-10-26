@@ -26,37 +26,32 @@ import mappers.LaboratoryMapper;
  *
  * @author carli
  */
-public class FrmAddComputer extends javax.swing.JFrame {
+public class FrmDeleteComputer extends javax.swing.JFrame {
     
     private IComputerBO computerBO;
     private ILaboratoryBO laboratoryBO;
     private LaboratoryDTO laboratoryDTO;
     private List<LaboratoryDTO> laboratoryList;
-    private int page = 1;
-    private int limit = 10;
-    private Long lab = 1L;
+    private ComputerDTO computerDTO;
+    private String computerID = null;
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmAddComputer(IComputerBO computerBO,ILaboratoryBO laboratoryBO,Long lab) {
+    public FrmDeleteComputer(IComputerBO computerBO,ILaboratoryBO laboratoryBO,String computerID) throws BusinessException {
         initComponents();
         this.computerBO = computerBO;
         this.laboratoryBO = laboratoryBO;
-        this.lab = lab;
+        this.computerID = computerID;
         loadInitialComponents();
     }
 
-    public void loadInitialComponents() {
+    public void loadInitialComponents() throws BusinessException {
         this.setTitle("Administracion de Computadoras");
 //        this.laboratoryDTO = cbLaboratory.getItemAt(0);
         this.setResizable(false);
         this.setSize(992, 720);
         this.setLocationRelativeTo(null);
-        try {
-            this.txtMachineNumber.setText(String.valueOf(computerBO.computerListByAcademyPaginated(page, limit, 0L).size()+1));
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmAddComputer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.loadTextOnFields();
         
     }
     
@@ -72,8 +67,17 @@ public class FrmAddComputer extends javax.swing.JFrame {
 //        }
     }
     
-    
-   
+    private void loadTextOnFields() throws BusinessException{
+            this.computerDTO = computerBO.findByIPComputer(computerID);
+            txtIP.setText(computerDTO.getIpAdress());
+            txtMachineNumber.setText(String.valueOf(computerDTO.getMachineNumber()));
+            txtStatus.setText(computerDTO.getStatus().name());
+            txtType.setText(computerDTO.getComputerType().name());
+            txtIP.setEditable(false);
+            txtMachineNumber.setEditable(false);
+            txtStatus.setEditable(false);
+            txtType.setEditable(false);
+        }
     
     
     
@@ -102,11 +106,11 @@ public class FrmAddComputer extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtMachineNumber = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        cbStatus = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        cbType = new javax.swing.JComboBox<>();
         btnAccept = new javax.swing.JButton();
         btnCancel1 = new javax.swing.JButton();
+        txtStatus = new javax.swing.JTextField();
+        txtType = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,7 +129,7 @@ public class FrmAddComputer extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
         lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblStudent.setText("Añadir Computadora");
+        lblStudent.setText("Eliminar Computadora");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("IP");
@@ -162,34 +166,26 @@ public class FrmAddComputer extends javax.swing.JFrame {
                 txtIPActionPerformed(evt);
             }
         });
-        jPanel4.add(txtIP, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 280, 40));
+        jPanel4.add(txtIP, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 440, 40));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel3.setText("Machine Number");
         jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
 
-        txtMachineNumber.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        txtMachineNumber.setEnabled(false);
         txtMachineNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMachineNumberActionPerformed(evt);
             }
         });
-        jPanel4.add(txtMachineNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 280, 40));
+        jPanel4.add(txtMachineNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 440, 40));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel4.setText("Status");
         jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
 
-        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "No_Disponible" }));
-        jPanel4.add(cbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, -1, -1));
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel5.setText("Type");
         jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, -1, -1));
-
-        cbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Administrativo" }));
-        jPanel4.add(cbType, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, -1, -1));
 
         btnAccept.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         btnAccept.setText("Aceptar");
@@ -208,6 +204,20 @@ public class FrmAddComputer extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnCancel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 550, 210, 60));
+
+        txtStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStatusActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txtStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, 440, 40));
+
+        txtType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTypeActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txtType, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 440, 40));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -254,39 +264,30 @@ public class FrmAddComputer extends javax.swing.JFrame {
 
     private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
         try {
-            ComputerDTO computerDto = new ComputerDTO();
-        computerDto.setIpAdress(txtIP.getText());
-        computerDto.setMachineNumber(21);
-        if (cbStatus.getSelectedItem() == "Disponible") {
-            computerDto.setStatus(ComputerStatus.Disponible);
-        }else{
-        computerDto.setStatus(ComputerStatus.No_Disponible);
-        }
-        
-        if (cbType.getSelectedItem()== "Estudiante") {
-            computerDto.setComputerType(ComputerTypes.Estudiante);
-        }else{
-            computerDto.setComputerType(ComputerTypes.Administrativo);
-            }
-            computerDto.setLabId(lab);
-            computerBO.saveComputer(computerDto);
+            computerBO.deleteComputer(computerDTO.getIpAdress());
         } catch (BusinessException ex) {
-            Logger.getLogger(FrmAddComputer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrmDeleteComputer.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }//GEN-LAST:event_btnAcceptActionPerformed
 
     private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
-        this.dispose();
+       this.dispose();
     }//GEN-LAST:event_btnCancel1ActionPerformed
+
+    private void txtStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtStatusActionPerformed
+
+    private void txtTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTypeActionPerformed
  
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnCancel1;
-    private javax.swing.JComboBox<String> cbStatus;
-    private javax.swing.JComboBox<String> cbType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
@@ -303,5 +304,7 @@ public class FrmAddComputer extends javax.swing.JFrame {
     private panels.PanelMenu panelMenu2;
     private javax.swing.JTextField txtIP;
     private javax.swing.JTextField txtMachineNumber;
+    private javax.swing.JTextField txtStatus;
+    private javax.swing.JTextField txtType;
     // End of variables declaration//GEN-END:variables
 }

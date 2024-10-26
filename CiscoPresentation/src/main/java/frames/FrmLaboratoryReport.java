@@ -4,179 +4,119 @@
  */
 package frames;
 
-
-import dto.AcademyDTO;
-import dto.ComputerDTO;
+import businessObjects.DegreeBO;
 import dto.DegreeDTO;
-import dto.LaboratoryDTO;
 import exception.BusinessException;
-import interfaces.IAcademyUnityBO;
-import interfaces.IComputerBO;
-import interfaces.ILaboratoryBO;
+import interfaces.IDegreeBO;
+import java.awt.Font;
+import java.awt.HeadlessException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
  * @author carli
  */
-public class FrmComputerManager extends javax.swing.JFrame {
-    
-    private IComputerBO computerBO;
-    private ILaboratoryBO laboratoryBO;
-    private LaboratoryDTO laboratoryDTO;
-    private AcademyDTO academyDTO;
-    private IAcademyUnityBO academyBO;
-    private List<LaboratoryDTO> laboratoryList;
-    private List<AcademyDTO> academyList;
+public class FrmLaboratoryReport extends javax.swing.JFrame {
+
     private int page = 1;
-    private int limit = 10;
-    private Long lab = 1L;
-    private Long academy = 1L;
+    private int LIMIT = 10;
+    IDegreeBO degreeBO;
+
     /**
      * Creates new form FrmStudentManager
+     *
+     * @param degreeBO
      */
-    public FrmComputerManager(IComputerBO computerBO,ILaboratoryBO laboratoryBO,IAcademyUnityBO academyBO) {
+    public FrmLaboratoryReport(IDegreeBO idegreeBO) {
         initComponents();
-        this.computerBO = computerBO;
-        this.laboratoryBO = laboratoryBO;
-        this.academyBO = academyBO;
-        loadInitialComponents();
+        this.degreeBO = idegreeBO;
+        this.loadInitialMethods();
+
     }
 
-    public void loadInitialComponents() {
-        this.setTitle("Administracion de Computadoras");
-//        this.laboratoryDTO = cbLaboratory.getItemAt(0);
+    public void loadInitialMethods() {
+        this.setTitle("Administracion de Carrera ");
         this.setResizable(false);
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
-        this.loadTableComputer();
-        this.pageStatus();
-        this.fillLaboratoryComboBox();
-        this.fillAcademyComboBox();
-    }
-    
-    private void fillLaboratoryComboBox() {
-        try {
-            cbLaboratory.removeAllItems();
-            laboratoryList = laboratoryBO.laboratoryListByAcademy(academy);
-
-            for (LaboratoryDTO laboratory : laboratoryList) {
-                cbLaboratory.addItem(laboratory);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-     private void fillAcademyComboBox() {
-        try {
-            academyList = academyBO.getAllAcademies();
-
-            for (AcademyDTO academy : academyList) {
-                cbAcademy.addItem(academy);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void deleteInfoTableComputers() {
-        DefaultTableModel modeloTabla = (DefaultTableModel) this.tblComputer.getModel();
-        if (modeloTabla.getRowCount() > 0) {
-            for (int row = modeloTabla.getRowCount() - 1; row > -1; row--) {
-                modeloTabla.removeRow(row);
-            }
-        }
-    }
-    private void leftButonStatus() {
-        if (page > 1) {
-            btnLeft.setEnabled(true);
-            return;
-        }
-        btnLeft.setEnabled(false);
-    }
-
-    private void loadTableComputer() {
-        try {
-            // Borrar registros previos antes de cargar los nuevos
-            deleteInfoTableComputers();
-
-
-            // Obtén solo los clientes necesarios para la página actual
-            List<ComputerDTO> computerList = this.computerBO.computerListByAcademyPaginated(page, limit, lab);
-
-         //Agrega los registros paginados a la tabla
-
-    this.addInfoTable(computerList);
-          //Control de botones de navegación
-                    btnLeft.setEnabled(page > 1);
+        this.loadTableDegree();
         
-                } catch (BusinessException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
-                }
-    }
-    private void rightButonStatus() {
+        this.customizeTableHeader();
 
-        try {
-            btnRight.setEnabled(true);
-            if (this.computerBO.computerListByAcademyPaginated(page, limit, lab) == null
-                    || this.computerBO.computerListByAcademyPaginated(page+1, limit, lab).isEmpty()) {
-                btnRight.setEnabled(false);
+    }
+    
+    private void customizeTableHeader() {
+        JTableHeader header = tblLaboratoryReport.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 10)); // Cambia el tipo, estilo y tamaño de fuente
+    }
+
+    
+
+    
+
+    private void deleteInfoTableDegree() {
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblLaboratoryReport.getModel();
+        if (tableModel.getRowCount() > 0) {
+            for (int row = tableModel.getRowCount() - 1; row > -1; row--) {
+                tableModel.removeRow(row);
             }
-        } catch (BusinessException ex) {
-            System.out.println(ex);
         }
     }
-    
-    public void pageStatus() {
-        String pageNumber = String.valueOf(page);
-        if (pageNumber.length() == 1) {
-            pageNumber = "0" + pageNumber;
-        }
 
-        lblPage.setText("Pagina " + pageNumber);
-        leftButonStatus();
-        rightButonStatus();
-    }
-    
-    private void addInfoTable(List<ComputerDTO> computerList) {
-        if (computerList == null) {
+    private void addInfoTable(List<DegreeDTO> degreeList) {
+        if (degreeList == null) {
             return;
         }
 
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblComputer.getModel();
-        computerList.forEach(column
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblLaboratoryReport.getModel();
+        degreeList.forEach(column
                 -> {
-            Object[] row = new Object[5];
+            Object[] row = new Object[3];
             row[0] = column.getId();
-            row[1] = column.getIpAdress();
-            row[2] = column.getMachineNumber();
-            row[3] = column.getStatus();
-            row[4] = column.getComputerType();
+            row[1] = column.getName();
+            row[2] = column.getTimeLimit();
+
             tableModel.addRow(row);
         });
     }
-    private String getSelectedIdTableComputer() {
-        int selectedIndex = this.tblComputer.getSelectedRow();
+
+    private Long getSelectedIdTableDegree() {
+        int selectedIndex = this.tblLaboratoryReport.getSelectedRow();
         if (selectedIndex != -1) {
-            DefaultTableModel model = (DefaultTableModel) this.tblComputer.getModel();
-            int idIndexRow = 1;
-            String idSelectedStudent = (String) model.getValueAt(selectedIndex,
+            DefaultTableModel model = (DefaultTableModel) this.tblLaboratoryReport.getModel();
+            int idIndexRow = 0;
+            Long idSelectedDegree = (Long) model.getValueAt(selectedIndex,
                     idIndexRow);
-            return idSelectedStudent;
+            return idSelectedDegree;
         } else {
             return null;
         }
     }
-    
-    
-    
-    
+
+    public void loadTableDegree() {
+        try {
+            // Borrar registros previos antes de cargar los nuevos
+            deleteInfoTableDegree();
+
+            // Obtén solo los clientes necesarios para la página actual
+            List<DegreeDTO> degreeList = this.degreeBO.obterCarrerasPaguinado(LIMIT, page);
+
+            //Agrega los registros paginados a la tabla
+            this.addInfoTable(degreeList);
+            //Control de botones de navegación
+           
+
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -217,23 +157,23 @@ public class FrmComputerManager extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblComputer = new javax.swing.JTable();
+        tblLaboratoryReport = new javax.swing.JTable();
         menuButton13 = new utilities.MenuButton();
-        lblStudent = new javax.swing.JLabel();
-        lblPage = new javax.swing.JLabel();
+        lblDegree = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        lblDegreeFilter = new javax.swing.JLabel();
-        cbAcademy = new javax.swing.JComboBox<>();
+        cbxAddDegree = new javax.swing.JComboBox<>();
+        cbxDeleteDegree = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        btnAdd = new utilities.MenuButton();
-        btnEdit = new utilities.MenuButton();
-        btnDelete = new utilities.MenuButton();
-        btnLeft = new utilities.MenuButton();
-        btnRight = new utilities.MenuButton();
-        lblDegreeFilter1 = new javax.swing.JLabel();
-        cbLaboratory = new javax.swing.JComboBox<>();
-        btnGoLab = new javax.swing.JButton();
-        btnGoAcademy = new javax.swing.JButton();
+        btnPrint = new javax.swing.JButton();
+        btnCreate = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        cbxDeleteDegree1 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        tpEnd = new com.github.lgooddatepicker.components.TimePicker();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        tpStart = new com.github.lgooddatepicker.components.TimePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -399,133 +339,109 @@ public class FrmComputerManager extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(208, 216, 232));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblComputer.setModel(new javax.swing.table.DefaultTableModel(
+        tblLaboratoryReport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "IP Address", "Machine Number", "Status", "Type"
+                "Centro de Computo", "# Computadora", "Cantidad de alumnos", "Uso por Dia (Min)", "Inactividad (Min)", "Fecha"
             }
         ));
-        jScrollPane1.setViewportView(tblComputer);
+        jScrollPane1.setViewportView(tblLaboratoryReport);
 
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 710, 440));
+        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 1000, 440));
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
-        lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblStudent.setText("Computadoras");
-        jPanel4.add(lblStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 130, -1, -1));
-
-        lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPage.setText("Pagina 01");
-        jPanel4.add(lblPage, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 640, 120, -1));
+        lblDegree.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblDegree.setText("Reporte Laboratorios");
+        jPanel4.add(lblDegree, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
 
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
-        lblDegreeFilter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDegreeFilter.setText("Filtrar por Academia");
+        cbxAddDegree.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxAddDegree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxAddDegreeActionPerformed(evt);
+            }
+        });
 
-        cbAcademy.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        cbxDeleteDegree.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxDeleteDegree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxDeleteDegreeActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setText("Eliminar Carrera");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblDegreeFilter)
-                .addGap(104, 104, 104))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cbAcademy, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxAddDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxDeleteDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel1)))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblDegreeFilter)
+                .addComponent(cbxAddDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbAcademy, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(cbxDeleteDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
-
-        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdd);
-
-        btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
-        btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnEdit);
-
-        btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
-        btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnDelete);
-
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
-        btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
-        btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
-        btnLeft.addActionListener(new java.awt.event.ActionListener() {
+        btnPrint.setText("Imprimir");
+        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 660, 140, 30));
+
+        btnCreate.setText("Generar");
+        jPanel4.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 660, 140, 30));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Agregar Carrera");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 100, 20));
+
+        cbxDeleteDegree1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxDeleteDegree1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLeftActionPerformed(evt);
+                cbxDeleteDegree1ActionPerformed(evt);
             }
         });
-        jPanel4.add(btnLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 630, -1, -1));
+        jPanel4.add(cbxDeleteDegree1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 130, 175, 33));
 
-        btnRight.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rightSelected.png"))); // NOI18N
-        btnRight.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right.png"))); // NOI18N
-        btnRight.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRightActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 630, -1, -1));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Fecha Fin");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 100, -1, -1));
+        jPanel4.add(tpEnd, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 130, 180, 30));
 
-        lblDegreeFilter1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDegreeFilter1.setText("Filtrar por Laboratorio");
-        jPanel4.add(lblDegreeFilter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 60, -1, -1));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setText("Centro de Computo");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, -1, -1));
 
-        cbLaboratory.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jPanel4.add(cbLaboratory, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 90, 220, 30));
-
-        btnGoLab.setText("Ir");
-        btnGoLab.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGoLabActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnGoLab, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 100, -1, -1));
-
-        btnGoAcademy.setText("Ir");
-        btnGoAcademy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGoAcademyActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnGoAcademy, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, -1, -1));
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setText("Fecha Inicio");
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, -1));
+        jPanel4.add(tpStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 50, 180, 30));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -552,7 +468,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1273, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -561,27 +477,6 @@ public class FrmComputerManager extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        
-        try {
-            FrmDeleteComputer deleteComputer = new FrmDeleteComputer(computerBO, laboratoryBO, getSelectedIdTableComputer());
-            deleteComputer.setVisible(true);
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmComputerManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        FrmAddComputer addComputer = new FrmAddComputer(computerBO, laboratoryBO, this.lab);
-        addComputer.setVisible(true);
-        
-    }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
-        page++;
-        this.pageStatus();
-    }//GEN-LAST:event_btnRightActionPerformed
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
         // TODO add your handling code here:
@@ -627,52 +522,21 @@ public class FrmComputerManager extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
 
-    private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
-       page--;
-       this.pageStatus();
-    }//GEN-LAST:event_btnLeftActionPerformed
+    private void cbxAddDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxAddDegreeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxAddDegreeActionPerformed
 
-    private void btnGoLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoLabActionPerformed
-        if (cbLaboratory !=null) {
-            this.laboratoryDTO = (LaboratoryDTO)cbLaboratory.getSelectedItem();
-            this.lab = laboratoryDTO.getId();
-            this.loadTableComputer();
-        }
-    }//GEN-LAST:event_btnGoLabActionPerformed
+    private void cbxDeleteDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDeleteDegreeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxDeleteDegreeActionPerformed
 
-    private void btnGoAcademyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoAcademyActionPerformed
-        if (cbAcademy !=null) {
-            this.academyDTO = (AcademyDTO)cbAcademy.getSelectedItem();
-            this.academy = academyDTO.getId();
-            this.fillLaboratoryComboBox();
-            this.laboratoryDTO = (LaboratoryDTO)cbLaboratory.getSelectedItem();
-            this.lab = laboratoryDTO.getId();
-            this.loadTableComputer();
-        }
-    }//GEN-LAST:event_btnGoAcademyActionPerformed
-
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        try {
-            
-            ComputerDTO com = computerBO.findByIPComputer(getSelectedIdTableComputer());
-            
-            FrmEditComputer editComputer = new FrmEditComputer(computerBO, laboratoryBO, com,this);
-            
-            editComputer.setVisible(true);
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmComputerManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEditActionPerformed
- 
+    private void cbxDeleteDegree1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDeleteDegree1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxDeleteDegree1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private utilities.MenuButton btnAdd;
-    private utilities.MenuButton btnDelete;
-    private utilities.MenuButton btnEdit;
-    private javax.swing.JButton btnGoAcademy;
-    private javax.swing.JButton btnGoLab;
-    private utilities.MenuButton btnLeft;
+    private javax.swing.JButton btnCreate;
     private utilities.MenuButton btnMenuAcademies;
     private utilities.MenuButton btnMenuBlockReports;
     private utilities.MenuButton btnMenuBlocks;
@@ -685,9 +549,11 @@ public class FrmComputerManager extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuRules;
     private utilities.MenuButton btnMenuSoftwares;
     private utilities.MenuButton btnMenuStudents;
-    private utilities.MenuButton btnRight;
-    private javax.swing.JComboBox<AcademyDTO> cbAcademy;
-    private javax.swing.JComboBox<LaboratoryDTO> cbLaboratory;
+    private javax.swing.JButton btnPrint;
+    private javax.swing.JComboBox<String> cbxAddDegree;
+    private javax.swing.JComboBox<String> cbxDeleteDegree;
+    private javax.swing.JComboBox<String> cbxDeleteDegree1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
@@ -696,24 +562,27 @@ public class FrmComputerManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblDegreeFilter;
-    private javax.swing.JLabel lblDegreeFilter1;
-    private javax.swing.JLabel lblPage;
-    private javax.swing.JLabel lblStudent;
+    private javax.swing.JLabel lblDegree;
     private utilities.MenuButton menuButton13;
     private panels.PanelMenu panelMenu2;
-    private javax.swing.JTable tblComputer;
+    private javax.swing.JTable tblLaboratoryReport;
+    private com.github.lgooddatepicker.components.TimePicker tpEnd;
+    private com.github.lgooddatepicker.components.TimePicker tpStart;
     // End of variables declaration//GEN-END:variables
 }
