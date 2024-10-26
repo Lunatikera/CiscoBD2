@@ -10,10 +10,12 @@ import exception.BusinessException;
 import exception.PersistenceException;
 import interfaces.IComputerBO;
 import interfaces.IComputerDAO;
+import interfaces.ILaboratoryDAO;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mappers.ComputerMapper;
+import tools.Tools;
 
 /**
  *
@@ -22,10 +24,13 @@ import mappers.ComputerMapper;
 public class ComputerBO implements IComputerBO{
 
     IComputerDAO computerDAO;
+    ILaboratoryDAO laboratoryDAO;
 
-    public ComputerBO(IComputerDAO computerDAO) {
+    public ComputerBO(IComputerDAO computerDAO, ILaboratoryDAO laboratoryDAO) {
         this.computerDAO = computerDAO;
+        this.laboratoryDAO = laboratoryDAO;
     }
+
     
     @Override
     public ComputerDTO saveComputer(ComputerDTO computer) throws BusinessException {
@@ -36,10 +41,10 @@ public class ComputerBO implements IComputerBO{
         ComputerEntity computerEntity = ComputerMapper.toEntity(computer);
 
         try {
-
+            computerEntity.setLaboratory(laboratoryDAO.findLaboratoryByID(computer.getLabId()));
             computerEntity = computerDAO.saveComputer(computerEntity);
             return ComputerMapper.toDTO(computerEntity);
-
+            
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Failed to save computer", ex);
             throw new BusinessException("An error occurred while saving the computer. Please try again later.");
@@ -98,7 +103,7 @@ public class ComputerBO implements IComputerBO{
         if (offset < 0 || limit <= 0) {
             throw new BusinessException("Invalid pagination parameters.");
         }
-
+        offset = Tools.ReturnOFFSETMySQL(limit, offset);
         try {
             List<ComputerEntity> computer = computerDAO.computerListByAcademyPaginated(offset, limit, IdLab);
             return ComputerMapper.toDTOList(computer);

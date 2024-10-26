@@ -31,6 +31,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
     private int page = 1;
     private int limit = 10;
     private Long lab = 1L;
+    private Long academy = 1L;
     /**
      * Creates new form FrmStudentManager
      */
@@ -49,18 +50,19 @@ public class FrmComputerManager extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.loadTableComputer();
         this.pageStatus();
+        this.fillLaboratoryComboBox();
     }
     
     private void fillLaboratoryComboBox() {
-//        try {
-//            laboratoryList = laboratoryBO.findLaboratoryByID(lab);
-//
-//            for (LaboratoryDTO laboratory : laboratoryList) {
-//                cbLaboratory.addItem(laboratory);
-//            }
-//        } catch (BusinessException ex) {
-//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            laboratoryList = laboratoryBO.laboratoryListByAcademy(academy);
+
+            for (LaboratoryDTO laboratory : laboratoryList) {
+                cbLaboratory.addItem(laboratory);
+            }
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void deleteInfoTableComputers() {
@@ -143,7 +145,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         int selectedIndex = this.tblComputer.getSelectedRow();
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblComputer.getModel();
-            int idIndexRow = 0;
+            int idIndexRow = 1;
             int idSelectedStudent = (int) model.getValueAt(selectedIndex,
                     idIndexRow);
             return idSelectedStudent;

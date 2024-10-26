@@ -460,9 +460,10 @@ public class FrmAddComputer extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMachineNumberActionPerformed
 
     private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
-        ComputerDTO computerDto = new ComputerDTO();
+        try {
+            ComputerDTO computerDto = new ComputerDTO();
         computerDto.setIpAdress(txtIP.getText());
-        computerDto.setMachineNumber(Integer.getInteger(txtMachineNumber.getText()));
+        computerDto.setMachineNumber(6);
         if (cbStatus.getSelectedItem() == "Disponible") {
             computerDto.setStatus(ComputerStatus.Disponible);
         }else{
@@ -474,16 +475,12 @@ public class FrmAddComputer extends javax.swing.JFrame {
         }else{
             computerDto.setComputerType(ComputerTypes.Administrativo);
             }
-        
-        try {
-            LaboratoryDTO labo = laboratoryBO.findLaboratoryByID(this.lab);
-            LaboratoryEntity labss = LaboratoryMapper.toEntity(labo);
-            computerDto.setLaboratory(labss);
+            computerDto.setLabId(lab);
             computerBO.saveComputer(computerDto);
         } catch (BusinessException ex) {
             Logger.getLogger(FrmAddComputer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        this.dispose();
     }//GEN-LAST:event_btnAcceptActionPerformed
  
 
