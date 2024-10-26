@@ -73,43 +73,62 @@ public class DegreeDAO implements IDegreeDAO {
     @Override
     public void updateDegree(DegreeEntity degree) throws PersistenceException {
      EntityManager entityManager = connection.getEntityManager();
-     
-     try{
-         DegreeEntity degreeNew = this.findDegreeForId(degree.getId());
-                 if (degreeNew != null) {
-                // Update fields as needed
-                degreeNew.setTimeLimit(degree.getTimeLimit());
-                
-                // Add other fields to update as necessary
+    EntityTransaction transaction = entityManager.getTransaction();
 
-                entityManager.merge(degreeNew); // Update the entity
-            } else {
-                throw new PersistenceException("Student not found.");
-            }
-        } catch (NoResultException e) {
-            throw new PersistenceException("Student not found.", e);
-        } finally {
-            entityManager.close(); // Close the EntityManager
+    try {
+        transaction.begin();  // Inicia la transacción
+
+        DegreeEntity degreeNew = entityManager.find(DegreeEntity.class, degree.getId());
+        
+        if (degreeNew != null) {
+            // Actualiza los campos necesarios
+            degreeNew.setTimeLimit(degree.getTimeLimit());
+            // Agrega otros campos que necesites actualizar
+
+            entityManager.merge(degreeNew); // Realiza el merge de la entidad actualizada
+        } else {
+            throw new PersistenceException("Degree not found.");
         }
+        
+        transaction.commit(); // Confirma la transacción
+    } catch (NoResultException e) {
+        if (transaction.isActive()) transaction.rollback(); // Revierte si ocurre un error
+        throw new PersistenceException("Degree not found.", e);
+    } catch (Exception e) {
+        if (transaction.isActive()) transaction.rollback(); // Revierte si ocurre un error
+        throw new PersistenceException("Error updating Degree", e);
+    } finally {
+        entityManager.close(); // Cierra el EntityManager
+    }
      
         } 
         @Override
     public void deleteDegree(Long degreeId) throws PersistenceException {
-        EntityManager entityManager = connection.getEntityManager();
-        try {
-            entityManager.find(DegreeEntity.class, degreeId);
-
-            if (degreeId != null) {
-                entityManager.remove(degreeId);
-            } else {
-                throw new PersistenceException("Degree not found.");
-            }
-        } catch (NoResultException e) {
-            throw new PersistenceException("Degree not found.", e);
-        } finally {
-            entityManager.close();
+    EntityManager entityManager = connection.getEntityManager();
+    EntityTransaction transaction = entityManager.getTransaction();
+    
+    try {
+        transaction.begin();  // Inicia la transacción
+        
+        DegreeEntity degree = entityManager.find(DegreeEntity.class, degreeId);
+        if (degree != null) {
+            entityManager.remove(degree); // Pasa la entidad encontrada a `remove`
+        } else {
+            throw new PersistenceException("Degree not found for ID: " + degreeId);
         }
+        
+        transaction.commit(); // Confirma la transacción para aplicar la eliminación
+    } catch (NoResultException e) {
+        if (transaction.isActive()) transaction.rollback(); // Revierte en caso de excepción
+        throw new PersistenceException("Degree not found.", e);
+    } catch (Exception e) {
+        if (transaction.isActive()) transaction.rollback(); // Revierte en caso de excepción
+        throw new PersistenceException("Error deleting Degree", e);
+    } finally {
+        entityManager.close();
     }
+    
+}
 
 
     @Override

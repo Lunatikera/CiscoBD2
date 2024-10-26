@@ -53,21 +53,21 @@ public class CiscoPresentation {
 //        FrmLaboratoryManager frmLaboratoryManager = new FrmLaboratoryManager(laboratoryBO, academyBO);
 //        frmLaboratoryManager.setVisible(true);
 //
-//        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
-//        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-//        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-//        frmDegreeManager.setVisible(true);
+        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+        frmDegreeManager.setVisible(true);
 //        FrmStudentManager frmStudentManager= new FrmStudentManager();
 //        frmStudentManager.setVisible(true);
 
-        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
-        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
-        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
-        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
-        IComputerBO computerBO = new ComputerBO(computerDAO,laboratoryDAO);
-        FrmComputerManager frmcom = new FrmComputerManager(computerBO, laboratoryBO);
-        frmcom.setVisible(true);
+//        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
+//        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
+//        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+//        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
+//        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
+//        IComputerBO computerBO = new ComputerBO(computerDAO,laboratoryDAO);
+//        FrmComputerManager frmcom = new FrmComputerManager(computerBO, laboratoryBO);
+//        frmcom.setVisible(true);
 
     }
 }

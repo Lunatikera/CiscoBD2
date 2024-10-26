@@ -10,6 +10,8 @@ import exception.BusinessException;
 import interfaces.IDegreeBO;
 import java.awt.HeadlessException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
@@ -411,6 +413,11 @@ public class FrmDegreeManager extends javax.swing.JFrame {
 
         btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
         btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEdit);
 
         btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
@@ -426,6 +433,11 @@ public class FrmDegreeManager extends javax.swing.JFrame {
 
         btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
         btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
+        btnLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLeftActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 630, -1, -1));
 
         btnRight.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rightSelected.png"))); // NOI18N
@@ -473,7 +485,7 @@ public class FrmDegreeManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-                Long id = this.getSelectedIdTableDegree();
+        Long id = this.getSelectedIdTableDegree();
         if (id == null) {
             JOptionPane.showMessageDialog(this, "Por favor selecciona un Carrera", "Información", JOptionPane.ERROR_MESSAGE);
             return;
@@ -495,11 +507,19 @@ public class FrmDegreeManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        DegreeDTO degreeDTO = new DegreeDTO();
+        FrmNewDegreeManager frmNewDegreeManager = new FrmNewDegreeManager(degreeBO, degreeDTO);
+        this.setVisible(false);
+        frmNewDegreeManager.setVisible(true);
+        
+        
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
-        // TODO add your handling code here:
+        page++;
+        this.pageStatus();
+        this.loadTableDegree();
+        
     }//GEN-LAST:event_btnRightActionPerformed
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
@@ -545,6 +565,28 @@ public class FrmDegreeManager extends javax.swing.JFrame {
     private void btnMenuLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLogOffActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+       try {
+            if (this.getSelectedIdTableDegree()== null) {
+                JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            DegreeDTO degreeDTO = degreeBO.findDegreeForId(this.getSelectedIdTableDegree());
+            FrmUpdateDegreeManager frmUpdateDegreeManager = new FrmUpdateDegreeManager(degreeBO, degreeDTO);
+            this.setVisible(false);
+            frmUpdateDegreeManager.setVisible(true);
+
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
+        page--;
+        this.pageStatus();
+        this.loadTableDegree();
+    }//GEN-LAST:event_btnLeftActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -40,6 +40,7 @@ public class FrmUpdateDegreeManager extends javax.swing.JFrame {
         this.setResizable(false);
         this.setSize(598, 600);
         spTime.setModel(new SpinnerNumberModel(this.degreeDTO.getTimeLimit().intValue(), 1, 100, 1));
+        txName.setText(degreeDTO.getName());
         
 
     }
@@ -89,6 +90,7 @@ public class FrmUpdateDegreeManager extends javax.swing.JFrame {
             }
         });
 
+        txName.setEditable(false);
         txName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         spTime.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
