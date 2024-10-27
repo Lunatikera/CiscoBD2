@@ -36,7 +36,7 @@
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="e8" green="d8" red="d0" type="rgb"/>
+          <Color blue="d2" green="bf" red="b6" type="rgb"/>
         </Property>
       </Properties>
 
@@ -362,7 +362,7 @@
         <Container class="javax.swing.JPanel" name="jPanel2">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="bf" red="b6" type="rgb"/>
+              <Color blue="e8" green="d8" red="d0" type="rgb"/>
             </Property>
           </Properties>
 
@@ -374,16 +374,16 @@
                           <Component id="jLabel2" min="-2" pref="385" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="177" max="-2" attributes="0"/>
-                              <Component id="lblPc" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblPcNumber" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblPc3" min="-2" pref="392" max="-2" attributes="0"/>
-                                  <Component id="lblPc2" min="-2" pref="392" max="-2" attributes="0"/>
-                                  <Component id="lblPc1" alignment="0" min="-2" pref="392" max="-2" attributes="0"/>
+                                  <Component id="lblRemainingTIme" min="-2" pref="392" max="-2" attributes="0"/>
+                                  <Component id="lblStudenName" min="-2" pref="392" max="-2" attributes="0"/>
+                                  <Component id="lblSelectedDegree" alignment="0" min="-2" pref="392" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -401,15 +401,15 @@
                               <EmptySpace pref="111" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
                                           <Component id="jSpinner1" min="-2" pref="136" max="-2" attributes="0"/>
                                           <Component id="lblPc5" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="122" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="Liberar" min="-2" pref="193" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
+                                      <Component id="Liberar" min="-2" pref="196" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -423,16 +423,16 @@
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" pref="264" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblPc" min="-2" pref="64" max="-2" attributes="0"/>
+                      <Component id="lblPcNumber" min="-2" pref="64" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                      <Component id="lblPc2" min="-2" pref="49" max="-2" attributes="0"/>
+                      <Component id="lblStudenName" min="-2" pref="49" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblPc1" min="-2" pref="49" max="-2" attributes="0"/>
+                      <Component id="lblSelectedDegree" min="-2" pref="49" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblPc3" min="-2" pref="49" max="-2" attributes="0"/>
+                      <Component id="lblRemainingTIme" min="-2" pref="49" max="-2" attributes="0"/>
                       <EmptySpace pref="31" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
@@ -465,18 +465,15 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPc">
+            <Component class="javax.swing.JLabel" name="lblPcNumber">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="48" style="0"/>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="cd" green="de" red="87" type="rgb"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="01"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPc1">
+            <Component class="javax.swing.JLabel" name="lblSelectedDegree">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="24" style="0"/>
@@ -484,7 +481,7 @@
                 <Property name="text" type="java.lang.String" value="Carrera Seleccionada"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPc2">
+            <Component class="javax.swing.JLabel" name="lblStudenName">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="24" style="0"/>
@@ -492,7 +489,7 @@
                 <Property name="text" type="java.lang.String" value="Nombre del Alumno"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPc3">
+            <Component class="javax.swing.JLabel" name="lblRemainingTIme">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="24" style="0"/>

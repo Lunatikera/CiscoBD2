@@ -4,20 +4,38 @@
  */
 package frames;
 
+import dto.ComputerDTO;
+import dto.LaboratoryDTO;
+import dto.StudentDTO;
+import dto.StudentDegreeDTO;
+import interfaces.IComputerBO;
+
 /**
  *
  * @author carli
  */
 public class FrmComputerDetails extends javax.swing.JFrame {
-
-    /**
-     * Creates new form FrmStudentStart
-     */
+    IComputerBO computerBO;
+    ComputerDTO computerDTO;
+    StudentDTO studentDTO;
+    LaboratoryDTO laboratoryDTO;
+    StudentDegreeDTO studentDegreeDTO;
     public FrmComputerDetails() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
+    
+    
+    private void loadFrame(){
+        lblPcNumber.setText(computerDTO.getMachineNumber().toString());
+        lblStudenName.setText(studentDTO.getNames()+" "+studentDTO.getFirstLastname()+" "+studentDTO.getSecondLastname());
+        lblRemainingTIme.setText(studentDegreeDTO.getRemainingTime().toString());
+        lblSelectedDegree.setText(studentDegreeDTO.getDegreeName());
+    }
 
+    
+    private void loadSoftwares(){
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,10 +60,10 @@ public class FrmComputerDetails extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        lblPc = new javax.swing.JLabel();
-        lblPc1 = new javax.swing.JLabel();
-        lblPc2 = new javax.swing.JLabel();
-        lblPc3 = new javax.swing.JLabel();
+        lblPcNumber = new javax.swing.JLabel();
+        lblSelectedDegree = new javax.swing.JLabel();
+        lblStudenName = new javax.swing.JLabel();
+        lblRemainingTIme = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         lblPc4 = new javax.swing.JLabel();
@@ -55,7 +73,7 @@ public class FrmComputerDetails extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(208, 216, 232));
+        jPanel1.setBackground(new java.awt.Color(182, 191, 210));
 
         jPanel11.setBackground(new java.awt.Color(182, 191, 210));
 
@@ -199,23 +217,22 @@ public class FrmComputerDetails extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Itson Centro, Laboratorio Nainari");
 
-        jPanel2.setBackground(new java.awt.Color(182, 191, 210));
+        jPanel2.setBackground(new java.awt.Color(208, 216, 232));
 
         jLabel2.setBackground(new java.awt.Color(255, 153, 153));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcBig.png"))); // NOI18N
 
-        lblPc.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        lblPc.setForeground(new java.awt.Color(135, 222, 205));
-        lblPc.setText("01");
+        lblPcNumber.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        lblPcNumber.setText("01");
 
-        lblPc1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc1.setText("Carrera Seleccionada");
+        lblSelectedDegree.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblSelectedDegree.setText("Carrera Seleccionada");
 
-        lblPc2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc2.setText("Nombre del Alumno");
+        lblStudenName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblStudenName.setText("Nombre del Alumno");
 
-        lblPc3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc3.setText("Tiempo Restante Diario:");
+        lblRemainingTIme.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblRemainingTIme.setText("Tiempo Restante Diario:");
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -247,14 +264,14 @@ public class FrmComputerDetails extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(177, 177, 177)
-                        .addComponent(lblPc)))
+                        .addComponent(lblPcNumber)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPc3, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPc2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPc1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblRemainingTIme, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblStudenName, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSelectedDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,13 +284,13 @@ public class FrmComputerDetails extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblPc5))
-                                .addGap(121, 121, 121))
+                                .addGap(122, 122, 122))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(Liberar, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(89, 89, 89))))))
+                                .addComponent(Liberar, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(86, 86, 86))))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,15 +298,15 @@ public class FrmComputerDetails extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPc, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblPcNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(lblPc2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblStudenName, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblPc1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblSelectedDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblPc3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblRemainingTIme, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -392,7 +409,7 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LiberarActionPerformed
-        FrmChooseComputer frmChooseComputer= new FrmChooseComputer();
+        FrmChooseComputer frmChooseComputer = new FrmChooseComputer();
         frmChooseComputer.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_LiberarActionPerformed
@@ -466,12 +483,12 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel22;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JLabel lblPc;
-    private javax.swing.JLabel lblPc1;
-    private javax.swing.JLabel lblPc2;
-    private javax.swing.JLabel lblPc3;
     private javax.swing.JLabel lblPc4;
     private javax.swing.JLabel lblPc5;
+    private javax.swing.JLabel lblPcNumber;
+    private javax.swing.JLabel lblRemainingTIme;
+    private javax.swing.JLabel lblSelectedDegree;
+    private javax.swing.JLabel lblStudenName;
     private javax.swing.JLabel lblStudent2;
     // End of variables declaration//GEN-END:variables
 }

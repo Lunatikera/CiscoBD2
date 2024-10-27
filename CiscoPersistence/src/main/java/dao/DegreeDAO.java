@@ -5,6 +5,7 @@
 package dao;
 
 import connection.IConnectionBD;
+import dto.StudentDegreeDTO;
 import entities.DegreeEntity;
 import exception.PersistenceException;
 import interfaces.IDegreeDAO;
@@ -26,62 +27,58 @@ public class DegreeDAO implements IDegreeDAO {
     public DegreeDAO(IConnectionBD connection) {
         this.connection = connection;
     }
-    
 
     @Override
     public List<DegreeEntity> getAllDegrees() throws PersistenceException {
-         EntityManager entityManager = connection.getEntityManager(); // Obtain the EntityManager
-    try {
-        // Create a query to retrieve all DegreeEntity instances
-        return entityManager.createQuery("SELECT d.id, d.degreeName, d.timeLimit FROM DegreeEntity d", DegreeEntity.class)
-                .getResultList(); // Execute the query and return the results
-    } catch (Exception e) {
-        throw new PersistenceException("Error retrieving all degrees", e); // Handle any exceptions that may occur
-    } finally {
-        entityManager.close(); // Ensure the EntityManager is closed to free resources
+        EntityManager entityManager = connection.getEntityManager(); // Obtain the EntityManager
+        try {
+            // Create a query to retrieve all DegreeEntity instances
+            return entityManager.createQuery("SELECT d.id, d.degreeName, d.timeLimit FROM DegreeEntity d", DegreeEntity.class)
+                    .getResultList(); // Execute the query and return the results
+        } catch (Exception e) {
+            throw new PersistenceException("Error retrieving all degrees", e); // Handle any exceptions that may occur
+        } finally {
+            entityManager.close(); // Ensure the EntityManager is closed to free resources
+        }
     }
-}
-
-   
 
     @Override
     public void saveDegree(DegreeEntity degree) throws PersistenceException {
-         EntityManager entityManager = connection.getEntityManager();
-    EntityTransaction transaction = null;
-    
-    try {
-        // Iniciar una transacción
-        transaction = entityManager.getTransaction();
-        transaction.begin();
+        EntityManager entityManager = connection.getEntityManager();
+        EntityTransaction transaction = null;
 
-        // Persistir la entidad (guardar en la base de datos)
-        entityManager.persist(degree);
+        try {
+            // Iniciar una transacción
+            transaction = entityManager.getTransaction();
+            transaction.begin();
 
-        // Confirmar la transacción
-        transaction.commit();
-    } catch (NoResultException e) {
-        // Revertir la transacción si ocurre un error
-        if (transaction != null && transaction.isActive()) {
-            transaction.rollback();
+            // Persistir la entidad (guardar en la base de datos)
+            entityManager.persist(degree);
+
+            // Confirmar la transacción
+            transaction.commit();
+        } catch (NoResultException e) {
+            // Revertir la transacción si ocurre un error
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new PersistenceException("Error saving degree.", e);
+        } finally {
+            entityManager.close(); // Cerrar el EntityManager
         }
-        throw new PersistenceException("Error saving degree.", e);
-    } finally {
-        entityManager.close(); // Cerrar el EntityManager
-    }
     }
 
     @Override
     public void updateDegree(DegreeEntity degree) throws PersistenceException {
-     EntityManager entityManager = connection.getEntityManager();
-     
-     try{
-         DegreeEntity degreeNew = this.findDegreeForId(degree.getId());
-                 if (degreeNew != null) {
+        EntityManager entityManager = connection.getEntityManager();
+
+        try {
+            DegreeEntity degreeNew = this.findDegreeForId(degree.getId());
+            if (degreeNew != null) {
                 // Update fields as needed
                 degreeNew.setTimeLimit(degree.getTimeLimit());
-                
-                // Add other fields to update as necessary
 
+                // Add other fields to update as necessary
                 entityManager.merge(degreeNew); // Update the entity
             } else {
                 throw new PersistenceException("Student not found.");
@@ -91,9 +88,10 @@ public class DegreeDAO implements IDegreeDAO {
         } finally {
             entityManager.close(); // Close the EntityManager
         }
-     
-        } 
-        @Override
+
+    }
+
+    @Override
     public void deleteDegree(Long degreeId) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
@@ -111,31 +109,30 @@ public class DegreeDAO implements IDegreeDAO {
         }
     }
 
-
     @Override
     public DegreeEntity findDegreeForId(Long degreeId) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
-        try{
+        try {
             return entityManager.find(DegreeEntity.class, degreeId);
-                    
-        }catch (NoResultException e) {
+
+        } catch (NoResultException e) {
             throw new PersistenceException("Dregree not found.", e);
         } finally {
             entityManager.close();
         }
-            
-       }
+
+    }
 
     @Override
     public List<DegreeEntity> obterCarrerasPaguinado(int limit, int offtel) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            
+
             return entityManager.createQuery("SELECT s FROM DegreeEntity s ", DegreeEntity.class)
                     .setFirstResult(offtel)
                     .setMaxResults(limit)
                     .getResultList();
-            
+
         } catch (NoResultException e) {
             throw new PersistenceException("Degree not found", e);
         } catch (Exception e) {
@@ -146,8 +143,25 @@ public class DegreeDAO implements IDegreeDAO {
         }
     }
 
+    @Override
+    public List<StudentDegreeDTO> getDegreesByStudent(Long studentID) throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager();
+        try {
+            return entityManager.createQuery(
+                    "SELECT NEW dto.StudentDegreeDTO(d.id, d.degreeName, d.timeLimit, sd.remainingTime) "
+                    + "FROM DegreeEntity d JOIN d.studentDegrees sd "
+                    + "WHERE sd.student.id = :studentID", StudentDegreeDTO.class)
+                    .setParameter("studentID", studentID)
+                    .getResultList();
 
+        } catch (NoResultException e) {
+            throw new PersistenceException("Degree not found", e);
+        } catch (Exception e) {
+            Logger.getLogger(DegreeDAO.class.getName()).log(Level.SEVERE, "Error retrieving Degree List", e);
+            throw new PersistenceException("Error retrieving Degree List", e);
+        } finally {
+            entityManager.close();
+        }
     }
 
-
-
+}

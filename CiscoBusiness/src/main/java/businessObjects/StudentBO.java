@@ -132,4 +132,22 @@ public class StudentBO implements IStudentBO {
             throw new BusinessException("An error occurred while logging in. Please try again later."); // Wrap the exception for higher-level handling
         }
     }
+
+    @Override
+    public boolean verifyID(Long uniqueID) throws BusinessException {
+        try {
+
+            StudentEntity student = studentDAO.findStudentByUniqueID(uniqueID);
+
+            if (student == null) {
+                throw new BusinessException("Invalid unique ID."); // Changed to BusinessException for consistency
+            }
+         
+            return true;
+
+        } catch (PersistenceException ex) {
+            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Login failed", ex);
+            throw new BusinessException("An error occurred while logging in. Please try again later."); // Wrap the exception for higher-level handling
+        }
+    }
 }

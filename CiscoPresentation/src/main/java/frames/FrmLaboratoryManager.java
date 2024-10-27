@@ -410,6 +410,11 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
         cbAcademy.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         cbAcademy.setForeground(new java.awt.Color(0, 9, 0));
+        cbAcademy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAcademyActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -604,6 +609,10 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void cbAcademyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAcademyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbAcademyActionPerformed
 
     public void pageStatus() {
         String pageNumber = String.valueOf(page);

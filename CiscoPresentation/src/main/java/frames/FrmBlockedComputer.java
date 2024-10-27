@@ -4,21 +4,58 @@
  */
 package frames;
 
-import dto.StudentDTO;
+import businessObjects.ComputerBO;
+import dto.ComputerDTO;
+import enums.ComputerStatus;
 import exception.BusinessException;
-import interfaces.IStudentBO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
+import utilities.IpGetter;
 
 /**
  *
  * @author carli
  */
-public class FrmStudentStart extends javax.swing.JFrame {
+public class FrmBlockedComputer extends javax.swing.JFrame {
 
-    IStudentBO studentBO;
-    public FrmStudentStart() {
+    private ComputerBO computerBO;
+    private Timer methodTimer;
+
+    public FrmBlockedComputer() {
         initComponents();
+        startMethodTimer();
+    }
+
+    private void startMethodTimer() {
+        methodTimer = new Timer(5000, new ActionListener() { // 1000 ms = 1 second
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verifyComputerStatus(); // Call your method here
+            }
+        });
+        methodTimer.start(); // Start the timer
+    }
+
+    private void verifyComputerStatus() {
+//        try {
+//            ComputerDTO computerDTO = computerBO.findByIPComputer(IpGetter.getLocalIPAddress());
+            System.out.println(IpGetter.getLocalIPAddress());
+//
+//            if (computerDTO.getStatus() == ComputerStatus.No_Disponible) {
+//                if (methodTimer != null) {
+//                    methodTimer.stop(); // Stop the method timer
+//                } 
+//                FrmUnlockComputer unlockComputer= new FrmUnlockComputer();
+//                unlockComputer.setVisible(true);
+//                this.dispose();
+//                
+////            }
+//        } catch (BusinessException ex) {
+//            Logger.getLogger(FrmBlockedComputer.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     /**
@@ -36,9 +73,9 @@ public class FrmStudentStart extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblStudent = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
         lblStudent1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        lblStudent2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,9 +91,9 @@ public class FrmStudentStart extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(81, 81, 81)
+                .addGap(67, 67, 67)
                 .addComponent(jLabel2)
-                .addGap(94, 94, 94)
+                .addGap(108, 108, 108)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -68,29 +105,20 @@ public class FrmStudentStart extends javax.swing.JFrame {
                         .addGap(264, 264, 264)
                         .addComponent(jLabel1))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
+                        .addGap(214, 214, 214)
                         .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblStudent.setText("Bienvenido");
+        lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
 
-        txtID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDActionPerformed(evt);
-            }
-        });
+        lblStudent1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        lblStudent1.setText("01");
 
-        lblStudent1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblStudent1.setText("ID");
+        lblStudent2.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        lblStudent2.setText("Maquina Bloqueada");
 
-        jButton1.setText("Ingresar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcBig.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -98,39 +126,36 @@ public class FrmStudentStart extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblStudent2)
+                            .addComponent(lblStudent))
+                        .addGap(126, 126, 126))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(137, 137, 137))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(lblStudent1)
-                        .addGap(115, 115, 115))
-                    .addComponent(txtID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(lblStudent))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(163, 163, 163))
+                        .addGap(304, 304, 304))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(97, 97, 97)
+                .addGap(28, 28, 28)
                 .addComponent(lblStudent)
-                .addGap(63, 63, 63)
-                .addComponent(lblStudent1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addComponent(lblStudent2)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addComponent(lblStudent1)
+                .addGap(181, 181, 181))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 1050, 560));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,23 +170,6 @@ public class FrmStudentStart extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String uniqueID=txtID.getText();
-        try {
-            StudentDTO student =studentBO.findStudentByUniqueID(Long.valueOf(uniqueID));
-            FrmChooseDegree chooseDegree= new FrmChooseDegree();
-            chooseDegree.setVisible(true);
-            this.dispose();
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmStudentStart.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,33 +188,34 @@ public class FrmStudentStart extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmStudentStart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmStudentStart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmStudentStart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmStudentStart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmStudentStart().setVisible(true);
+                new FrmBlockedComputer().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblStudent;
     private javax.swing.JLabel lblStudent1;
-    private javax.swing.JTextField txtID;
+    private javax.swing.JLabel lblStudent2;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,19 +4,115 @@
  */
 package frames;
 
+import dto.ComputerDTO;
+import dto.DegreeDTO;
+import dto.StudentDTO;
+import exception.BusinessException;
+import interfaces.IComputerBO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import utilities.ComputerButton;
+
 /**
  *
  * @author carli
  */
 public class FrmChooseComputer extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmStudentStart
-     */
+    private int page = 1;
+    private final int LIMITE = 18;
+    IComputerBO computerBO;
+    DegreeDTO degreeDTO;
+    StudentDTO studentDTO;
+    ComputerDTO computerDTO;
+    private ComputerButton[] botones;
+    private List<ComputerDTO> loadedPCs;
+
     public FrmChooseComputer() {
         initComponents();
         this.setLocationRelativeTo(null);
 
+    }
+
+    private void loadFrame() {
+        this.setTitle("Laboratorio");
+        this.setLocationRelativeTo(null);
+        this.cargarPeliculas();
+        this.pageStatus();
+
+    }
+
+    public void cargarPeliculas() {
+        try {
+            List<ComputerDTO> computerList = this.computerBO.computerListByAcademyPaginated(page, LIMITE, this.computerDTO.getId());
+            System.out.println(computerList);
+            loadedPCs.clear();
+            loadedPCs.addAll(computerList);
+            this.fillFields(computerList);
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Informacion", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }
+
+    private void fillFields(List<ComputerDTO> computerList) {
+        for (int i = 0; i < computerList.size(); i++) {
+            botones[i].setEnabled(true);
+            botones[i].setNumber(computerList.get(i).getMachineNumber());
+        }
+        // Limpiar botones y etiquetas restantes
+        for (int i = computerList.size(); i < LIMITE; i++) {
+            botones[i].setVisible(false);
+            botones[i].setEnabled(false);
+
+        }
+
+    }
+
+    private void pageStatus() {
+        String numPagina = String.valueOf(page);
+        if (numPagina.length() == 1) {
+            numPagina = "0" + numPagina;
+        }
+
+        lblPage.setText("Pagina " + numPagina);
+        leftBtnStatus();
+        rightBtnStatus();
+    }
+
+    private void leftBtnStatus() {
+        if (this.page > 1) {
+            btnLeft.setEnabled(true);
+            return;
+        }
+        btnLeft.setEnabled(false);
+    }
+
+    private void rightBtnStatus() {
+
+        try {
+            btnRight.setEnabled(true);
+            if (this.computerBO.computerListByAcademyPaginated(page + 1, LIMITE, this.computerDTO.getId()) == null
+                    || this.computerBO.computerListByAcademyPaginated(page + 1, LIMITE, this.computerDTO.getId()).isEmpty()) {
+                btnRight.setEnabled(false);
+            }
+        } catch (BusinessException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    private void computerDetails(int x) {
+        ComputerDTO computer = loadedPCs.get(x);
+        System.out.println(computer);
+        this.openComputerDetails(computer);
+
+    }
+
+    private void openComputerDetails(ComputerDTO computer) {
+
+        FrmComputerDetails detalles = new FrmComputerDetails();
+        detalles.setVisible(true);
+        this.dispose();
     }
 
     /**
@@ -38,14 +134,14 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         computer4 = new utilities.ComputerButton();
         computer5 = new utilities.ComputerButton();
         jPanel3 = new javax.swing.JPanel();
-        menuButton2 = new utilities.MenuButton();
+        btnLeft = new utilities.MenuButton();
         computer6 = new utilities.ComputerButton();
         computer7 = new utilities.ComputerButton();
         computer8 = new utilities.ComputerButton();
         computer9 = new utilities.ComputerButton();
         computer10 = new utilities.ComputerButton();
         computer11 = new utilities.ComputerButton();
-        menuButton1 = new utilities.MenuButton();
+        btnRight = new utilities.MenuButton();
         jPanel5 = new javax.swing.JPanel();
         computer12 = new utilities.ComputerButton();
         computer13 = new utilities.ComputerButton();
@@ -59,6 +155,7 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
+        lblPage = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
@@ -67,7 +164,6 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1280, 720));
 
         jPanel1.setBackground(new java.awt.Color(208, 216, 232));
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
@@ -79,103 +175,193 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         computer.setNumber(5);
         computer.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computerActionPerformed(evt);
+            }
+        });
         jPanel2.add(computer);
 
         computer1.setNumber(5);
         computer1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer1.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer1ActionPerformed(evt);
+            }
+        });
         jPanel2.add(computer1);
 
         computer2.setNumber(5);
         computer2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer2.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer2ActionPerformed(evt);
+            }
+        });
         jPanel2.add(computer2);
 
         computer3.setNumber(5);
         computer3.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer3.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer3ActionPerformed(evt);
+            }
+        });
         jPanel2.add(computer3);
 
         computer4.setNumber(5);
         computer4.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer4.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer4ActionPerformed(evt);
+            }
+        });
         jPanel2.add(computer4);
 
         computer5.setNumber(5);
         computer5.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer5.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer5ActionPerformed(evt);
+            }
+        });
         jPanel2.add(computer5);
 
         jPanel3.setBackground(new java.awt.Color(208, 216, 232));
 
-        menuButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
-        menuButton2.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
-        jPanel3.add(menuButton2);
+        btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
+        btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
+        jPanel3.add(btnLeft);
 
         computer6.setNumber(5);
         computer6.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer6.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer6ActionPerformed(evt);
+            }
+        });
         jPanel3.add(computer6);
 
         computer7.setNumber(5);
         computer7.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer7.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer7ActionPerformed(evt);
+            }
+        });
         jPanel3.add(computer7);
 
         computer8.setNumber(5);
         computer8.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer8.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer8ActionPerformed(evt);
+            }
+        });
         jPanel3.add(computer8);
 
         computer9.setNumber(5);
         computer9.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer9.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer9ActionPerformed(evt);
+            }
+        });
         jPanel3.add(computer9);
 
         computer10.setNumber(5);
         computer10.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer10.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer10ActionPerformed(evt);
+            }
+        });
         jPanel3.add(computer10);
 
         computer11.setNumber(5);
         computer11.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer11.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer11ActionPerformed(evt);
+            }
+        });
         jPanel3.add(computer11);
 
-        menuButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rightSelected.png"))); // NOI18N
-        menuButton1.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right.png"))); // NOI18N
-        jPanel3.add(menuButton1);
+        btnRight.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rightSelected.png"))); // NOI18N
+        btnRight.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right.png"))); // NOI18N
+        jPanel3.add(btnRight);
 
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
         computer12.setNumber(5);
         computer12.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer12.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer12ActionPerformed(evt);
+            }
+        });
         jPanel5.add(computer12);
 
         computer13.setNumber(5);
         computer13.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer13.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer13ActionPerformed(evt);
+            }
+        });
         jPanel5.add(computer13);
 
         computer14.setNumber(5);
         computer14.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer14.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer14ActionPerformed(evt);
+            }
+        });
         jPanel5.add(computer14);
 
         computer15.setNumber(5);
         computer15.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer15.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer15ActionPerformed(evt);
+            }
+        });
         jPanel5.add(computer15);
 
         computer16.setNumber(5);
         computer16.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer16.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer16ActionPerformed(evt);
+            }
+        });
         jPanel5.add(computer16);
 
         computer17.setNumber(5);
         computer17.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
         computer17.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        computer17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computer17ActionPerformed(evt);
+            }
+        });
         jPanel5.add(computer17);
 
         jPanel6.setBackground(new java.awt.Color(182, 191, 210));
@@ -207,15 +393,24 @@ public class FrmChooseComputer extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(182, 191, 210));
 
+        lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblPage.setText("                                                                                        Pagina  01");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(20, 20, 20))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 37, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addComponent(lblPage, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -280,11 +475,11 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         jPanel22.setLayout(jPanel22Layout);
         jPanel22Layout.setHorizontalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 54, Short.MAX_VALUE)
+            .addGap(0, 20, Short.MAX_VALUE)
         );
 
         jPanel15.setBackground(new java.awt.Color(182, 191, 210));
@@ -327,9 +522,7 @@ public class FrmChooseComputer extends javax.swing.JFrame {
                 .addGap(456, 456, 456)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,45 +556,83 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    private void computerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computerActionPerformed
+        this.computerDetails(0);
+    }//GEN-LAST:event_computerActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmChooseComputer().setVisible(true);
-            }
-        });
-    }
+    private void computer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer1ActionPerformed
+        this.computerDetails(1);
+    }//GEN-LAST:event_computer1ActionPerformed
+
+    private void computer2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer2ActionPerformed
+        this.computerDetails(2);
+    }//GEN-LAST:event_computer2ActionPerformed
+
+    private void computer3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer3ActionPerformed
+        this.computerDetails(3);
+    }//GEN-LAST:event_computer3ActionPerformed
+
+    private void computer4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer4ActionPerformed
+        this.computerDetails(4);
+    }//GEN-LAST:event_computer4ActionPerformed
+
+    private void computer5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer5ActionPerformed
+        this.computerDetails(5);
+    }//GEN-LAST:event_computer5ActionPerformed
+
+    private void computer6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer6ActionPerformed
+        this.computerDetails(6);
+    }//GEN-LAST:event_computer6ActionPerformed
+
+    private void computer7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer7ActionPerformed
+        this.computerDetails(7);
+    }//GEN-LAST:event_computer7ActionPerformed
+
+    private void computer8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer8ActionPerformed
+        this.computerDetails(8);
+    }//GEN-LAST:event_computer8ActionPerformed
+
+    private void computer9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer9ActionPerformed
+        this.computerDetails(9);
+    }//GEN-LAST:event_computer9ActionPerformed
+
+    private void computer10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer10ActionPerformed
+        this.computerDetails(10);
+    }//GEN-LAST:event_computer10ActionPerformed
+
+    private void computer11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer11ActionPerformed
+        this.computerDetails(11);
+    }//GEN-LAST:event_computer11ActionPerformed
+
+    private void computer12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer12ActionPerformed
+        this.computerDetails(12);
+    }//GEN-LAST:event_computer12ActionPerformed
+
+    private void computer13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer13ActionPerformed
+        this.computerDetails(13);
+    }//GEN-LAST:event_computer13ActionPerformed
+
+    private void computer14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer14ActionPerformed
+        this.computerDetails(14);
+    }//GEN-LAST:event_computer14ActionPerformed
+
+    private void computer15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer15ActionPerformed
+        this.computerDetails(15);
+    }//GEN-LAST:event_computer15ActionPerformed
+
+    private void computer16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer16ActionPerformed
+        this.computerDetails(16);
+    }//GEN-LAST:event_computer16ActionPerformed
+
+    private void computer17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computer17ActionPerformed
+        this.computerDetails(17);
+    }//GEN-LAST:event_computer17ActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private utilities.MenuButton btnLeft;
+    private utilities.MenuButton btnRight;
     private utilities.ComputerButton computer;
     private utilities.ComputerButton computer1;
     private utilities.ComputerButton computer10;
@@ -436,8 +667,7 @@ public class FrmChooseComputer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel lblPage;
     private javax.swing.JLabel lblStudent2;
-    private utilities.MenuButton menuButton1;
-    private utilities.MenuButton menuButton2;
     // End of variables declaration//GEN-END:variables
 }

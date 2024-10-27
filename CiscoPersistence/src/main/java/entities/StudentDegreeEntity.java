@@ -26,11 +26,14 @@ public class StudentDegreeEntity implements Serializable {
     @Column(name = "idStudent_Degree", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "remainingTIme", nullable = false)
+    private Long remainingTIme;
 
     @ManyToOne
     @JoinColumn(name = "idDegree", nullable = false)
     private DegreeEntity degree;
-    
+
     @ManyToOne
     @JoinColumn(name = "idStudent", nullable = false)
     private StudentEntity student;
@@ -41,6 +44,14 @@ public class StudentDegreeEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public DegreeEntity getDegree() {
+        return degree;
+    }
+
+    public StudentEntity getStudent() {
+        return student;
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import dto.StudentDegreeDTO;
 import entities.DegreeEntity;
 import exception.PersistenceException;
 import java.util.List;
@@ -15,14 +16,16 @@ import java.util.List;
 public interface IDegreeDAO {
 
     public List<DegreeEntity> getAllDegrees() throws PersistenceException;
-    
+
     public List<DegreeEntity> obterCarrerasPaguinado(int limit, int offtel) throws PersistenceException;
-    
-    public void saveDegree (DegreeEntity degree) throws PersistenceException;
-    
-    public void deleteDegree (Long degreeId) throws PersistenceException;
-    
-    public void updateDegree (DegreeEntity degree) throws PersistenceException;
-    
-    public DegreeEntity findDegreeForId (Long degreeId) throws PersistenceException;
+
+    public void saveDegree(DegreeEntity degree) throws PersistenceException;
+
+    public void deleteDegree(Long degreeId) throws PersistenceException;
+
+    public void updateDegree(DegreeEntity degree) throws PersistenceException;
+
+    public DegreeEntity findDegreeForId(Long degreeId) throws PersistenceException;
+
+    public List<StudentDegreeDTO> getDegreesByStudent(Long studentID) throws PersistenceException;
 }
