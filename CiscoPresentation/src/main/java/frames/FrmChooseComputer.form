@@ -3,6 +3,9 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1280, 720]"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -23,7 +26,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="jPanel1" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -38,6 +44,9 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="e8" green="d8" red="d0" type="rgb"/>
         </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[1280, 720]"/>
+        </Property>
       </Properties>
 
       <Layout>
@@ -50,68 +59,33 @@
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="jPanel21" max="32767" attributes="0"/>
               </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jPanel16" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jPanel18" max="32767" attributes="0"/>
-                      <Component id="jPanel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jPanel19" max="32767" attributes="0"/>
-                              <Component id="jPanel17" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="jPanel14" max="32767" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
               <Component id="jPanel22" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="456" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <Component id="jPanel4" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" pref="38" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="jPanel15" max="32767" attributes="0"/>
                       <Component id="jPanel12" alignment="1" max="32767" attributes="0"/>
                       <Component id="jPanel21" alignment="1" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
-                                  <Component id="jPanel16" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="314" max="-2" attributes="0"/>
-                                  <Component id="jPanel18" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="jPanel14" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
-                          <Component id="jPanel17" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="132" max="-2" attributes="0"/>
-                          <Component id="jPanel19" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="jPanel22" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -128,14 +102,14 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPanel2" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jPanel6" alignment="0" max="32767" attributes="0"/>
                           <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
                           <Component id="jPanel5" alignment="0" max="32767" attributes="0"/>
                           <Component id="jPanel7" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jPanel3" alignment="0" min="-2" pref="1123" max="-2" attributes="0"/>
+                          <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jPanel6" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -145,7 +119,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jPanel2" min="-2" pref="140" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
+                      <Component id="jPanel6" min="-2" pref="39" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Component id="jPanel3" min="-2" pref="140" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
@@ -168,8 +142,9 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
               <SubComponents>
-                <Component class="utilities.MenuButton" name="btnPC">
+                <Component class="utilities.ComputerButton" name="computer">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -178,8 +153,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC1">
+                <Component class="utilities.ComputerButton" name="computer1">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -188,8 +164,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC2">
+                <Component class="utilities.ComputerButton" name="computer2">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -198,8 +175,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC3">
+                <Component class="utilities.ComputerButton" name="computer3">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -208,8 +186,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC4">
+                <Component class="utilities.ComputerButton" name="computer4">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -218,8 +197,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC5">
+                <Component class="utilities.ComputerButton" name="computer5">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -249,8 +229,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC6">
+                <Component class="utilities.ComputerButton" name="computer6">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -259,8 +240,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC7">
+                <Component class="utilities.ComputerButton" name="computer7">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -269,8 +251,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC8">
+                <Component class="utilities.ComputerButton" name="computer8">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -279,8 +262,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC9">
+                <Component class="utilities.ComputerButton" name="computer9">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -289,8 +273,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC10">
+                <Component class="utilities.ComputerButton" name="computer10">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -299,8 +284,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC11">
+                <Component class="utilities.ComputerButton" name="computer11">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -330,8 +316,9 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
               <SubComponents>
-                <Component class="utilities.MenuButton" name="btnPC12">
+                <Component class="utilities.ComputerButton" name="computer12">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -340,8 +327,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC13">
+                <Component class="utilities.ComputerButton" name="computer13">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -350,8 +338,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC14">
+                <Component class="utilities.ComputerButton" name="computer14">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -360,8 +349,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC15">
+                <Component class="utilities.ComputerButton" name="computer15">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -370,8 +360,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC16">
+                <Component class="utilities.ComputerButton" name="computer16">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -380,8 +371,9 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="utilities.MenuButton" name="btnPC17">
+                <Component class="utilities.ComputerButton" name="computer17">
                   <Properties>
+                    <Property name="number" type="int" value="5"/>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/images/pcSelected.png"/>
                     </Property>
@@ -399,55 +391,40 @@
                 </Property>
               </Properties>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+                <Property name="useNullLayout" type="boolean" value="false"/>
+              </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="lblPc">
+                <Component class="javax.swing.JLabel" name="jLabel9">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                      <AbsoluteConstraints x="499" y="21" width="-1" height="-1"/>
+                    </Constraint>
+                  </Constraints>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblPc1">
+                <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
+                    <Property name="text" type="java.lang.String" value="        "/>
                   </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                      <AbsoluteConstraints x="504" y="13" width="-1" height="-1"/>
+                    </Constraint>
+                  </Constraints>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblPc2">
+                <Component class="javax.swing.JLabel" name="jLabel8">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
+                    <Property name="text" type="java.lang.String" value="        "/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc3">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc4">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc5">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                      <AbsoluteConstraints x="758" y="13" width="-1" height="-1"/>
+                    </Constraint>
+                  </Constraints>
                 </Component>
               </SubComponents>
             </Container>
@@ -456,59 +433,23 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d2" green="bf" red="b6" type="rgb"/>
                 </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[1280, 42]"/>
+                </Property>
               </Properties>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
-              <SubComponents>
-                <Component class="javax.swing.JLabel" name="lblPc6">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc7">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc8">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc9">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc10">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc11">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-              </SubComponents>
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="1280" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel7">
               <Properties>
@@ -517,179 +458,20 @@
                 </Property>
               </Properties>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
-              <SubComponents>
-                <Component class="javax.swing.JLabel" name="lblPc12">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc13">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc14">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc15">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc16">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblPc17">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="24" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="          01          "/>
-                  </Properties>
-                </Component>
-              </SubComponents>
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="1280" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="37" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
             </Container>
           </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel11">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="bf" red="b6" type="rgb"/>
-            </Property>
-          </Properties>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="60" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel14">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="bf" red="b6" type="rgb"/>
-            </Property>
-          </Properties>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel16">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="bf" red="b6" type="rgb"/>
-            </Property>
-          </Properties>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel17">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="bf" red="b6" type="rgb"/>
-            </Property>
-          </Properties>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel18">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="bf" red="b6" type="rgb"/>
-            </Property>
-          </Properties>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel19">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="bf" red="b6" type="rgb"/>
-            </Property>
-          </Properties>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="70" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel12">
           <Properties>
@@ -746,7 +528,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="34" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="54" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -789,6 +571,14 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="24" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Itson Centro, Laboratorio Nainari"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

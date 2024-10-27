@@ -15,6 +15,8 @@ public class FrmChooseComputer extends javax.swing.JFrame {
      */
     public FrmChooseComputer() {
         initComponents();
+        this.setLocationRelativeTo(null);
+
     }
 
     /**
@@ -29,92 +31,80 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        btnPC = new utilities.MenuButton();
-        btnPC1 = new utilities.MenuButton();
-        btnPC2 = new utilities.MenuButton();
-        btnPC3 = new utilities.MenuButton();
-        btnPC4 = new utilities.MenuButton();
-        btnPC5 = new utilities.MenuButton();
+        computer = new utilities.ComputerButton();
+        computer1 = new utilities.ComputerButton();
+        computer2 = new utilities.ComputerButton();
+        computer3 = new utilities.ComputerButton();
+        computer4 = new utilities.ComputerButton();
+        computer5 = new utilities.ComputerButton();
         jPanel3 = new javax.swing.JPanel();
         menuButton2 = new utilities.MenuButton();
-        btnPC6 = new utilities.MenuButton();
-        btnPC7 = new utilities.MenuButton();
-        btnPC8 = new utilities.MenuButton();
-        btnPC9 = new utilities.MenuButton();
-        btnPC10 = new utilities.MenuButton();
-        btnPC11 = new utilities.MenuButton();
+        computer6 = new utilities.ComputerButton();
+        computer7 = new utilities.ComputerButton();
+        computer8 = new utilities.ComputerButton();
+        computer9 = new utilities.ComputerButton();
+        computer10 = new utilities.ComputerButton();
+        computer11 = new utilities.ComputerButton();
         menuButton1 = new utilities.MenuButton();
         jPanel5 = new javax.swing.JPanel();
-        btnPC12 = new utilities.MenuButton();
-        btnPC13 = new utilities.MenuButton();
-        btnPC14 = new utilities.MenuButton();
-        btnPC15 = new utilities.MenuButton();
-        btnPC16 = new utilities.MenuButton();
-        btnPC17 = new utilities.MenuButton();
+        computer12 = new utilities.ComputerButton();
+        computer13 = new utilities.ComputerButton();
+        computer14 = new utilities.ComputerButton();
+        computer15 = new utilities.ComputerButton();
+        computer16 = new utilities.ComputerButton();
+        computer17 = new utilities.ComputerButton();
         jPanel6 = new javax.swing.JPanel();
-        lblPc = new javax.swing.JLabel();
-        lblPc1 = new javax.swing.JLabel();
-        lblPc2 = new javax.swing.JLabel();
-        lblPc3 = new javax.swing.JLabel();
-        lblPc4 = new javax.swing.JLabel();
-        lblPc5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
-        lblPc6 = new javax.swing.JLabel();
-        lblPc7 = new javax.swing.JLabel();
-        lblPc8 = new javax.swing.JLabel();
-        lblPc9 = new javax.swing.JLabel();
-        lblPc10 = new javax.swing.JLabel();
-        lblPc11 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        lblPc12 = new javax.swing.JLabel();
-        lblPc13 = new javax.swing.JLabel();
-        lblPc14 = new javax.swing.JLabel();
-        lblPc15 = new javax.swing.JLabel();
-        lblPc16 = new javax.swing.JLabel();
-        lblPc17 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jPanel17 = new javax.swing.JPanel();
-        jPanel18 = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         lblStudent2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1280, 720));
 
         jPanel1.setBackground(new java.awt.Color(208, 216, 232));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
 
-        btnPC.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel2.add(btnPC);
+        computer.setNumber(5);
+        computer.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel2.add(computer);
 
-        btnPC1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC1.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel2.add(btnPC1);
+        computer1.setNumber(5);
+        computer1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer1.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel2.add(computer1);
 
-        btnPC2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC2.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel2.add(btnPC2);
+        computer2.setNumber(5);
+        computer2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer2.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel2.add(computer2);
 
-        btnPC3.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC3.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel2.add(btnPC3);
+        computer3.setNumber(5);
+        computer3.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer3.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel2.add(computer3);
 
-        btnPC4.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC4.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel2.add(btnPC4);
+        computer4.setNumber(5);
+        computer4.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer4.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel2.add(computer4);
 
-        btnPC5.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC5.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel2.add(btnPC5);
+        computer5.setNumber(5);
+        computer5.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer5.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel2.add(computer5);
 
         jPanel3.setBackground(new java.awt.Color(208, 216, 232));
 
@@ -122,29 +112,35 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         menuButton2.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
         jPanel3.add(menuButton2);
 
-        btnPC6.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC6.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel3.add(btnPC6);
+        computer6.setNumber(5);
+        computer6.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer6.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel3.add(computer6);
 
-        btnPC7.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC7.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel3.add(btnPC7);
+        computer7.setNumber(5);
+        computer7.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer7.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel3.add(computer7);
 
-        btnPC8.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC8.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel3.add(btnPC8);
+        computer8.setNumber(5);
+        computer8.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer8.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel3.add(computer8);
 
-        btnPC9.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC9.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel3.add(btnPC9);
+        computer9.setNumber(5);
+        computer9.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer9.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel3.add(computer9);
 
-        btnPC10.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC10.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel3.add(btnPC10);
+        computer10.setNumber(5);
+        computer10.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer10.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel3.add(computer10);
 
-        btnPC11.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC11.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel3.add(btnPC11);
+        computer11.setNumber(5);
+        computer11.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer11.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel3.add(computer11);
 
         menuButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rightSelected.png"))); // NOI18N
         menuButton1.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/right.png"))); // NOI18N
@@ -152,107 +148,75 @@ public class FrmChooseComputer extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
-        btnPC12.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC12.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel5.add(btnPC12);
+        computer12.setNumber(5);
+        computer12.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer12.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel5.add(computer12);
 
-        btnPC13.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC13.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel5.add(btnPC13);
+        computer13.setNumber(5);
+        computer13.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer13.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel5.add(computer13);
 
-        btnPC14.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC14.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel5.add(btnPC14);
+        computer14.setNumber(5);
+        computer14.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer14.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel5.add(computer14);
 
-        btnPC15.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC15.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel5.add(btnPC15);
+        computer15.setNumber(5);
+        computer15.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer15.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel5.add(computer15);
 
-        btnPC16.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC16.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel5.add(btnPC16);
+        computer16.setNumber(5);
+        computer16.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer16.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel5.add(computer16);
 
-        btnPC17.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
-        btnPC17.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
-        jPanel5.add(btnPC17);
+        computer17.setNumber(5);
+        computer17.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pcSelected.png"))); // NOI18N
+        computer17.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pc.png"))); // NOI18N
+        jPanel5.add(computer17);
 
         jPanel6.setBackground(new java.awt.Color(182, 191, 210));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblPc.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc.setText("          01          ");
-        jPanel6.add(lblPc);
+        jLabel9.setToolTipText("");
+        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(499, 21, -1, -1));
 
-        lblPc1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc1.setText("          01          ");
-        jPanel6.add(lblPc1);
+        jLabel2.setText("        ");
+        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(504, 13, -1, -1));
 
-        lblPc2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc2.setText("          01          ");
-        jPanel6.add(lblPc2);
-
-        lblPc3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc3.setText("          01          ");
-        jPanel6.add(lblPc3);
-
-        lblPc4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc4.setText("          01          ");
-        jPanel6.add(lblPc4);
-
-        lblPc5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc5.setText("          01          ");
-        jPanel6.add(lblPc5);
+        jLabel8.setText("        ");
+        jLabel8.setToolTipText("");
+        jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(758, 13, -1, -1));
 
         jPanel9.setBackground(new java.awt.Color(182, 191, 210));
+        jPanel9.setPreferredSize(new java.awt.Dimension(1280, 42));
 
-        lblPc6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc6.setText("          01          ");
-        jPanel9.add(lblPc6);
-
-        lblPc7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc7.setText("          01          ");
-        jPanel9.add(lblPc7);
-
-        lblPc8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc8.setText("          01          ");
-        jPanel9.add(lblPc8);
-
-        lblPc9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc9.setText("          01          ");
-        jPanel9.add(lblPc9);
-
-        lblPc10.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc10.setText("          01          ");
-        jPanel9.add(lblPc10);
-
-        lblPc11.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc11.setText("          01          ");
-        jPanel9.add(lblPc11);
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 42, Short.MAX_VALUE)
+        );
 
         jPanel7.setBackground(new java.awt.Color(182, 191, 210));
 
-        lblPc12.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc12.setText("          01          ");
-        jPanel7.add(lblPc12);
-
-        lblPc13.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc13.setText("          01          ");
-        jPanel7.add(lblPc13);
-
-        lblPc14.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc14.setText("          01          ");
-        jPanel7.add(lblPc14);
-
-        lblPc15.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc15.setText("          01          ");
-        jPanel7.add(lblPc15);
-
-        lblPc16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc16.setText("          01          ");
-        jPanel7.add(lblPc16);
-
-        lblPc17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPc17.setText("          01          ");
-        jPanel7.add(lblPc17);
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1280, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 37, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -262,18 +226,18 @@ public class FrmChooseComputer extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 1123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -282,84 +246,6 @@ public class FrmChooseComputer extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jPanel11.setBackground(new java.awt.Color(182, 191, 210));
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
-        );
-
-        jPanel14.setBackground(new java.awt.Color(182, 191, 210));
-
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
-        );
-
-        jPanel16.setBackground(new java.awt.Color(182, 191, 210));
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
-        );
-
-        jPanel17.setBackground(new java.awt.Color(182, 191, 210));
-
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
-        );
-
-        jPanel18.setBackground(new java.awt.Color(182, 191, 210));
-
-        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
-        jPanel18.setLayout(jPanel18Layout);
-        jPanel18Layout.setHorizontalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel18Layout.setVerticalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
-        );
-
-        jPanel19.setBackground(new java.awt.Color(182, 191, 210));
-
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 70, Short.MAX_VALUE)
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
         );
 
         jPanel12.setBackground(new java.awt.Color(182, 191, 210));
@@ -398,7 +284,7 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 34, Short.MAX_VALUE)
+            .addGap(0, 54, Short.MAX_VALUE)
         );
 
         jPanel15.setBackground(new java.awt.Color(182, 191, 210));
@@ -423,6 +309,9 @@ public class FrmChooseComputer extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setText("Itson Centro, Laboratorio Nainari");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -433,61 +322,38 @@ public class FrmChooseComputer extends javax.swing.JFrame {
                 .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0))))
             .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(456, 456, 456)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(66, 66, 66)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(140, 140, 140)
-                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(314, 314, 314)
-                                .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(139, 139, 139)
-                        .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(132, 132, 132)
-                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -536,35 +402,32 @@ public class FrmChooseComputer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private utilities.MenuButton btnPC;
-    private utilities.MenuButton btnPC1;
-    private utilities.MenuButton btnPC10;
-    private utilities.MenuButton btnPC11;
-    private utilities.MenuButton btnPC12;
-    private utilities.MenuButton btnPC13;
-    private utilities.MenuButton btnPC14;
-    private utilities.MenuButton btnPC15;
-    private utilities.MenuButton btnPC16;
-    private utilities.MenuButton btnPC17;
-    private utilities.MenuButton btnPC2;
-    private utilities.MenuButton btnPC3;
-    private utilities.MenuButton btnPC4;
-    private utilities.MenuButton btnPC5;
-    private utilities.MenuButton btnPC6;
-    private utilities.MenuButton btnPC7;
-    private utilities.MenuButton btnPC8;
-    private utilities.MenuButton btnPC9;
+    private utilities.ComputerButton computer;
+    private utilities.ComputerButton computer1;
+    private utilities.ComputerButton computer10;
+    private utilities.ComputerButton computer11;
+    private utilities.ComputerButton computer12;
+    private utilities.ComputerButton computer13;
+    private utilities.ComputerButton computer14;
+    private utilities.ComputerButton computer15;
+    private utilities.ComputerButton computer16;
+    private utilities.ComputerButton computer17;
+    private utilities.ComputerButton computer2;
+    private utilities.ComputerButton computer3;
+    private utilities.ComputerButton computer4;
+    private utilities.ComputerButton computer5;
+    private utilities.ComputerButton computer6;
+    private utilities.ComputerButton computer7;
+    private utilities.ComputerButton computer8;
+    private utilities.ComputerButton computer9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel3;
@@ -573,24 +436,6 @@ public class FrmChooseComputer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JLabel lblPc;
-    private javax.swing.JLabel lblPc1;
-    private javax.swing.JLabel lblPc10;
-    private javax.swing.JLabel lblPc11;
-    private javax.swing.JLabel lblPc12;
-    private javax.swing.JLabel lblPc13;
-    private javax.swing.JLabel lblPc14;
-    private javax.swing.JLabel lblPc15;
-    private javax.swing.JLabel lblPc16;
-    private javax.swing.JLabel lblPc17;
-    private javax.swing.JLabel lblPc2;
-    private javax.swing.JLabel lblPc3;
-    private javax.swing.JLabel lblPc4;
-    private javax.swing.JLabel lblPc5;
-    private javax.swing.JLabel lblPc6;
-    private javax.swing.JLabel lblPc7;
-    private javax.swing.JLabel lblPc8;
-    private javax.swing.JLabel lblPc9;
     private javax.swing.JLabel lblStudent2;
     private utilities.MenuButton menuButton1;
     private utilities.MenuButton menuButton2;
