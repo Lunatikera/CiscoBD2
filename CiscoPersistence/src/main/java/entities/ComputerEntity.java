@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -11,6 +11,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,9 +41,11 @@ public class ComputerEntity implements Serializable {
     private Integer machineNumber;
 
     @Column(name = "status", nullable = false, length = 25)
+    @Enumerated(EnumType.STRING) 
     private ComputerStatus status;
     
     @Column(name = "computerType", nullable = false, length = 25)
+    @Enumerated(EnumType.STRING) 
     private ComputerTypes computerType;
     
     @ManyToOne
@@ -73,6 +77,17 @@ public class ComputerEntity implements Serializable {
         this.studentComputers = studentComputers;
     }
 
+    public ComputerEntity(Long id, String ipAdress, Integer machineNumber, ComputerStatus status, ComputerTypes computerType, LaboratoryEntity laboratory) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.status = status;
+        this.computerType = computerType;
+        this.laboratory = laboratory;
+    }
+
+     
+    
     public ComputerEntity() {
     }
 
@@ -166,7 +181,9 @@ public class ComputerEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.ComputerEntity[ id=" + id + " ]";
+        return "ComputerEntity{" + "id=" + id + ", ipAdress=" + ipAdress + ", machineNumber=" + machineNumber + ", status=" + status + ", computerType=" + computerType + ", laboratory=" + laboratory + ", computerSoftwares=" + computerSoftwares + ", studentComputers=" + studentComputers + '}';
     }
+
+    
 
 }

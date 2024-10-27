@@ -4,6 +4,7 @@
  */
 package dto;
 
+import entities.LaboratoryEntity;
 import enums.ComputerStatus;
 import enums.ComputerTypes;
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class ComputerDTO {
     private Integer machineNumber;
     private ComputerTypes computerType;
     private ComputerStatus status;
+    private Long labId;
 
     public ComputerDTO(Long id, String ipAdress, Integer machineNumber, ComputerTypes computerType, ComputerStatus status) {
         this.id = id;
@@ -27,7 +29,26 @@ public class ComputerDTO {
         this.status = status;
     }
 
+    public ComputerDTO(Long id, String ipAdress, Integer machineNumber, ComputerTypes computerType, ComputerStatus status, Long labId) {
+        this.id = id;
+        this.ipAdress = ipAdress;
+        this.machineNumber = machineNumber;
+        this.computerType = computerType;
+        this.status = status;
+        this.labId = labId;
+    }
+
+    
+
     public ComputerDTO() {
+    }
+
+    public Long getLabId() {
+        return labId;
+    }
+
+    public void setLabId(Long labId) {
+        this.labId = labId;
     }
 
     

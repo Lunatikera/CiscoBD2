@@ -19,7 +19,7 @@ public interface IStudentBO {
 
     public StudentDTO findStudentByUniqueID(Long studentId) throws BusinessException;
 
-    public List<StudentDTO> studentListByDegreePaginated(String degree, int offset, int limit) throws BusinessException;
+    public List<StudentDTO> studentListByDegreePaginated(Long degreeId, int offset, int limit) throws BusinessException;
 
     public void updateStudent(StudentDTO student) throws BusinessException;
 

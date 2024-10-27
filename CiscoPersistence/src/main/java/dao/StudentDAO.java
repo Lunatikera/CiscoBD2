@@ -29,17 +29,32 @@ public class StudentDAO implements IStudentDAO {
 
     @Override
     public StudentEntity saveStudent(StudentEntity student) throws PersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager entityManager = connection.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+
+            // Guardar el student en la base de datos
+            entityManager.persist(student);
+            entityManager.getTransaction().commit();
+            return student; // Retornar la entidad guardada, puede ser útil para obtener el ID generado
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); // Hacer rollback en caso de error
+            }
+            throw new PersistenceException("Error saving laboratory", e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public StudentEntity findStudentByUniqueID(Long studentId) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            return entityManager.createQuery(
-                    "SELECT s.id, s.firstLastname,s.secondLastName,s.unique_ID,s.password,s.enrollmentStatus FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
-                    .setParameter("uniqueID", studentId)
-                    .getSingleResult();
+             return entityManager.createQuery(
+                "SELECT s FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
+                .setParameter("uniqueID", studentId)
+                .getSingleResult();
             
         } catch (NoResultException e) {
             return null; // Handle case where no student is found
@@ -49,18 +64,20 @@ public class StudentDAO implements IStudentDAO {
     }
 
     @Override
-    public List<StudentEntity> studentListByDegreePaginated(String degreeName, int offset, int limit) throws PersistenceException {
+    public List<StudentEntity> studentListByDegreePaginated(Long degreeId, int offset, int limit) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            DegreeEntity degree = entityManager.createQuery("SELECT d FROM DegreeEntity d WHERE d.degreeName = :degreeName", DegreeEntity.class)
-                    .setParameter("degreeName", degreeName)
+            
+            DegreeEntity degree = entityManager.createQuery("SELECT d FROM DegreeEntity d WHERE d.id = :degreeId", DegreeEntity.class)
+                    .setParameter("degreeId", degreeId)
                     .getSingleResult();
-
-            return entityManager.createQuery("SELECT s FROM StudentEntity s WHERE s.degree = :degree AND s.isDeleted = false", StudentEntity.class)
-                    .setParameter("degree", degree)
+            
+            return entityManager.createQuery("SELECT s FROM StudentEntity s  inner join s.studentDegrees sd inner join sd.degree d where d.id = :degree", StudentEntity.class)
+                    .setParameter("degree", degree.getId())
                     .setFirstResult(offset)
                     .setMaxResults(limit)
                     .getResultList();
+            
         } catch (NoResultException e) {
             throw new PersistenceException("Degree not found", e);
         } catch (Exception e) {
