@@ -68,14 +68,13 @@ public class FrmStudentManager extends javax.swing.JFrame {
         this.laboratoryBO = laboratoryBO;
         this.studentBO = studentBO;
         this.degreeBO = degreeBO;
-        this.degreeDTO = degreeDTO;
         this.listDegree = new ArrayList<>();
         this.loadFrame();
     }
 
     public void loadFrame() {
         this.fillDegreeComboBox();
-        this.degreeDTO = cbDegree.getItemAt(0);
+        this.degreeDTO = (DegreeDTO)cbDegree.getItemAt(0);
         this.setTitle("Administracion de Estudiantes ");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
@@ -532,6 +531,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         FrmAddStudent frmAddStudent = new FrmAddStudent(studentBO, degreeBO);
         frmAddStudent.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
@@ -626,8 +626,9 @@ public class FrmStudentManager extends javax.swing.JFrame {
                 return;
             }
             StudentDTO studentDTO = studentBO.findStudentByUniqueID(this.getSelectedIdTableStudent());
-            FrmUpdateStudentManager Study = new FrmUpdateStudentManager(studentDTO, studentBO);
+            FrmUpdateStudentManager Study = new FrmUpdateStudentManager(studentDTO, studentBO,degreeBO);
             Study.setVisible(true);
+            this.dispose();
         } catch (BusinessException ex) {
             Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
         }

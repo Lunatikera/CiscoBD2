@@ -16,7 +16,7 @@ public class StudentDTO {
     private Long unique_ID;
     private String names;
     private String firstLastname;
-    private String secondLastname;
+    private String secondLastName;
     private String password;
     private EnrollmentStatus enrollmentStatus;
 
@@ -24,7 +24,7 @@ public class StudentDTO {
         this.unique_ID = unique_ID;
         this.names = names;
         this.firstLastname = firstLastname;
-        this.secondLastname = secondLastname;
+        this.secondLastName = secondLastname;
         this.password = password;
         this.enrollmentStatus = enrollmentStatus;
     }
@@ -33,7 +33,7 @@ public class StudentDTO {
         this.unique_ID = unique_ID;
         this.names = names;
         this.firstLastname = firstLastname;
-        this.secondLastname = secondLastname;
+        this.secondLastName = secondLastname;
         this.password = password;
     }
 
@@ -75,11 +75,11 @@ public class StudentDTO {
     }
 
     public String getSecondLastname() {
-        return secondLastname;
+        return secondLastName;
     }
 
     public void setSecondLastname(String secondLastname) {
-        this.secondLastname = secondLastname;
+        this.secondLastName = secondLastname;
     }
 
     public EnrollmentStatus getEnrollmentStatus() {

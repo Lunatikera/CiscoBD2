@@ -43,12 +43,13 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmUpdateStudentManager(StudentDTO studentDTO, IStudentBO studentBO ) {
+    public FrmUpdateStudentManager(StudentDTO studentDTO, IStudentBO studentBO,IDegreeBO degreeBO) {
         this.enrollmentStatus = enrollmentStatus;
         initComponents();
         this.studentBO = studentBO;
         this.enrollmentStatus = EnrollmentStatus.Inscrito;
         this.studentDTO = studentDTO;
+        this.degreeBO = degreeBO;
         this.studentList = new ArrayList<>();
         this.loadFrame();
     }
@@ -225,7 +226,7 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
 
         
         try {
-            studentBO.updateStudent(studentDTO);
+            studentBO.updateStudent(newStudentDTO);
         } catch (BusinessException ex) {
             Logger.getLogger(FrmUpdateStudentManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -237,7 +238,9 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnContinueActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        
+        FrmStudentManager student = new FrmStudentManager(studentBO, degreeBO);
+        student.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed

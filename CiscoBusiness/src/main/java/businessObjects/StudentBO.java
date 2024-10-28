@@ -36,9 +36,8 @@ public class StudentBO implements IStudentBO {
         if (student == null) {
             throw new BusinessException("StudentDTO cannot be null.");
         }
-
         StudentEntity studentEntity = StudentMapper.toEntity(student);
-
+        
         try {
 
             studentEntity = studentDAO.saveStudent(studentEntity);
