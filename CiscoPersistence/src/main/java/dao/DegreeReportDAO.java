@@ -30,64 +30,48 @@ import javax.persistence.criteria.Root;
  *
  * @author NaderCroft
  */
-public class DegreeReportDAO implements IDegreeReportDAO{
+public class DegreeReportDAO implements IDegreeReportDAO {
 
     IConnectionBD connection;
 
     public DegreeReportDAO(IConnectionBD connection) {
         this.connection = connection;
     }
-    
+
     @Override
     public List<ReportDegreeDto> getCareerUsageReport(List<String> degreeNames, LocalDate startDate, LocalDate endDate) throws PersistenceException {
-    EntityManager entityManager = connection.getEntityManager();
-    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-    CriteriaQuery<ReportDegreeDto> query = cb.createQuery(ReportDegreeDto.class);
-    Root<StudentComputerEntity> sc = query.from(StudentComputerEntity.class);
+        String literal = "MINUTE";
+        EntityManager entityManager = connection.getEntityManager();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ReportDegreeDto> cq = cb.createQuery(ReportDegreeDto.class);
 
-    Join<StudentComputerEntity, StudentEntity> studentJoin = sc.join("student");
-    Join<StudentEntity, StudentDegreeEntity> studentDegreeJoin = studentJoin.join("studentDegrees");
-    Join<StudentDegreeEntity, DegreeEntity> degreeJoin = studentDegreeJoin.join("degree");
+        Root<StudentComputerEntity> sc = cq.from(StudentComputerEntity.class);
+        Join<StudentComputerEntity, StudentEntity> s = sc.join("student");
+        Join<StudentDegreeEntity, DegreeEntity> sd = s.join("studentDegrees");
+        Join<DegreeEntity, DegreeEntity> d = sd.join("degree");
 
-    // Expresión para calcular minutos de uso
-    Expression<Long> totalMinutes = cb.sum(
-            cb.function(
-                    "TIMESTAMPDIFF",
-                    Long.class,
-                    cb.literal("MINUTE"),
-                    sc.get("startDateTime"),
-                    cb.coalesce(sc.get("endDateTime"), cb.currentTimestamp())
-            )
-    );
+        // Filtrar por los nombres de grado dinámicos
+        Predicate degreePredicate = d.get("degreeName").in(degreeNames);
 
-    // Selección de los campos requeridos en ReportDegreeDto
-    query.select(cb.construct(
-            ReportDegreeDto.class,
-            degreeJoin.get("degreeName"),          // Nombre de la carrera
-            totalMinutes,                          // Minutos de uso
-            cb.countDistinct(studentJoin.get("id")), // Cantidad de estudiantes
-            cb.function("DATE", Date.class, sc.get("startDateTime")) // Fecha
-    ));
+        // Filtrar por rango de fechas
+        Predicate dateRangePredicate = cb.between(
+                cb.function("DATE", LocalDate.class, sc.get("startDateTime")),
+                startDate, endDate
+        );
 
-    // Convertir LocalDate a java.sql.Date
-    Date dateS = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-    Date dateF = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        cq.select(cb.construct(ReportDegreeDto.class,
+                d.get("degreeName"),
+                cb.sum(cb.function("TimeDiffInMinutes", Long.class, sc.get("startDateTime"),
+                        cb.coalesce(sc.get("endDateTime"), cb.currentTimestamp()))),
+                cb.countDistinct(s.get("id")) // Conteo de estudiantes únicos
+                ,
+                 cb.function("DATE", LocalDate.class, sc.get("startDateTime")) // Fecha
+        ))
+                .where(cb.and(degreePredicate, dateRangePredicate))
+                .groupBy(d.get("degreeName"), cb.function("DATE", LocalDate.class, sc.get("startDateTime")))
+                .orderBy(cb.asc(cb.function("DATE", LocalDate.class, sc.get("startDateTime"))), cb.asc(d.get("degreeName")));
 
-    // Condiciones WHERE
-    Predicate degreeNamePredicate = degreeJoin.get("degreeName").in(degreeNames);
-    Predicate dateRangePredicate = cb.between(
-            sc.get("startDateTime"), // Asegúrate de que esto sea de tipo Date o LocalDateTime
-            dateS,
-            dateF
-    );
+        return entityManager.createQuery(cq).getResultList();
+    }
 
-    query.where(cb.and(degreeNamePredicate, dateRangePredicate));
-
-    // Agrupación y ordenamiento
-    query.groupBy(degreeJoin.get("degreeName"), cb.function("DATE", Date.class, sc.get("startDateTime")));
-    query.orderBy(cb.asc(cb.function("DATE", Date.class, sc.get("startDateTime"))), cb.asc(degreeJoin.get("degreeName")));
-
-    return entityManager.createQuery(query).getResultList();
 }
-}
- 

@@ -363,7 +363,7 @@
                     <Component class="javax.swing.JTable" name="tblDegreeReport">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="4">
+                          <Table columnCount="4" rowCount="0">
                             <Column editable="true" title="Nombre Carrera" type="java.lang.Object"/>
                             <Column editable="true" title="Uso por dia (Min)" type="java.lang.Object"/>
                             <Column editable="true" title="Cantidad de alumnos" type="java.lang.Object"/>
@@ -558,7 +558,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="210" y="660" width="140" height="30"/>
+                      <AbsoluteConstraints x="730" y="660" width="140" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -571,7 +571,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="740" y="660" width="140" height="30"/>
+                      <AbsoluteConstraints x="200" y="660" width="140" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
