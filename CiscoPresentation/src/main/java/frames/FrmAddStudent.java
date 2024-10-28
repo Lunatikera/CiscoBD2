@@ -40,11 +40,13 @@ public class FrmAddStudent extends javax.swing.JFrame {
         this.llenarComboClasificaciones();
     }
     
+
     private void llenarComboClasificaciones() {
         for (EnrollmentStatus clasi : enrollmentStatus.values()) {
             cbStatus.addItem(clasi);
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

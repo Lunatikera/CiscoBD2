@@ -31,6 +31,18 @@ public class LaboratoryBO implements ILaboratoryBO {
         this.laboratoryDAO = laboratoryDAO;
         this.academyDAO=academyDAO;
     }
+    
+    @Override
+    public List<LaboratoryDTO> getAllLaboratory() throws BusinessException {
+    
+        try {
+            List<LaboratoryEntity> laboratory = laboratoryDAO.getAllLaboratorys();
+            return LaboratoryMapper.toDTOList(laboratory);
+        } catch (PersistenceException ex) {
+            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Error retrieving academy list.");
+        }
+    }
 
     @Override
     public List<LaboratoryDTO> laboratoryListByAcademyPaginated(Long academyID, int limit, int page) throws BusinessException {

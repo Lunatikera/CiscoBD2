@@ -32,7 +32,7 @@ public class StudentDAO implements IStudentDAO {
         EntityManager entityManager = connection.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            
+
             // Guardar el student en la base de datos
             entityManager.persist(student);
             entityManager.getTransaction().commit();
@@ -51,11 +51,11 @@ public class StudentDAO implements IStudentDAO {
     public StudentEntity findStudentByUniqueID(Long studentId) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            return entityManager.createQuery(
-                    "SELECT s FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
-                    .setParameter("uniqueID", studentId)
-                    .getSingleResult();
-
+             return entityManager.createQuery(
+                "SELECT s FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
+                .setParameter("uniqueID", studentId)
+                .getSingleResult();
+            
         } catch (NoResultException e) {
             return null; // Handle case where no student is found
         } finally {
@@ -67,23 +67,19 @@ public class StudentDAO implements IStudentDAO {
     public List<StudentEntity> studentListByDegreePaginated(Long degreeId, int offset, int limit) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            // Retrieve the degree
-            DegreeEntity degree;
-            try {
-                degree = entityManager.createQuery("SELECT d FROM DegreeEntity d WHERE d.id = :degreeId", DegreeEntity.class)
-                        .setParameter("degreeId", degreeId)
-                        .getSingleResult();
-            } catch (NoResultException e) {
-                throw new PersistenceException("Degree not found with ID: " + degreeId, e);
-            }
-
-            // Query students by the found degree
-            return entityManager.createQuery("SELECT s FROM StudentEntity s INNER JOIN s.studentDegrees sd INNER JOIN sd.degree d WHERE d.id = :degreeId", StudentEntity.class)
-                    .setParameter("degreeId", degree.getId())
+            
+            DegreeEntity degree = entityManager.createQuery("SELECT d FROM DegreeEntity d WHERE d.id = :degreeId", DegreeEntity.class)
+                    .setParameter("degreeId", degreeId)
+                    .getSingleResult();
+            
+            return entityManager.createQuery("SELECT s FROM StudentEntity s  inner join s.studentDegrees sd inner join sd.degree d where d.id = :degree", StudentEntity.class)
+                    .setParameter("degree", degree.getId())
                     .setFirstResult(offset)
                     .setMaxResults(limit)
                     .getResultList();
-
+            
+        } catch (NoResultException e) {
+            throw new PersistenceException("Degree not found", e);
         } catch (Exception e) {
             throw new PersistenceException("Error retrieving student list by degree", e);
         } finally {
@@ -119,4 +115,25 @@ public class StudentDAO implements IStudentDAO {
             entityManager.close(); // Close the EntityManager
         }
     }
-}
+
+    @Override
+    public StudentEntity findStudentByID(Long studentId) throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager();
+
+         try {
+        if (studentId == null) {
+            throw new PersistenceException("El ID del estudiante no puede ser nulo.");
+        }
+       
+            // Buscar el estudiante por ID usando el método find de EntityManager
+            return entityManager.find(StudentEntity.class, studentId);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Error al buscar el estudiante: " + e.getMessage());
+        }finally {
+            entityManager.close(); // Close the EntityManager
+        }
+    }
+    }
+
+
+   

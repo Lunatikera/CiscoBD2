@@ -153,4 +153,28 @@ public class StudentBO implements IStudentBO {
             throw new BusinessException("An error occurred while logging in. Please try again later."); // Wrap the exception for higher-level handling
         }
     }
+
+    @Override
+    public StudentDTO findStudentByID(Long studentId) throws BusinessException {
+        if (studentId == null || studentId <= 0) {
+        throw new BusinessException("El ID del estudiante tiene que estar en un formato válido.");
+    }
+
+    try {
+        // Registro de depuración
+        Logger.getLogger(StudentBO.class.getName()).log(Level.INFO, "Buscando estudiante con ID: {0}", studentId);
+        
+        StudentEntity student = studentDAO.findStudentByID(studentId);
+        
+        if (student == null) {
+            throw new BusinessException("Estudiante no encontrado con el ID proporcionado.");
+        }
+        
+        return StudentMapper.toDTO(student);
+    } catch (PersistenceException ex) {
+        Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Error al buscar el estudiante por ID", ex);
+        throw new BusinessException("Error al buscar el estudiante por ID. Por favor, inténtelo de nuevo más tarde.");
+    }
+    }
+      
 }
