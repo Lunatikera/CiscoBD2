@@ -21,6 +21,7 @@ import dao.DegreeDAO;
 import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.AcademyDTO;
 import dto.ComputerDTO;
 import dto.LaboratoryDTO;
@@ -41,6 +42,7 @@ import interfaces.IRuleDAO;
 import interfaces.ISoftwareBO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -107,7 +109,7 @@ public class FrmSoftwareManager extends javax.swing.JFrame {
 //    } catch (BusinessException e) {
 //        System.out.println("Error al cargar la tabla: " + e.getMessage());
 //    }
-}
+    }
 
     private void deleteInfoTableSoftware() {
         DefaultTableModel tableModel = (DefaultTableModel) this.tblSoftware.getModel();
@@ -495,13 +497,11 @@ public class FrmSoftwareManager extends javax.swing.JFrame {
         IConnectionBD connection = new ConnectionDB();
         IComputerDAO computerDAO = new ComputerDAO(connection);
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
-        IComputerBO computerBO =new ComputerBO(computerDAO, laboratoryDAO);
+        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
         IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        
-        
-        
+
         FrmComputerManager frmComputerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
         this.dispose();
         frmComputerManager.setVisible(true);
@@ -509,20 +509,22 @@ public class FrmSoftwareManager extends javax.swing.JFrame {
 
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
         IConnectionBD connection = new ConnectionDB();
-         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-         this.dispose();
-         frmDegreeManager.setVisible(true);
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+        this.dispose();
+        frmDegreeManager.setVisible(true);
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
- IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
         IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        
+
         FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
         this.dispose();
         laboratory.setVisible(true);
@@ -544,7 +546,7 @@ public class FrmSoftwareManager extends javax.swing.JFrame {
         IConnectionBD connection = new ConnectionDB();
         IRuleDAO ruleDAO = new RuleDAO(connection);
         IRuleBO ruleBO = new RuleBO(ruleDAO);
-        
+
         FrmRulesManager frmRulesManager = new FrmRulesManager(ruleBO);
         this.dispose();
         frmRulesManager.setVisible(true);
@@ -559,10 +561,10 @@ public class FrmSoftwareManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
 
     private void btnMenuBlockReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportsActionPerformed
-         IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IBlockReportDAO blockReportDAO = new BlockReportDAO(connection);
         IBlockReportBO blockReportBO = new BlockReportBO(blockReportDAO);
-        
+
         FrmLocksReport frmLocksReport = new FrmLocksReport(blockReportBO);
         this.dispose();
         frmLocksReport.setVisible(true);
@@ -579,12 +581,14 @@ public class FrmSoftwareManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLeftActionPerformed
 
     private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
-          IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IStudentDAO studentDAO = new StudentDAO(connection);
         IStudentBO studentBO = new StudentBO(studentDAO);
         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-       
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+
         FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
         this.dispose();
         frmStudentManager.setVisible(true);
