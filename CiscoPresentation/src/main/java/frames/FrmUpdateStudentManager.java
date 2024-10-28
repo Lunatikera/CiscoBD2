@@ -75,7 +75,7 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
     }
     
     private void llenarComboClasificaciones() {
-        for (enrollmentStatus clasi : enrollmentStatus.values()) {
+        for (EnrollmentStatus clasi : enrollmentStatus.values()) {
             cbStatus.addItem(clasi);
         }
     }
@@ -118,27 +118,22 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
         lbUpdateStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lbUpdateStudent.setForeground(new java.awt.Color(0, 0, 0));
         lbUpdateStudent.setText("Editar Estudiante");
         jPanel4.add(lbUpdateStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 340, -1));
 
         lblSecondName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblSecondName.setForeground(new java.awt.Color(0, 0, 0));
         lblSecondName.setText("Apellido Materno:");
         jPanel4.add(lblSecondName, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 200, -1));
 
         lblLastName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblLastName.setForeground(new java.awt.Color(0, 0, 0));
         lblLastName.setText("Apellido Paterno:");
         jPanel4.add(lblLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
         lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblStatus.setForeground(new java.awt.Color(0, 0, 0));
         lblStatus.setText("Estado:");
         jPanel4.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, -1, -1));
 
         lblName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblName.setForeground(new java.awt.Color(0, 0, 0));
         lblName.setText("Nombre:");
         jPanel4.add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
 
@@ -169,11 +164,9 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
         jPanel4.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 250, 30));
 
         lblPassword1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPassword1.setForeground(new java.awt.Color(0, 0, 0));
         lblPassword1.setText("Contraseña:");
         jPanel4.add(lblPassword1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
 
-        cbStatus.setForeground(new java.awt.Color(0, 0, 0));
         cbStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbStatusActionPerformed(evt);
@@ -255,7 +248,7 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnContinue;
     private javax.swing.JButton btnReturn;
-    private javax.swing.JComboBox<String> cbStatus;
+    private javax.swing.JComboBox<EnrollmentStatus> cbStatus;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

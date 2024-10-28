@@ -5,7 +5,6 @@
 package dao;
 
 import connection.IConnectionBD;
-import dto.StudentDegreeDTO;
 import entities.DegreeEntity;
 import exception.PersistenceException;
 import interfaces.IDegreeDAO;
@@ -144,20 +143,18 @@ public class DegreeDAO implements IDegreeDAO {
     }
 
     @Override
-    public List<StudentDegreeDTO> getDegreesByStudent(Long studentID) throws PersistenceException {
+    public List<DegreeEntity> getDegreesByStudent(Long studentID) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            return entityManager.createQuery(
-                    "SELECT NEW dto.StudentDegreeDTO(d.id, d.degreeName, d.timeLimit, sd.remainingTime) "
-                    + "FROM DegreeEntity d JOIN d.studentDegrees sd "
-                    + "WHERE sd.student.id = :studentID", StudentDegreeDTO.class)
-                    .setParameter("studentID", studentID)
-                    .getResultList();
-
+            
+                 return entityManager.createQuery(
+                "SELECT d FROM DegreeEntity d JOIN d.studentDegrees sd JOIN sd.student s WHERE s.unique_ID = :studentID", DegreeEntity.class)
+                .setParameter("studentID", studentID)
+                .getResultList();
         } catch (NoResultException e) {
             throw new PersistenceException("Degree not found", e);
         } catch (Exception e) {
-            Logger.getLogger(DegreeDAO.class.getName()).log(Level.SEVERE, "Error retrieving Degree List", e);
+            Logger.getLogger(DegreeDAO.class.getName()).log(Level.SEVERE, "Failed to save student", e);
             throw new PersistenceException("Error retrieving Degree List", e);
         } finally {
             entityManager.close();

@@ -28,7 +28,7 @@ public class AcademicUnityEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-     @Column(name = "academicUnityName", nullable = false, length = 25)
+     @Column(name = "academicUnityName", nullable = false, length = 50)
     private String academicUnityName;
     
      @OneToMany(mappedBy = "academicUnity", cascade = CascadeType.PERSIST)

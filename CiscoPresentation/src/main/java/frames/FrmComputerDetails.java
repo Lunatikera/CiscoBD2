@@ -409,8 +409,8 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LiberarActionPerformed
-        FrmChooseComputer frmChooseComputer = new FrmChooseComputer();
-        frmChooseComputer.setVisible(true);
+//        FrmChooseComputer frmChooseComputer = new FrmChooseComputer();
+//        frmChooseComputer.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_LiberarActionPerformed
 

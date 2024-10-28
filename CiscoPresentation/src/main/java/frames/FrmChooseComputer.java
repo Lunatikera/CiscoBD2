@@ -5,10 +5,13 @@
 package frames;
 
 import dto.ComputerDTO;
-import dto.DegreeDTO;
+import dto.LaboratoryDTO;
 import dto.StudentDTO;
+import dto.StudentDegreeDTO;
+import enums.ComputerTypes;
 import exception.BusinessException;
 import interfaces.IComputerBO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import utilities.ComputerButton;
@@ -22,29 +25,39 @@ public class FrmChooseComputer extends javax.swing.JFrame {
     private int page = 1;
     private final int LIMITE = 18;
     IComputerBO computerBO;
-    DegreeDTO degreeDTO;
+    StudentDegreeDTO studentDegreeDTO;
     StudentDTO studentDTO;
+    LaboratoryDTO laboratoryDTO;
     ComputerDTO computerDTO;
     private ComputerButton[] botones;
     private List<ComputerDTO> loadedPCs;
 
-    public FrmChooseComputer() {
+    public FrmChooseComputer(IComputerBO computerBO, StudentDTO studentDTO, StudentDegreeDTO studentDegreeDTO, LaboratoryDTO laboratoryDTO, ComputerDTO computerDTO) {
         initComponents();
+        this.computerBO = computerBO;
+        this.studentDegreeDTO = studentDegreeDTO;
+        this.studentDTO = studentDTO;
+        this.laboratoryDTO = laboratoryDTO;
+        this.computerDTO = computerDTO;
+        this.loadedPCs = new ArrayList<>();
+        this.botones = new ComputerButton[]{computer, computer1, computer2, computer3, computer4,
+            computer5, computer6, computer7, computer8, computer9, computer10, computer11, computer12, computer13, computer14, computer15, computer16, computer17};
         this.setLocationRelativeTo(null);
+        loadFrame();
 
     }
 
     private void loadFrame() {
-        this.setTitle("Laboratorio");
+        this.setTitle("Laboratorio " + laboratoryDTO.getLabName());
         this.setLocationRelativeTo(null);
-        this.cargarPeliculas();
+        this.loadComputers();
         this.pageStatus();
 
     }
 
-    public void cargarPeliculas() {
+    public void loadComputers() {
         try {
-            List<ComputerDTO> computerList = this.computerBO.computerListByAcademyPaginated(page, LIMITE, this.computerDTO.getId());
+            List<ComputerDTO> computerList = this.computerBO.computerListByAcademyPaginated(page, LIMITE, this.computerDTO.getLabId());
             System.out.println(computerList);
             loadedPCs.clear();
             loadedPCs.addAll(computerList);
@@ -57,8 +70,13 @@ public class FrmChooseComputer extends javax.swing.JFrame {
 
     private void fillFields(List<ComputerDTO> computerList) {
         for (int i = 0; i < computerList.size(); i++) {
+
             botones[i].setEnabled(true);
             botones[i].setNumber(computerList.get(i).getMachineNumber());
+            if (computerList.get(i).getComputerType() == ComputerTypes.Administrativo) {
+                botones[i].setVisible(false);
+
+            }
         }
         // Limpiar botones y etiquetas restantes
         for (int i = computerList.size(); i < LIMITE; i++) {
@@ -92,8 +110,8 @@ public class FrmChooseComputer extends javax.swing.JFrame {
 
         try {
             btnRight.setEnabled(true);
-            if (this.computerBO.computerListByAcademyPaginated(page + 1, LIMITE, this.computerDTO.getId()) == null
-                    || this.computerBO.computerListByAcademyPaginated(page + 1, LIMITE, this.computerDTO.getId()).isEmpty()) {
+            if (this.computerBO.computerListByAcademyPaginated(page + 1, LIMITE, this.computerDTO.getLabId()) == null
+                    || this.computerBO.computerListByAcademyPaginated(page + 1, LIMITE, this.computerDTO.getLabId()).isEmpty()) {
                 btnRight.setEnabled(false);
             }
         } catch (BusinessException ex) {
@@ -394,24 +412,8 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(182, 191, 210));
 
         lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPage.setText("                                                                                        Pagina  01");
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(lblPage, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
-        );
+        lblPage.setText("Pagina  01");
+        jPanel7.add(lblPage);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -440,7 +442,8 @@ public class FrmChooseComputer extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         jPanel12.setBackground(new java.awt.Color(182, 191, 210));
@@ -479,7 +482,7 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
+            .addGap(0, 49, Short.MAX_VALUE)
         );
 
         jPanel15.setBackground(new java.awt.Color(182, 191, 210));
@@ -628,7 +631,6 @@ public class FrmChooseComputer extends javax.swing.JFrame {
         this.computerDetails(17);
     }//GEN-LAST:event_computer17ActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private utilities.MenuButton btnLeft;

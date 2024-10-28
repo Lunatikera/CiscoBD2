@@ -14,12 +14,26 @@ public class StudentDegreeDTO {
     private String degreeName;
     private Long remainingTime;
     private Long timeLimit;
+    private Long unique_ID;
+    private Long idDegree;
 
     public StudentDegreeDTO(Long id, String degreeName, Long remainingTime, Long timeLimit) {
         this.id = id;
         this.degreeName = degreeName;
         this.remainingTime = remainingTime;
         this.timeLimit = timeLimit;
+    }
+
+    public StudentDegreeDTO() {
+    }
+
+    public StudentDegreeDTO(Long id, String degreeName, Long remainingTime, Long timeLimit, Long unique_ID, Long idDegree) {
+        this.id = id;
+        this.degreeName = degreeName;
+        this.remainingTime = remainingTime;
+        this.timeLimit = timeLimit;
+        this.unique_ID = unique_ID;
+        this.idDegree = idDegree;
     }
 
     public Long getId() {
@@ -52,6 +66,28 @@ public class StudentDegreeDTO {
 
     public void setTimeLimit(Long timeLimit) {
         this.timeLimit = timeLimit;
+    }
+
+    public Long getUnique_ID() {
+        return unique_ID;
+    }
+
+    public void setUnique_ID(Long unique_ID) {
+        this.unique_ID = unique_ID;
+    }
+
+   
+    public Long getIdDegree() {
+        return idDegree;
+    }
+
+    public void setIdDegree(Long idDegree) {
+        this.idDegree = idDegree;
+    }
+
+    @Override
+    public String toString() {
+        return degreeName ;
     }
     
     

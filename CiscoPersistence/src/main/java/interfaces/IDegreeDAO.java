@@ -4,7 +4,6 @@
  */
 package interfaces;
 
-import dto.StudentDegreeDTO;
 import entities.DegreeEntity;
 import exception.PersistenceException;
 import java.util.List;
@@ -27,5 +26,5 @@ public interface IDegreeDAO {
 
     public DegreeEntity findDegreeForId(Long degreeId) throws PersistenceException;
 
-    public List<StudentDegreeDTO> getDegreesByStudent(Long studentID) throws PersistenceException;
+    public List<DegreeEntity> getDegreesByStudent(Long studentID) throws PersistenceException;
 }

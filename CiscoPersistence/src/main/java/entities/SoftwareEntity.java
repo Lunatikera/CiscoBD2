@@ -28,7 +28,7 @@ public class SoftwareEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "softwareName", nullable = false, length = 25)
+    @Column(name = "softwareName", nullable = false, length = 50)
     private String softwareName;
     
     @OneToMany(mappedBy = "software", cascade = CascadeType.PERSIST)

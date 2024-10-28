@@ -4,10 +4,15 @@
  */
 package frames;
 
+import dto.ComputerDTO;
+import dto.LaboratoryDTO;
 import dto.StudentDTO;
 import dto.StudentDegreeDTO;
 import exception.BusinessException;
+import interfaces.IComputerBO;
 import interfaces.IDegreeBO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,26 +22,51 @@ import java.util.logging.Logger;
  * @author carli
  */
 public class FrmChooseDegree extends javax.swing.JFrame {
-
+    IComputerBO computerBO;
     IDegreeBO degreeBO;
     StudentDTO studentDTO;
+    ComputerDTO computerDTO;
+    LaboratoryDTO laboratoryDTO;
     List< StudentDegreeDTO> degreeList;
 
     /**
      * Creates new form FrmStudentStart
      */
-    public FrmChooseDegree() {
+    public FrmChooseDegree(IComputerBO computerBO, IDegreeBO degreeBO, StudentDTO studentDTO, ComputerDTO computerDTO, LaboratoryDTO laboratoryDTO) {
         initComponents();
+        this.computerBO=computerBO;
+        this.degreeBO = degreeBO;
+        this.studentDTO = studentDTO;
+        this.computerDTO = computerDTO;
+        this.laboratoryDTO = laboratoryDTO;
+        this.setSize(1280, 720);
+        this.setLocationRelativeTo(null);
         fillDegrees();
+        fillFields();
+
+        this.cbDegree.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fillFields();
+            }
+        });
     }
 
-    public void fillDegrees() {
+    private void fillFields() {
+        StudentDegreeDTO studentDegreeDTO = degreeList.get(cbDegree.getSelectedIndex());
+        lblTotalTIme.setText(" Tiempo Total " + studentDegreeDTO.getTimeLimit() + " minutos");
+        lblRemainingTime.setText(" Tiempo Restante " + studentDegreeDTO.getRemainingTime() + " minutos");
+
+    }
+
+    private void fillDegrees() {
         try {
-            degreeList = degreeBO.getDegreesByStudent(studentDTO.getUniqueId());
+            degreeList = degreeBO.getDegreesByStudent(studentDTO.getUnique_ID());
 
             for (StudentDegreeDTO degree : degreeList) {
                 cbDegree.addItem(degree);
             }
+            cbDegree.setSelectedIndex(0);
         } catch (BusinessException ex) {
             Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,8 +91,8 @@ public class FrmChooseDegree extends javax.swing.JFrame {
         lblStudent1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         cbDegree = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lblTotalTIme = new javax.swing.JLabel();
+        lblRemainingTime = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,9 +140,11 @@ public class FrmChooseDegree extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Tiempo total");
+        lblTotalTIme.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblTotalTIme.setText("Tiempo total");
 
-        jLabel4.setText("Tiempo disponible");
+        lblRemainingTime.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblRemainingTime.setText("Tiempo disponible");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -121,46 +153,43 @@ public class FrmChooseDegree extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(lblStudent)
-                                .addGap(194, 194, 194))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(cbDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(154, 154, 154))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(210, 210, 210))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(lblStudent))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbDegree, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(205, 205, 205)
-                                .addComponent(lblStudent1))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(158, 158, 158)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap())))
+                                .addGap(68, 68, 68)
+                                .addComponent(lblStudent1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(159, 159, 159)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblRemainingTime, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTotalTIme, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(185, 185, 185)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(97, 97, 97)
+                .addGap(75, 75, 75)
                 .addComponent(lblStudent)
-                .addGap(63, 63, 63)
+                .addGap(41, 41, 41)
                 .addComponent(lblStudent1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(lblTotalTIme)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addGap(53, 53, 53)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblRemainingTime)
+                .addGap(38, 38, 38)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -182,58 +211,23 @@ public class FrmChooseDegree extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         StudentDegreeDTO studentDegreeDTO = (StudentDegreeDTO) cbDegree.getSelectedItem();
-        FrmChooseComputer chooseComputer = new FrmChooseComputer();
+        FrmChooseComputer chooseComputer = new FrmChooseComputer(computerBO, studentDTO, studentDegreeDTO, laboratoryDTO, computerDTO);
         chooseComputer.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseDegree.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseDegree.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseDegree.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmChooseDegree.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmChooseDegree().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<StudentDegreeDTO> cbDegree;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lblRemainingTime;
     private javax.swing.JLabel lblStudent;
     private javax.swing.JLabel lblStudent1;
+    private javax.swing.JLabel lblTotalTIme;
     // End of variables declaration//GEN-END:variables
 }

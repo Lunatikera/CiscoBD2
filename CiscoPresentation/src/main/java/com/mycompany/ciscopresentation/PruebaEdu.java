@@ -33,7 +33,7 @@ public class PruebaEdu {
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO,academyDao);
         IComputerDAO computerDAO = new ComputerDAO(connectionBD);
         IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
-        FrmComputerManager computerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
-        computerManager.setVisible(true);
+//        FrmComputerManager computerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
+//        computerManager.setVisible(true);
     }
 }

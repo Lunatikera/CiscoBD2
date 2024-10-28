@@ -7,10 +7,13 @@ package businessObjects;
 import dto.DegreeDTO;
 import dto.StudentDegreeDTO;
 import entities.DegreeEntity;
+import entities.StudentDegreeEntity;
 import exception.BusinessException;
 import exception.PersistenceException;
 import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
+import interfaces.IStudentDegreeDAO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,11 +27,13 @@ import tools.Tools;
 public class DegreeBO implements IDegreeBO {
 
     IDegreeDAO degreeDAO;
-    
-    public DegreeBO(IDegreeDAO degreeDAO) {
+    IStudentDegreeDAO studentDegreeDAO;
+
+    public DegreeBO(IDegreeDAO degreeDAO, IStudentDegreeDAO studentDegreeDAO) {
         this.degreeDAO = degreeDAO;
+        this.studentDegreeDAO = studentDegreeDAO;
     }
-    
+
     @Override
     public List<DegreeDTO> getAllDegrees() throws BusinessException {
         try {
@@ -38,7 +43,7 @@ public class DegreeBO implements IDegreeBO {
             throw new BusinessException("Error retrieving degrees", e); // Handle persistence exceptions
         }
     }
-    
+
     @Override
     public List<DegreeDTO> obterCarrerasPaguinado(int limit, int page) throws BusinessException {
         try {
@@ -50,7 +55,7 @@ public class DegreeBO implements IDegreeBO {
             throw new BusinessException("Error retrieving paginated degrees", e);
         }
     }
-    
+
     @Override
     public void saveDegree(DegreeDTO degree) throws BusinessException {
         try {
@@ -60,7 +65,7 @@ public class DegreeBO implements IDegreeBO {
             throw new BusinessException("Error saving degree", e);
         }
     }
-    
+
     @Override
     public void deleteDegree(Long degreeId) throws BusinessException {
         try {
@@ -69,7 +74,7 @@ public class DegreeBO implements IDegreeBO {
             throw new BusinessException("Error deleting degree", e);
         }
     }
-    
+
     @Override
     public void updateDegree(DegreeDTO degree) throws BusinessException {
         try {
@@ -79,7 +84,7 @@ public class DegreeBO implements IDegreeBO {
             throw new BusinessException("Error updating degree", e);
         }
     }
-    
+
     @Override
     public DegreeDTO findDegreeForId(Long degreeId) throws BusinessException {
         try {
@@ -89,14 +94,28 @@ public class DegreeBO implements IDegreeBO {
             throw new BusinessException("Error finding degree by ID", e);
         }
     }
-    
+
     @Override
     public List<StudentDegreeDTO> getDegreesByStudent(Long studentID) throws BusinessException {
+        List<StudentDegreeDTO> studentDegreeDTOList = new ArrayList<>();
         try {
-            return degreeDAO.getDegreesByStudent(studentID); // Collect results into a List<DegreeDTO>
+            List<StudentDegreeEntity> studentDegreeList = studentDegreeDAO.findByStudentId(studentID);
+            System.out.println(studentDegreeList);
+            for (StudentDegreeEntity studentDegreeEntity : studentDegreeList) {
+                StudentDegreeDTO studentDegreeDTO = new StudentDegreeDTO();
+                studentDegreeDTO.setId(studentDegreeEntity.getId());
+                studentDegreeDTO.setRemainingTime(studentDegreeEntity.getRemainingTime());
+                studentDegreeDTO.setDegreeName(studentDegreeEntity.getDegree().getDegreeName());
+                studentDegreeDTO.setTimeLimit(studentDegreeEntity.getDegree().getTimeLimit());
+                studentDegreeDTO.setIdDegree(studentDegreeEntity.getDegree().getId());
+                studentDegreeDTO.setUnique_ID(studentDegreeEntity.getStudent().getUnique_ID());
+                studentDegreeDTOList.add(studentDegreeDTO);
+            }
+            return studentDegreeDTOList;
+
         } catch (PersistenceException e) {
             throw new BusinessException("Error retrieving degrees", e); // Handle persistence exceptions
         }
     }
-    
+
 }

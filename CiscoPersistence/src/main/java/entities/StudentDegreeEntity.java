@@ -27,8 +27,8 @@ public class StudentDegreeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "remainingTIme", nullable = false)
-    private Long remainingTIme;
+    @Column(name = "remainingTime", nullable = true)
+    private Long remainingTime;
 
     @ManyToOne
     @JoinColumn(name = "idDegree", nullable = false)
@@ -54,6 +54,22 @@ public class StudentDegreeEntity implements Serializable {
         return student;
     }
 
+    public void setDegree(DegreeEntity degree) {
+        this.degree = degree;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
+    }
+
+    public Long getRemainingTime() {
+        return remainingTime;
+    }
+
+    public void setRemainingTime(Long remainingTime) {
+        this.remainingTime = remainingTime;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -76,7 +92,9 @@ public class StudentDegreeEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.StudentDegreeEntity[ id=" + id + " ]";
+        return "StudentDegreeEntity{" + "id=" + id + ", remainingTime=" + remainingTime + ", degree=" + degree + ", student=" + student + '}';
     }
+
+   
 
 }
