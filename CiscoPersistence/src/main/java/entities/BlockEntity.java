@@ -28,7 +28,7 @@ public class BlockEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "motive", nullable = false, length = 25)
+    @Column(name = "motive", nullable = false, length = 200)
     private String motive;
 
     @Column(name = "blockDate", nullable = false)
@@ -52,6 +52,48 @@ public class BlockEntity implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getMotive() {
+        return motive;
+    }
+
+    public void setMotive(String motive) {
+        this.motive = motive;
+    }
+
+    public LocalDate getBlockDate() {
+        return blockDate;
+    }
+
+    public void setBlockDate(LocalDate blockDate) {
+        this.blockDate = blockDate;
+    }
+
+    public LocalDate getWithdrawalDate() {
+        return withdrawalDate;
+    }
+
+    public void setWithdrawalDate(LocalDate withdrawalDate) {
+        this.withdrawalDate = withdrawalDate;
+    }
+
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
+    }
+
+    public RuleEntity getRule() {
+        return rule;
+    }
+
+    public void setRule(RuleEntity rule) {
+        this.rule = rule;
+    }
+    
+    
 
     @Override
     public int hashCode() {
