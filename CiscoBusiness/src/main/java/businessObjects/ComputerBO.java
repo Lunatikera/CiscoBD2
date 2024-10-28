@@ -42,7 +42,10 @@ public class ComputerBO implements IComputerBO{
 
         try {
             computerEntity.setLaboratory(laboratoryDAO.findLaboratoryByID(computer.getLabId()));
+            System.out.println(computerEntity);
             computerEntity = computerDAO.saveComputer(computerEntity);
+            System.out.println(computerEntity);
+            
             return ComputerMapper.toDTO(computerEntity);
             
         } catch (PersistenceException ex) {
@@ -73,6 +76,7 @@ public class ComputerBO implements IComputerBO{
 
         try {
             ComputerEntity computerEntity = ComputerMapper.toEntity(computer);
+            computerEntity.setLaboratory(laboratoryDAO.findLaboratoryByID(computer.getId()));
             computerDAO.updateComputer(computerEntity);
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,7 +95,10 @@ public class ComputerBO implements IComputerBO{
             if (computer == null) {
                 throw new BusinessException("Computer not found.");
             }
-            return ComputerMapper.toDTO(computer);
+            
+            ComputerDTO computerDto =  ComputerMapper.toDTO(computer);
+            computerDto.setLabId(computer.getLaboratory().getId());
+            return computerDto;
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new BusinessException("Error finding computer by given IP.");

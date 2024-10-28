@@ -468,6 +468,11 @@ public class FrmComputerManager extends javax.swing.JFrame {
 
         btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
         btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEdit);
 
         btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
@@ -645,6 +650,19 @@ public class FrmComputerManager extends javax.swing.JFrame {
             this.loadTableComputer();
         }
     }//GEN-LAST:event_btnGoAcademyActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        try {
+            
+            ComputerDTO com = computerBO.findByIPComputer(getSelectedIdTableComputer());
+            
+            FrmEditComputer editComputer = new FrmEditComputer(computerBO, laboratoryBO, com,this);
+            
+            editComputer.setVisible(true);
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmComputerManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
  
 
 

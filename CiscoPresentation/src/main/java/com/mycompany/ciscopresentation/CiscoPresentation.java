@@ -3,6 +3,17 @@
  */
 package com.mycompany.ciscopresentation;
 
+import businessObjects.DegreeBO;
+import businessObjects.StudentBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.DegreeDAO;
+import dao.StudentDAO;
+import frames.FrmStudentManager;
+import interfaces.IDegreeBO;
+import interfaces.IDegreeDAO;
+import interfaces.IStudentBO;
+import interfaces.IStudentDAO;
 
 
 
@@ -14,5 +25,7 @@ public class CiscoPresentation {
 
     public static void main(String[] args) {
         
+
     }     
+
 }
