@@ -28,7 +28,7 @@ public class BlockEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "motive", nullable = false, length = 25)
+    @Column(name = "motive", nullable = false, length = 200)
     private String motive;
 
     @Column(name = "blockDate", nullable = false)

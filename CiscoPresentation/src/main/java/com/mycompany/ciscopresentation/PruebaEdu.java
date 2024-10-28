@@ -35,20 +35,21 @@ import interfaces.ILaboratoryDAO;
  */
 public class PruebaEdu {
     public static void main(String[] args) {
-        IConnectionBD connectionBD = new ConnectionDB();
-        IAcademyUnityDAO academyDao = new AcademyUnityDAO(connectionBD);
-        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDao);
-        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
-        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO,academyDao);
-        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
-        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
-        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-//        FrmComputerManager computerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
-//        computerManager.setVisible(true);
-        IDegreeReportDAO reportDegreeDAO = new DegreeReportDAO(connectionBD);
-        IDegreeReportBO reportDegreeBO = new DegreeReportBO(reportDegreeDAO);
-        FrmDegreeReport repor = new FrmDegreeReport(degreeBO, reportDegreeBO);
-        repor.setVisible(true);
+//        IConnectionBD connectionBD = new ConnectionDB();
+//        IAcademyUnityDAO academyDao = new AcademyUnityDAO(connectionBD);
+//        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDao);
+//        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
+//        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO,academyDao);
+//        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
+//        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
+//
+//        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
+//        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+////        FrmComputerManager computerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
+////        computerManager.setVisible(true);
+//        IDegreeReportDAO reportDegreeDAO = new DegreeReportDAO(connectionBD);
+//        IDegreeReportBO reportDegreeBO = new DegreeReportBO(reportDegreeDAO);
+//        FrmDegreeReport repor = new FrmDegreeReport(degreeBO, reportDegreeBO);
+//        repor.setVisible(true);
     }
 }

@@ -31,10 +31,10 @@ public class LaboratoryEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "labName", nullable = false, length = 25)
+    @Column(name = "labName", nullable = false, length = 60)
     private String labName;
 
-    @Column(name = "masterPassword", nullable = false, length = 25)
+    @Column(name = "masterPassword", nullable = false, length = 30)
     private String masterPassword;
 
     @Column(name = "startTime", nullable = false)

@@ -34,16 +34,16 @@ public class StudentEntity implements Serializable {
     @Column(name = "unique_ID", nullable = false, length = 25, unique = true)
     private Long unique_ID;
 
-    @Column(name = "password", nullable = false, length = 25)
+    @Column(name = "password", nullable = false, length = 30)
     private String password;
 
-    @Column(name = "names", nullable = false, length = 25)
+    @Column(name = "names", nullable = false, length = 40)
     private String names;
 
-    @Column(name = "firstLastname", nullable = false, length = 25)
+    @Column(name = "firstLastname", nullable = false, length = 40)
     private String firstLastname;
 
-    @Column(name = "secondLastName", nullable = false, length = 25)
+    @Column(name = "secondLastName", nullable = false, length = 40)
     private String secondLastName;
 
     @Column(name = "enrollmentStatus", nullable = false, length = 25)

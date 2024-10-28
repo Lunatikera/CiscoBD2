@@ -58,14 +58,6 @@ public class StudentDTO {
         this.password = password;
     }
 
-    public Long getUniqueId() {
-        return unique_ID;
-    }
-
-    public void setUniqueId(Long uniqueId) {
-        this.unique_ID = uniqueId;
-    }
-
     public String getNames() {
         return names;
     }

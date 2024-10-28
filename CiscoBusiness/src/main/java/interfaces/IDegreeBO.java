@@ -5,6 +5,7 @@
 package interfaces;
 
 import dto.DegreeDTO;
+import dto.StudentDegreeDTO;
 import exception.BusinessException;
 import java.util.List;
 
@@ -25,5 +26,8 @@ public interface IDegreeBO {
     public void updateDegree (DegreeDTO degree) throws BusinessException;
     
     public DegreeDTO findDegreeForId (Long degreeId) throws BusinessException;
+    
+    public  List<StudentDegreeDTO>  getDegreesByStudent(Long studentID) throws BusinessException;
+    
 
 }

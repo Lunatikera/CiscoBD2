@@ -25,6 +25,8 @@ public interface ILaboratoryDAO {
     public void deleteLaboratory(Long LaboratoryId) throws PersistenceException;
 
     public List<LaboratoryEntity> laboratoryListByAcademy(Long academyID) throws PersistenceException;
+    
+    public List<LaboratoryEntity> obtainAllLaboratory()throws PersistenceException;
 
     public List<LaboratoryEntity> getAllLaboratorys() throws PersistenceException;
 
