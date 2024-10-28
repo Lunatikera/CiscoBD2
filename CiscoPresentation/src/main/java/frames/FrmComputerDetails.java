@@ -6,36 +6,70 @@ package frames;
 
 import dto.ComputerDTO;
 import dto.LaboratoryDTO;
+import dto.SoftwareDTO;
 import dto.StudentDTO;
 import dto.StudentDegreeDTO;
+import exception.BusinessException;
 import interfaces.IComputerBO;
+import interfaces.ISoftwareBO;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
  * @author carli
  */
 public class FrmComputerDetails extends javax.swing.JFrame {
+
     IComputerBO computerBO;
+    ISoftwareBO softwareBO;
     ComputerDTO computerDTO;
     StudentDTO studentDTO;
     LaboratoryDTO laboratoryDTO;
     StudentDegreeDTO studentDegreeDTO;
-    public FrmComputerDetails() {
+    List<SoftwareDTO> softwarelist;
+
+    public FrmComputerDetails(ISoftwareBO softwareBO, IComputerBO computerBO, ComputerDTO computerDTO, StudentDTO studentDTO,
+            LaboratoryDTO laboratoryDTO, StudentDegreeDTO studentDegreeDTO) {
         initComponents();
+        this.softwareBO = softwareBO;
+        this.computerBO = computerBO;
+        this.computerDTO = computerDTO;
+        this.studentDTO = studentDTO;
+        this.laboratoryDTO = laboratoryDTO;
+        this.studentDegreeDTO = studentDegreeDTO;
+
         this.setLocationRelativeTo(null);
-    }
-    
-    
-    private void loadFrame(){
-        lblPcNumber.setText(computerDTO.getMachineNumber().toString());
-        lblStudenName.setText(studentDTO.getNames()+" "+studentDTO.getFirstLastname()+" "+studentDTO.getSecondLastname());
-        lblRemainingTIme.setText(studentDegreeDTO.getRemainingTime().toString());
-        lblSelectedDegree.setText(studentDegreeDTO.getDegreeName());
+        loadFrame();
     }
 
-    
-    private void loadSoftwares(){
+    private void loadFrame() {
+        lblPcNumber.setText(computerDTO.getMachineNumber().toString());
+        lblStudenName.setText(studentDTO.getNames() + " " + studentDTO.getFirstLastname() + " " + studentDTO.getSecondLastname());
+        lblRemainingTIme.setText(studentDegreeDTO.getRemainingTime().toString()+" Minutos");
+        lblSelectedDegree.setText(studentDegreeDTO.getDegreeName());
+        lblLab.setText("Laboratorio: " +laboratoryDTO.getLabName());
+        Jspinner.setModel(new SpinnerNumberModel(1, 1, studentDegreeDTO.getRemainingTime().intValue(), 1));
+        loadSoftwares();
     }
+
+    private void loadSoftwares() {
+        try {
+            softwarelist = softwareBO.getSoftwarebyComputer(computerDTO.getId(), true);
+        DefaultListModel<SoftwareDTO> listModel = new DefaultListModel<>();
+        for (SoftwareDTO software : softwarelist) {
+            listModel.addElement(software);
+        }
+            jListSoftware.setModel(listModel);
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmComputerDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,7 +91,7 @@ public class FrmComputerDetails extends javax.swing.JFrame {
         jPanel22 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         lblStudent2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lblLab = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         lblPcNumber = new javax.swing.JLabel();
@@ -65,10 +99,10 @@ public class FrmComputerDetails extends javax.swing.JFrame {
         lblStudenName = new javax.swing.JLabel();
         lblRemainingTIme = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jListSoftware = new javax.swing.JList<>();
         lblPc4 = new javax.swing.JLabel();
         Liberar = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
+        Jspinner = new javax.swing.JSpinner();
         lblPc5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -214,8 +248,8 @@ public class FrmComputerDetails extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel1.setText("Itson Centro, Laboratorio Nainari");
+        lblLab.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblLab.setText("Itson Centro, Laboratorio Nainari");
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
 
@@ -234,13 +268,8 @@ public class FrmComputerDetails extends javax.swing.JFrame {
         lblRemainingTIme.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblRemainingTIme.setText("Tiempo Restante Diario:");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jList1.setEnabled(false);
-        jScrollPane1.setViewportView(jList1);
+        jListSoftware.setEnabled(false);
+        jScrollPane1.setViewportView(jListSoftware);
 
         lblPc4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblPc4.setText("Softwares:");
@@ -272,20 +301,19 @@ public class FrmComputerDetails extends javax.swing.JFrame {
                             .addComponent(lblRemainingTIme, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblStudenName, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblSelectedDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                        .addContainerGap(162, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(62, 62, 62)
-                                .addComponent(lblPc4))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                                .addGap(32, 32, 32)
+                                .addComponent(lblPc4)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Jspinner, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblPc5))
                                 .addGap(122, 122, 122))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -317,7 +345,7 @@ public class FrmComputerDetails extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addComponent(lblPc5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Jspinner, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
                         .addComponent(Liberar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(42, 42, 42))
@@ -353,14 +381,14 @@ public class FrmComputerDetails extends javax.swing.JFrame {
             .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(456, 456, 456)
-                .addComponent(jLabel1)
+                .addComponent(lblLab)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblLab, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -414,61 +442,12 @@ public class FrmComputerDetails extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_LiberarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmComputerDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmComputerDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmComputerDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmComputerDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmComputerDetails().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner Jspinner;
     private javax.swing.JButton Liberar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<SoftwareDTO> jListSoftware;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -482,7 +461,7 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JLabel lblLab;
     private javax.swing.JLabel lblPc4;
     private javax.swing.JLabel lblPc5;
     private javax.swing.JLabel lblPcNumber;

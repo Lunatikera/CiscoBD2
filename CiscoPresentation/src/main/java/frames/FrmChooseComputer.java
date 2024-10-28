@@ -4,6 +4,10 @@
  */
 package frames;
 
+import businessObjects.SoftwareBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.SoftwareDAO;
 import dto.ComputerDTO;
 import dto.LaboratoryDTO;
 import dto.StudentDTO;
@@ -11,6 +15,8 @@ import dto.StudentDegreeDTO;
 import enums.ComputerTypes;
 import exception.BusinessException;
 import interfaces.IComputerBO;
+import interfaces.ISoftwareBO;
+import interfaces.ISoftwareDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -127,8 +133,10 @@ public class FrmChooseComputer extends javax.swing.JFrame {
     }
 
     private void openComputerDetails(ComputerDTO computer) {
-
-        FrmComputerDetails detalles = new FrmComputerDetails();
+        IConnectionBD connectionBD = new ConnectionDB();
+        ISoftwareDAO softwareDAO = new SoftwareDAO(connectionBD);
+        ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+        FrmComputerDetails detalles = new FrmComputerDetails(softwareBO, computerBO, computer, studentDTO, laboratoryDTO, studentDegreeDTO);
         detalles.setVisible(true);
         this.dispose();
     }

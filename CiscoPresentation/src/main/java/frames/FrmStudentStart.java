@@ -181,7 +181,7 @@ public class FrmStudentStart extends javax.swing.JFrame {
 
             studentBO.verifyID(Long.valueOf(uniqueID));
             StudentDTO student = studentBO.findStudentByUniqueID(Long.valueOf(uniqueID));
-
+            System.out.println(student);
             IConnectionBD conexion = new ConnectionDB();
 
             IDegreeDAO degreeDAO = new DegreeDAO(conexion);
