@@ -10,6 +10,7 @@ import exception.PersistenceException;
 import interfaces.IRuleDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 /**
@@ -114,4 +115,26 @@ public class RuleDAO implements IRuleDAO {
         }
     }
 
+    @Override
+    public RuleEntity getRuleById(Long ruleId) throws PersistenceException {
+    EntityManager entityManager = connectionBD.getEntityManager();
+    try {
+        // Define la consulta JPQL para buscar la regla por ID
+        String jpql = "SELECT r FROM RuleEntity r WHERE r.id = :ruleId";
+
+        TypedQuery<RuleEntity> query = entityManager.createQuery(jpql, RuleEntity.class);
+        query.setParameter("ruleId", ruleId);
+
+        return query.getSingleResult(); // Retorna el único resultado
+
+    } catch (NoResultException e) {
+        return null; // Maneja el caso en que no se encuentra la regla
+    } catch (Exception e) {
+        throw new PersistenceException("Error retrieving rule by ID", e);
+    } finally {
+        if (entityManager != null && entityManager.isOpen()) {
+            entityManager.close();  // Asegura que el EntityManager se cierra
+        }
+    }
+}
 }

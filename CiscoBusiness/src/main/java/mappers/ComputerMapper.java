@@ -6,6 +6,7 @@ package mappers;
 
 import dto.ComputerDTO;
 import entities.ComputerEntity;
+import entities.LaboratoryRulesEntity;
 import java.util.List;
 
 /**
@@ -22,8 +23,8 @@ public class ComputerMapper {
     }
 
 
-    public static List<ComputerDTO> toDTOList(List<ComputerEntity> computerEntities) {
-        return GenericMapper.mapList(computerEntities, ComputerDTO.class);
+    public static List<ComputerDTO> toDTOList( List<ComputerEntity> ruleEntities) {
+        return GenericMapper.mapList(ruleEntities, ComputerDTO.class);
     }
 
     public static List<ComputerEntity> toEntityList(List<ComputerDTO> computerDTOs) {

@@ -29,8 +29,6 @@ public class FrmAvailableSoftware extends javax.swing.JFrame {
     ISoftwareBO softwareBO;
     ComputerDTO computerDTO;
     IComputerSoftwareBO computerSoftwareBO;
-    private int page = 1;
-    private int limit = 10;
 
     /**
      * Creates new form FrmAvailableSoftware

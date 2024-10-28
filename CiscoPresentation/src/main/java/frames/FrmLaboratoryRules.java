@@ -4,16 +4,19 @@
  */
 package frames;
 
-import businessObjects.SoftwareBO;
-import dto.ComputerDTO;
-import dto.ComputerSoftwareDTO;
+import businessObjects.LaboratoryBO;
+import businessObjects.LaboratoryRulesBO;
 import dto.LaboratoryDTO;
+import dto.LaboratoryRulesDTO;
+import dto.RuleDTO;
 import dto.SoftwareDTO;
 import exception.BusinessException;
-import interfaces.IComputerBO;
-import interfaces.IComputerSoftwareBO;
+import interfaces.IAcademyUnityDAO;
 import interfaces.ILaboratoryBO;
-import interfaces.ISoftwareBO;
+import interfaces.ILaboratoryDAO;
+import interfaces.ILaboratoryRulesBO;
+import interfaces.ILaboratoryRulesDAO;
+import interfaces.IRuleDAO;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,20 +29,26 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrmLaboratoryRules extends javax.swing.JFrame {
 
-    ISoftwareBO softwareBO;
-    ComputerDTO computerDTO;
-    IComputerSoftwareBO computerSoftwareBO;
+    RuleDTO rulesDTO;
+    LaboratoryDTO laboratoryDTO;
+    ILaboratoryRulesDAO laboratoryRulesDAO;
+    ILaboratoryDAO laboratoryDAO;
+    IRuleDAO ruleDAO;
+    IAcademyUnityDAO academyDAO;
+    ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+    ILaboratoryRulesBO laboratoryRulesBO = new LaboratoryRulesBO(laboratoryDAO, ruleDAO, laboratoryRulesDAO);
     private int page = 1;
     private int limit = 10;
 
     /**
      * Creates new form FrmAvailableSoftware
      */
-    public FrmLaboratoryRules(IComputerSoftwareBO computerSoftwareBO, ISoftwareBO softwareBO, ComputerDTO computerDTO) {
+    public FrmLaboratoryRules(ILaboratoryRulesBO laboratoryRulesBO, ILaboratoryBO laboratoryBO, LaboratoryDTO laboratoryDTO, RuleDTO rulesDTO) {
         initComponents();
-        this.computerSoftwareBO=computerSoftwareBO;
-        this.softwareBO = softwareBO;
-        this.computerDTO = computerDTO;
+        this.laboratoryBO=laboratoryBO;
+        this.rulesDTO = rulesDTO;
+        this.laboratoryDTO=laboratoryDTO;
+        this.laboratoryRulesBO = laboratoryRulesBO;
         this.loadFrame();
     }
 
@@ -51,8 +60,8 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.loadTableDisponibles();
         this.loadTableInstalados();
-        
-        this.lblIdComputer.setText("Computadora "+computerDTO.getMachineNumber().toString());
+
+        this.lblIdComputer.setText("Laboratorio " + laboratoryDTO.getLabName() + toString());
     }
 
     private void deleteInfoTableInstalados() {
@@ -73,62 +82,62 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
         }
     }
 
-    private void addInfoTableDisponibles(List<SoftwareDTO> softwareList) {
-        if (softwareList == null) {
+    private void addInfoTableDisponibles(List<LaboratoryRulesDTO> ruleList) {
+        if (ruleList == null) {
             return;
         }
 
         DefaultTableModel tableModel = (DefaultTableModel) this.tblDisponibles.getModel();
-        softwareList.forEach(softwareDTO
+        ruleList.forEach(LaboratoryDTO
                 -> {
             Object[] row = new Object[1];
-            row[0] = softwareDTO;
+            row[0] = LaboratoryDTO;
             tableModel.addRow(row);
         });
     }
 
-    private void addInfoTableInstalado(List<SoftwareDTO> softwareList) {
-        if (softwareList == null) {
+    private void addInfoTableInstalado(List<LaboratoryRulesDTO> ruleList) {
+        if (ruleList == null) {
             return;
         }
 
         DefaultTableModel tableModel = (DefaultTableModel) this.tblInstalados.getModel();
-        softwareList.forEach(softwareDTO
+        ruleList.forEach(LaboratoryDTO
                 -> {
             Object[] row = new Object[1];
-            row[0] = softwareDTO;
+            row[0] = LaboratoryDTO;
             tableModel.addRow(row);
         });
     }
 
-    private SoftwareDTO getTableSoftware() {
+    private LaboratoryDTO getTableSoftware() {
         int selectedIndex = this.tblDisponibles.getSelectedRow();
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblDisponibles.getModel();
             int idIndexRow = 0;
-            SoftwareDTO SelectedSoftware = (SoftwareDTO) model.getValueAt(selectedIndex,
+            LaboratoryDTO SelectedLaboratory = (LaboratoryDTO) model.getValueAt(selectedIndex,
                     idIndexRow);
-            return SelectedSoftware;
+            return SelectedLaboratory;
         } else {
             return null;
         }
     }
 
-    private SoftwareDTO getTableSoftwareInstalados() {
+    private LaboratoryDTO getTableSoftwareInstalados() {
         int selectedIndex = this.tblInstalados.getSelectedRow();
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblInstalados.getModel();
             int idIndexRow = 0;
-            SoftwareDTO SelectedSoftware = (SoftwareDTO) model.getValueAt(selectedIndex,
+            LaboratoryDTO SelectedLaboratory = (LaboratoryDTO) model.getValueAt(selectedIndex,
                     idIndexRow);
-            return SelectedSoftware;
+            return SelectedLaboratory;
         } else {
             return null;
         }
     }
 
     public void loadTableDisponibles() {
-        if (this.computerDTO == null) {
+        if (this.rulesDTO == null) {
             throw new IllegalStateException("computerDTO is not initialized.");
         }
         try {
@@ -136,10 +145,10 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
             deleteInfoTableDisponible();
 
             // Obtén solo los clientes necesarios para la página actual
-            List<SoftwareDTO> softwareList = this.softwareBO.getSoftwareNotInstalledByComputer(computerDTO.getId());
+            List<LaboratoryRulesDTO> ruleList = this.laboratoryRulesBO.getRulesNotAppliedByLaboratory(rulesDTO.getId());
 
             //Agrega los registros paginados a la tabla
-            this.addInfoTableDisponibles(softwareList);
+            this.addInfoTableDisponibles(ruleList);
             //Control de botones de navegación
 
         } catch (BusinessException ex) {
@@ -148,7 +157,7 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
     }
 
     public void loadTableInstalados() {
-        if (this.computerDTO == null) {
+        if (this.rulesDTO == null) {
             throw new IllegalStateException("computerDTO is not initialized.");
         }
         try {
@@ -156,10 +165,10 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
             deleteInfoTableInstalados();
 
             // Obtén solo los clientes necesarios para la página actual
-            List<SoftwareDTO> softwareList = this.softwareBO.getSoftwareInstalledByComputer(computerDTO.getId());
+            List<LaboratoryRulesDTO> ruleList = this.laboratoryRulesBO.getRulesAppliedByLaboratory(rulesDTO.getId());
 
             //Agrega los registros paginados a la tabla
-            this.addInfoTableInstalado(softwareList);
+            this.addInfoTableInstalado(ruleList);
             //Control de botones de navegación
 
         } catch (BusinessException ex) {
@@ -192,7 +201,7 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(0, 0, 0));
 
         lblName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblName.setText("Aplicaciones Instaladas");
+        lblName.setText("Reglas Aplicadas");
 
         tblInstalados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -237,7 +246,7 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblDisponibles);
 
         lblName1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblName1.setText("Aplicaciones Disponibles");
+        lblName1.setText("Reglas Disponibles");
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -252,8 +261,6 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
                 btnEliminarActionPerformed(evt);
             }
         });
-
-        lblIdComputer.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -280,7 +287,7 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblIdComputer, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblName)
+                        .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(136, 136, 136))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -288,7 +295,7 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblIdComputer)
+                    .addComponent(lblIdComputer, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblName1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -323,32 +330,32 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        SoftwareDTO software = this.getTableSoftware();
-        if(software == null){
-            JOptionPane.showMessageDialog(this, "Por favor seleccione un software para agregar", "Información", JOptionPane.ERROR_MESSAGE);
-            return ;
+        LaboratoryDTO laboratory = this.getTableSoftware();
+        if (laboratory == null) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una regla para agregar", "Información", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        ComputerSoftwareDTO computerSoftwareDTO = new ComputerSoftwareDTO();
-        computerSoftwareDTO.setComputer(computerDTO.getId());
-        computerSoftwareDTO.setSoftware(software.getId());
+        LaboratoryRulesDTO laboratoryRulesDTO = new LaboratoryRulesDTO();
+        laboratoryRulesDTO.setLaboratory(laboratoryDTO.getId());
+        laboratoryRulesDTO.setRule(rulesDTO.getId());
         try {
-            computerSoftwareBO.saveComputerSoftware(computerSoftwareDTO);
+            laboratoryRulesBO.saveLaboratoryRule(laboratoryRulesDTO);
             this.loadTableInstalados();
             this.loadTableDisponibles();
         } catch (BusinessException ex) {
             Logger.getLogger(FrmLaboratoryRules.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        SoftwareDTO software = this.getTableSoftwareInstalados();
-        if(software == null){
+        LaboratoryDTO laboratory = this.getTableSoftwareInstalados();
+        if (laboratory == null) {
             JOptionPane.showMessageDialog(this, "Por favor seleccione un software para eliminar", "Información", JOptionPane.ERROR_MESSAGE);
-            return ;
+            return;
         }
         try {
-            computerSoftwareBO.deleteComputerSoftware(computerDTO.getId(), software.getId());
+            laboratoryRulesBO.deleteLaboratoryRule(laboratoryDTO.getId(), rulesDTO.getId());
             this.loadTableInstalados();
             this.loadTableDisponibles();
         } catch (BusinessException ex) {

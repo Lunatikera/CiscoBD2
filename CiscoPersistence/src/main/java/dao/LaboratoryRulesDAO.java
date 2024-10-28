@@ -62,13 +62,13 @@ public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
         }
     }
 
-    public void saveSoftwareRule(LaboratoryRulesEntity softwareRuleEntity) throws PersistenceException {
+    public void saveSoftwareRule(LaboratoryRulesEntity laboratoryRulesEntity) throws PersistenceException {
         EntityManager entityManager = connectionBD.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
             transaction.begin(); // Iniciar la transacción
-            entityManager.persist(softwareRuleEntity); // Persistir la entidad
+            entityManager.persist(laboratoryRulesEntity); // Persistir la entidad
             transaction.commit(); // Confirmar la transacción
         } catch (Exception e) {
             if (transaction.isActive()) {
@@ -117,4 +117,8 @@ public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
             }
         }
     }
+
+    
+
+    
 }
