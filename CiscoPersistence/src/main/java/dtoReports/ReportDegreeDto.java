@@ -15,9 +15,9 @@ public class ReportDegreeDto {
     private String degreeName;
     private Long minutesOfUsage;
     private Long studentCount;
-    private Date date;
+    private LocalDate date;
 
-    public ReportDegreeDto(String degreeName, Long minutesOfUsage,Long studentCount,Date date) {
+    public ReportDegreeDto(String degreeName, Long minutesOfUsage,Long studentCount,LocalDate date) {
         this.degreeName = degreeName;
         this.minutesOfUsage = minutesOfUsage;
         this.studentCount = studentCount;
@@ -52,11 +52,11 @@ public class ReportDegreeDto {
         this.studentCount = studentCount;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
     

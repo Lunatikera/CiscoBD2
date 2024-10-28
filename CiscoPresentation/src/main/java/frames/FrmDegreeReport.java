@@ -416,10 +416,7 @@ public class FrmDegreeReport extends javax.swing.JFrame {
 
         tblDegreeReport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nombre Carrera", "Uso por dia (Min)", "Cantidad de alumnos", "Fecha"
@@ -514,7 +511,7 @@ public class FrmDegreeReport extends javax.swing.JFrame {
                 btnPrintActionPerformed(evt);
             }
         });
-        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 660, 140, 30));
+        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 660, 140, 30));
 
         btnCreate.setText("Generar");
         btnCreate.addActionListener(new java.awt.event.ActionListener() {
@@ -656,7 +653,7 @@ public class FrmDegreeReport extends javax.swing.JFrame {
         LocalDate fechaFin = (LocalDate)dpFinishDate.getDate();
 
         
-        this.loadDataOnTable(degreeListName, fechaFin, fechaFin);
+        this.loadDataOnTable(degreeListName, fechaInicio, fechaFin);
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
