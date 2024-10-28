@@ -25,6 +25,7 @@ import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
 import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.DegreeDTO;
 import dto2.BlockReportDTO;
 import exception.BusinessException;
@@ -43,6 +44,7 @@ import interfaces.ISoftwareBO;
 import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeDAO;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.io.FileNotFoundException;
@@ -60,7 +62,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.Document;
-
 
 /**
  *
@@ -89,17 +90,8 @@ public class FrmLocksReport extends javax.swing.JFrame {
         this.setResizable(false);
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
-        
-        
-        
 
     }
-    
-    
-
-    
-
-    
 
     private void deleteInfoTableBlockReport() {
         DefaultTableModel tableModel = (DefaultTableModel) this.tblBlockReport.getModel();
@@ -122,19 +114,17 @@ public class FrmLocksReport extends javax.swing.JFrame {
             Object[] row = new Object[4];
             row[0] = column.getStudentName();
             row[1] = column.getBlockDate();
-            if(column.getReleaseDate() == null){
-                  row[2] = noReleaseDate;
-            }else{
+            if (column.getReleaseDate() == null) {
+                row[2] = noReleaseDate;
+            } else {
                 row[2] = column.getReleaseDate();
             }
-           
+
             row[3] = column.getReason();
 
             tableModel.addRow(row);
         });
     }
-
-    
 
     public void loadTableDegree() {
         try {
@@ -147,7 +137,6 @@ public class FrmLocksReport extends javax.swing.JFrame {
             //Agrega los registros paginados a la tabla
             this.addInfoTable(BlockReportList);
             //Control de botones de navegación
-           
 
         } catch (BusinessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
@@ -485,37 +474,37 @@ public class FrmLocksReport extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
-       IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IComputerDAO computerDAO = new ComputerDAO(connection);
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
-        IComputerBO computerBO =new ComputerBO(computerDAO, laboratoryDAO);
+        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
         IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        
-        
-        
+
         FrmComputerManager frmComputerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
         this.dispose();
         frmComputerManager.setVisible(true);
     }//GEN-LAST:event_btnMenuComputersActionPerformed
 
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
-         IConnectionBD connection = new ConnectionDB();
-         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-         this.dispose();
-         frmDegreeManager.setVisible(true);
+        IConnectionBD connection = new ConnectionDB();
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+        this.dispose();
+        frmDegreeManager.setVisible(true);
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
-         IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
         IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        
+
         FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
         this.dispose();
         laboratory.setVisible(true);
@@ -530,10 +519,10 @@ public class FrmLocksReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuAcademiesActionPerformed
 
     private void btnMenuSoftwaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwaresActionPerformed
-          IConnectionBD connection = new ConnectionDB();
-         ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
-         ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
-        
+        IConnectionBD connection = new ConnectionDB();
+        ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
+        ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+
         FrmSoftwareManager frmSoftwareManager = new FrmSoftwareManager(softwareBO);
         this.dispose();
         frmSoftwareManager.setVisible(true);
@@ -543,7 +532,7 @@ public class FrmLocksReport extends javax.swing.JFrame {
         IConnectionBD connection = new ConnectionDB();
         IRuleDAO ruleDAO = new RuleDAO(connection);
         IRuleBO ruleBO = new RuleBO(ruleDAO);
-        
+
         FrmRulesManager frmRulesManager = new FrmRulesManager(ruleBO);
         this.dispose();
         frmRulesManager.setVisible(true);
@@ -570,14 +559,10 @@ public class FrmLocksReport extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No se selecciono ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         this.loadTableDegree();
-        
-        
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
@@ -624,7 +609,7 @@ public class FrmLocksReport extends javax.swing.JFrame {
             }
 
             doc.add(tbl);
-            
+
             JOptionPane.showMessageDialog(this, "Se imprimió con éxito el documento!");
 
         } catch (FileNotFoundException ex) {
@@ -634,10 +619,8 @@ public class FrmLocksReport extends javax.swing.JFrame {
         } finally {
             doc.close(); // Asegúrate de cerrar el documento en el bloque finally
         }
-                                                
 
-   
-        
+
     }//GEN-LAST:event_btnPrintActionPerformed
 
     private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
@@ -645,8 +628,9 @@ public class FrmLocksReport extends javax.swing.JFrame {
         IStudentDAO studentDAO = new StudentDAO(connection);
         IStudentBO studentBO = new StudentBO(studentDAO);
         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-       
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+
         FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
         this.dispose();
         frmStudentManager.setVisible(true);

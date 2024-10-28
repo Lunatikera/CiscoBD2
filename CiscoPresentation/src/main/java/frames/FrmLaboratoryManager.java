@@ -22,6 +22,7 @@ import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
 import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.AcademyDTO;
 import dto.LaboratoryDTO;
 import exception.BusinessException;
@@ -42,6 +43,8 @@ import interfaces.ISoftwareBO;
 import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeBO;
+import interfaces.IStudentDegreeDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -245,9 +248,9 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         lblAcademyFilter = new javax.swing.JLabel();
         cbAcademy = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        btnAdd = new utilities.MenuButton();
         btnEdit = new utilities.MenuButton();
         btnDelete = new utilities.MenuButton();
+        btnAdd = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
@@ -264,6 +267,11 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         btnMenuStudents.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuStudents.setText("Estudiantes");
         btnMenuStudents.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuStudentsActionPerformed(evt);
+            }
+        });
         panelMenu2.add(btnMenuStudents);
 
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
@@ -443,11 +451,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
         cbAcademy.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         cbAcademy.setForeground(new java.awt.Color(0, 9, 0));
-        cbAcademy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbAcademyActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -472,15 +475,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
 
-        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdd);
-
         btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
         btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -498,6 +492,15 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnDelete);
+
+        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnAdd);
 
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
@@ -588,7 +591,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
          IConnectionBD connection = new ConnectionDB();
          IDegreeDAO degreeDAO = new DegreeDAO(connection);
-         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+         IStudentDegreeDAO studentDegreeDAO=new StudentDegreeDAO(connection);
+         IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
          FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
          this.dispose();
          frmDegreeManager.setVisible(true);
@@ -684,7 +688,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         IStudentDAO studentDAO = new StudentDAO(connection);
         IStudentBO studentBO = new StudentBO(studentDAO);
         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+        IStudentDegreeDAO studentDegreeDAO= new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO,studentDegreeDAO);
        
         FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
         this.dispose();

@@ -22,6 +22,7 @@ import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
 import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.DegreeDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
@@ -40,6 +41,8 @@ import interfaces.ISoftwareBO;
 import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeBO;
+import interfaces.IStudentDegreeDAO;
 import java.awt.HeadlessException;
 import java.util.List;
 import java.util.logging.Level;
@@ -575,7 +578,8 @@ public class FrmDegreeManager extends javax.swing.JFrame {
         IStudentDAO studentDAO = new StudentDAO(connection);
         IStudentBO studentBO = new StudentBO(studentDAO);
         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+        IStudentDegreeDAO studentDegreeDAO=new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
        
         FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
         this.dispose();
