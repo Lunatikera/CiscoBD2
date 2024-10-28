@@ -22,4 +22,5 @@ public interface IRuleDAO {
 
     public List<RuleEntity> getRules() throws PersistenceException;
 
+    public RuleEntity getRuleById(Long ruleId) throws PersistenceException;
 }

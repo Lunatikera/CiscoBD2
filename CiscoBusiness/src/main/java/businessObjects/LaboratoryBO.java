@@ -65,7 +65,7 @@ public class LaboratoryBO implements ILaboratoryBO {
 
     @Override
     public LaboratoryDTO findLaboratoryByID(Long LaboratoryId) throws BusinessException {
-        if (LaboratoryId <= 0) {
+        if (LaboratoryId == null || LaboratoryId <= 0) {
             throw new BusinessException("Invalid laboratory ID.");
         }
 
@@ -75,9 +75,7 @@ public class LaboratoryBO implements ILaboratoryBO {
             if (laboratory == null) {
                 throw new BusinessException("Student not found.");
             }
-            LaboratoryDTO laboratoryDTO = LaboratoryMapper.toDTO(laboratory);
-            laboratoryDTO.setIdAcademy(laboratory.getAcademicUnity().getId());
-            return laboratoryDTO;
+            return LaboratoryMapper.toDTO(laboratory);
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new BusinessException("Error finding student by unique ID.");

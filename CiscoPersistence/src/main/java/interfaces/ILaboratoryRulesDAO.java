@@ -18,7 +18,7 @@ public interface ILaboratoryRulesDAO {
 
     public List<LaboratoryRulesEntity> softwareNoInstall(Long idLab) throws PersistenceException;
 
-    public void saveSoftwareRule(LaboratoryRulesEntity softwareRuleEntity) throws PersistenceException;
+    public void saveSoftwareRule(LaboratoryRulesEntity laboratoryRulesEntity) throws PersistenceException;
 
     public void deleteSoftwareRule(Long softwareId, Long ruleId) throws PersistenceException;
 }
