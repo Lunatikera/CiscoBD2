@@ -21,4 +21,10 @@ public interface ISoftwareBO {
     public List<SoftwareDTO> getSoftwarebyComputer(Long idCom, boolean has) throws BusinessException;
 
     public List<SoftwareDTO> softwareListPaginated(int limit, int page) throws BusinessException;
+
+    public List<SoftwareDTO> getSoftwareInstalledByComputer(Long idCom) throws BusinessException;
+
+    public List<SoftwareDTO> getSoftwareNotInstalledByComputer(Long idCom) throws BusinessException;
+
+    public SoftwareDTO getSoftwareById(Long softwareId) throws BusinessException;
 }

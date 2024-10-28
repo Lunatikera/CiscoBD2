@@ -21,7 +21,7 @@ import tools.Tools;
  *
  * @author NaderCroft
  */
-public class ComputerBO implements IComputerBO{
+public class ComputerBO implements IComputerBO {
 
     IComputerDAO computerDAO;
     ILaboratoryDAO laboratoryDAO;
@@ -31,7 +31,18 @@ public class ComputerBO implements IComputerBO{
         this.laboratoryDAO = laboratoryDAO;
     }
 
-    
+    @Override
+    public List<ComputerDTO> getAllComputer() throws BusinessException {
+
+        try {
+            List<ComputerEntity> academy = computerDAO.getAllComputer();
+            return ComputerMapper.toDTOList(academy);
+        } catch (PersistenceException ex) {
+            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Error retrieving computer list.");
+        }
+    }
+
     @Override
     public ComputerDTO saveComputer(ComputerDTO computer) throws BusinessException {
         if (computer == null) {
@@ -45,9 +56,9 @@ public class ComputerBO implements IComputerBO{
             System.out.println(computerEntity);
             computerEntity = computerDAO.saveComputer(computerEntity);
             System.out.println(computerEntity);
-            
+
             return ComputerMapper.toDTO(computerEntity);
-            
+
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Failed to save computer", ex);
             throw new BusinessException("An error occurred while saving the computer. Please try again later.");
@@ -95,8 +106,8 @@ public class ComputerBO implements IComputerBO{
             if (computer == null) {
                 throw new BusinessException("Computer not found.");
             }
-            
-            ComputerDTO computerDto =  ComputerMapper.toDTO(computer);
+
+            ComputerDTO computerDto = ComputerMapper.toDTO(computer);
             computerDto.setLabId(computer.getLaboratory().getId());
             return computerDto;
         } catch (PersistenceException ex) {
@@ -119,8 +130,8 @@ public class ComputerBO implements IComputerBO{
             throw new BusinessException("Error retrieving computer list by Laboratory.");
         }
     }
-    
-    public List<ComputerDTO> computerListByAcademy(Long IdLab) throws BusinessException{
+
+    public List<ComputerDTO> computerListByAcademy(Long IdLab) throws BusinessException {
         try {
             List<ComputerEntity> computer = computerDAO.computerListByAcademy(IdLab);
             return ComputerMapper.toDTOList(computer);
@@ -128,7 +139,30 @@ public class ComputerBO implements IComputerBO{
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new BusinessException("Error retrieving computer list by Laboratory.");
         }
-    
+
     }
-    
+
+    @Override
+    public ComputerDTO findComputerByID(Long Idcomp) throws BusinessException {
+        if (Idcomp <= 0) {
+            throw new BusinessException("Invalid computer ID.");
+        }
+
+        try {
+            ComputerEntity computer = computerDAO.findByIdComputer(Idcomp);
+
+            if (computer == null) {
+                throw new BusinessException("Computer not found.");
+            }
+
+            ComputerDTO computerDTO = ComputerMapper.toDTO(computer);
+            // Aquí puedes agregar más datos del DTO si es necesario
+            return computerDTO;
+
+        } catch (PersistenceException ex) {
+            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Error finding computer by unique ID.");
+        }
+    }
+
 }

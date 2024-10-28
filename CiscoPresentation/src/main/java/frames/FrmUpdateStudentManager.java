@@ -31,19 +31,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aleja
  */
-
 public class FrmUpdateStudentManager extends javax.swing.JFrame {
-
 
     StudentDTO studentDTO;
     IStudentBO studentBO;
     IDegreeBO degreeBO;
     EnrollmentStatus enrollmentStatus;
     List<StudentDTO> studentList;
+
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmUpdateStudentManager(StudentDTO studentDTO, IStudentBO studentBO ) {
+    public FrmUpdateStudentManager(StudentDTO studentDTO, IStudentBO studentBO) {
         this.enrollmentStatus = enrollmentStatus;
         initComponents();
         this.studentBO = studentBO;
@@ -60,28 +59,24 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.fillFields();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.llenarComboClasificaciones();
+//        this.llenarComboClasificaciones();
 //        this.fillStatusComboBox();
 
     }
 
-    private void fillFields(){
+    private void fillFields() {
         txtName.setText(studentDTO.getNames());
         txtLastName.setText(studentDTO.getFirstLastname());
         txtSecondName.setText(studentDTO.getSecondLastname());
         txtPassword.setText(studentDTO.getPassword());
-        
-        
-    }
-    
-    private void llenarComboClasificaciones() {
-        for (enrollmentStatus clasi : enrollmentStatus.values()) {
-            cbStatus.addItem(clasi);
-        }
-    }
-    
-    
 
+    }
+
+//    private void llenarComboClasificaciones() {
+//        for (enrollmentStatus clasi : enrollmentStatus.values()) {
+//            cbStatus.addItem(clasi);
+//        }
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -220,17 +215,14 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
         String studentLastName = txtLastName.getText().trim();
         String studentSecondName = txtSecondName.getText().trim();
         String password = txtPassword.getText().trim();
-        
- 
+
         if (studentName.isEmpty() || studentLastName.isEmpty() || studentSecondName.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
+        StudentDTO newStudentDTO = new StudentDTO(this.studentDTO.getUnique_ID(), studentName, studentLastName, studentSecondName, password);
 
-        StudentDTO newStudentDTO = new StudentDTO(this.studentDTO.getUnique_ID(),studentName, studentLastName, studentSecondName, password);
-
-        
         try {
             studentBO.updateStudent(studentDTO);
         } catch (BusinessException ex) {
@@ -240,11 +232,11 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
         this.setVisible(false);
         FrmStudentManager student = new FrmStudentManager(studentBO, degreeBO);
         student.setVisible(true);
-    
+
     }//GEN-LAST:event_btnContinueActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        
+
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
@@ -271,4 +263,3 @@ public class FrmUpdateStudentManager extends javax.swing.JFrame {
     private javax.swing.JTextField txtSecondName;
     // End of variables declaration//GEN-END:variables
 }
-
