@@ -23,10 +23,12 @@ import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
 import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.AcademyDTO;
 import dto.BlockDTO;
 import dto.LaboratoryDTO;
 import dto.RuleDTO;
+import dto.StudentDTO;
 import dto2.BlockReportDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
@@ -46,8 +48,11 @@ import interfaces.ISoftwareBO;
 import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeBO;
+import interfaces.IStudentDegreeDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -63,9 +68,8 @@ public class FrmBlockManager extends javax.swing.JFrame {
 
     private int page = 1;
     private int limit = 10;
-    IStudentBO studentBO;
-    IDegreeBO degreeBO;
     IBlockBO blockBO;
+    IStudentBO studentBO;
     IRuleBO ruleBO;
     RuleDTO ruleDTO;
     List<RuleDTO> ruleList;
@@ -73,9 +77,10 @@ public class FrmBlockManager extends javax.swing.JFrame {
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmBlockManager(IBlockBO blockBO, IRuleBO ruleBO) {
-        this.ruleBO = ruleBO;
+    public FrmBlockManager(IBlockBO blockBO, IRuleBO ruleBO, IStudentBO studentBO) {
         this.blockBO = blockBO;
+        this.ruleBO = ruleBO;
+        this.studentBO = studentBO;
         this.ruleList = new ArrayList<>();
         initComponents();
         this.loadFrame();
@@ -119,9 +124,10 @@ public class FrmBlockManager extends javax.swing.JFrame {
         try {
             // Borrar registros previos antes de cargar los nuevos
             deleteInfoTableBlock();
+            Long idRule = ruleDTO.getId();
 
             // Obtén solo los clientes necesarios para la página actual
-            List <BlockDTO> blockList = this.blockBO.blockListByRulePaginated(page, limit, ruleDTO.getId());
+            List<BlockDTO> blockList = this.blockBO.blockListByRulePaginated(page, limit, idRule);
 
 //         Agrega los registros paginados a la tabla
             this.addInfoTable(blockList);
@@ -142,18 +148,17 @@ public class FrmBlockManager extends javax.swing.JFrame {
         }
     }
 
-    private void addInfoTable(List <BlockDTO> blockList) {
-        
+    private void addInfoTable(List<BlockDTO> blockList) {
 
         DefaultTableModel tableModel = (DefaultTableModel) this.tblBlock.getModel();
-        blockList.forEach(column
-                -> {
+        blockList.forEach(column -> {
             Object[] row = new Object[5];
             row[0] = column.getId();
             row[1] = column.getBlockDate();
             row[2] = column.getMotive();
             row[3] = column.getWithdrawalDate();
-            row[4] = column.getIdStudent();
+            row[4] = column.getstudentName();
+
             tableModel.addRow(row);
         });
     }
@@ -192,8 +197,9 @@ public class FrmBlockManager extends javax.swing.JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el laboratorio seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                this.blockBO.deleteBlock(id);
-                // Recargar la tabla después de eliminar
+                // Retirar el bloque y establecer la fecha de hoy como fecha de retiro
+                this.blockBO.deleteBlock(id, LocalDate.now());
+                // Recargar la tabla después de retirar el bloque
                 loadRuleLaboratory();
             } catch (BusinessException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -250,7 +256,6 @@ public class FrmBlockManager extends javax.swing.JFrame {
         lblAcademyFilter = new javax.swing.JLabel();
         cbRule = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        btnAdd = new utilities.MenuButton();
         btnDelete = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
@@ -429,7 +434,7 @@ public class FrmBlockManager extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Dia Bloqueo", "Motivo", "Dia de desbaneo", "Nombre de Alumno"
+                "ID", "Dia Bloqueo", "Motivo", "Dia de desbaneo", "ID del Alumno"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -445,9 +450,9 @@ public class FrmBlockManager extends javax.swing.JFrame {
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 710, 440));
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
-        lblBlock.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblBlock.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblBlock.setText("Bloqueos");
-        jPanel4.add(lblBlock, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 670, -1));
+        jPanel4.add(lblBlock, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 700, -1));
 
         lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblPage.setText("Pagina 01");
@@ -489,15 +494,6 @@ public class FrmBlockManager extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
 
-        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdd);
-
         btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
         btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -507,7 +503,7 @@ public class FrmBlockManager extends javax.swing.JFrame {
         });
         jPanel2.add(btnDelete);
 
-        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
+        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 340, 70, 260));
 
         btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
         btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
@@ -566,10 +562,6 @@ public class FrmBlockManager extends javax.swing.JFrame {
         this.removeLaboratory();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        
-    }//GEN-LAST:event_btnAddActionPerformed
-
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
         // TODO add your handling code here:
         page++;
@@ -577,28 +569,28 @@ public class FrmBlockManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRightActionPerformed
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
-       IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IComputerDAO computerDAO = new ComputerDAO(connection);
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
-        IComputerBO computerBO =new ComputerBO(computerDAO, laboratoryDAO);
+        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
         IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
-        
-        
-        
+
         FrmComputerManager frmComputerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
         this.dispose();
         frmComputerManager.setVisible(true);
     }//GEN-LAST:event_btnMenuComputersActionPerformed
 
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
-         IConnectionBD connection = new ConnectionDB();
-         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-         this.dispose();
-         frmDegreeManager.setVisible(true);
+        IConnectionBD connection = new ConnectionDB();
+
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+        this.dispose();
+        frmDegreeManager.setVisible(true);
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
@@ -614,10 +606,10 @@ public class FrmBlockManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuAcademiesActionPerformed
 
     private void btnMenuSoftwaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwaresActionPerformed
-         IConnectionBD connection = new ConnectionDB();
-         ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
-         ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
-        
+        IConnectionBD connection = new ConnectionDB();
+        ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
+        ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+
         FrmSoftwareManager frmSoftwareManager = new FrmSoftwareManager(softwareBO);
         this.dispose();
         frmSoftwareManager.setVisible(true);
@@ -627,7 +619,7 @@ public class FrmBlockManager extends javax.swing.JFrame {
         IConnectionBD connection = new ConnectionDB();
         IRuleDAO ruleDAO = new RuleDAO(connection);
         IRuleBO ruleBO = new RuleBO(ruleDAO);
-        
+
         FrmRulesManager frmRulesManager = new FrmRulesManager(ruleBO);
         this.dispose();
         frmRulesManager.setVisible(true);
@@ -642,10 +634,10 @@ public class FrmBlockManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
 
     private void btnMenuBlockReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportsActionPerformed
-         IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IBlockReportDAO blockReportDAO = new BlockReportDAO(connection);
         IBlockReportBO blockReportBO = new BlockReportBO(blockReportDAO);
-        
+
         FrmLocksReport frmLocksReport = new FrmLocksReport(blockReportBO);
         this.dispose();
         frmLocksReport.setVisible(true);
@@ -662,15 +654,17 @@ public class FrmBlockManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLeftActionPerformed
 
     private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
-  IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IStudentDAO studentDAO = new StudentDAO(connection);
         IStudentBO studentBO = new StudentBO(studentDAO);
+
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-       
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+
         FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
         this.dispose();
-        frmStudentManager.setVisible(true);       
+        frmStudentManager.setVisible(true);
     }//GEN-LAST:event_btnMenuStudentsActionPerformed
 
     private void cbRuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRuleActionPerformed
@@ -704,8 +698,8 @@ public class FrmBlockManager extends javax.swing.JFrame {
         }
         try {
             btnRight.setEnabled(true);
-            if (this.blockBO.blockListByRulePaginated(page + 1, limit,ruleDTO.getId()) == null
-                    || this.blockBO.blockListByRulePaginated(page + 1, limit,ruleDTO.getId()).isEmpty()) {
+            if (this.blockBO.blockListByRulePaginated(page + 1, limit, ruleDTO.getId()) == null
+                    || this.blockBO.blockListByRulePaginated(page + 1, limit, ruleDTO.getId()).isEmpty()) {
                 btnRight.setEnabled(false);
             }
         } catch (BusinessException ex) {
@@ -715,7 +709,6 @@ public class FrmBlockManager extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private utilities.MenuButton btnAdd;
     private utilities.MenuButton btnDelete;
     private utilities.MenuButton btnLeft;
     private utilities.MenuButton btnMenuAcademies;

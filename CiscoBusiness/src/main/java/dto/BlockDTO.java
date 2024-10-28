@@ -19,6 +19,7 @@ public class BlockDTO {
     private LocalDate withdrawalDate;
     private Long idStudent;
     private Long idRule;
+    private String studentName;
     
 
     public BlockDTO() {
@@ -32,6 +33,15 @@ public class BlockDTO {
         this.idRule = idRule;
         this.idStudent = idStudent;
     }
+
+    public BlockDTO(Long idBlock, String motive, LocalDate blockDate, LocalDate withdrawalDate, Long idStudent) {
+        this.idBlock = idBlock;
+        this.motive = motive;
+        this.blockDate = blockDate;
+        this.withdrawalDate = withdrawalDate;
+        this.idStudent = idStudent;
+    }
+    
 
     public Long getId() {
         return idBlock;
@@ -79,6 +89,14 @@ public class BlockDTO {
 
     public void setIdStudent(Long idStudent) {
         this.idStudent = idStudent;
+    }
+
+    public String getstudentName() {
+        return studentName;
+    }
+
+    public void setstudentName(String studentName) {
+        this.studentName = studentName;
     }
     
     
