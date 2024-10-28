@@ -29,7 +29,7 @@ public class RuleEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ruleDescription", nullable = false, length = 50)
+    @Column(name = "ruleDescription", nullable = false, length = 100)
     private String ruleDescription;
     
     @OneToMany(mappedBy = "rule", cascade = CascadeType.PERSIST)

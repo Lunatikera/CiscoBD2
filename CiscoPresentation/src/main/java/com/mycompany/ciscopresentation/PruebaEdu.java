@@ -42,6 +42,7 @@ public class PruebaEdu {
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO,academyDao);
         IComputerDAO computerDAO = new ComputerDAO(connectionBD);
         IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
+
         IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
 //        FrmComputerManager computerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);

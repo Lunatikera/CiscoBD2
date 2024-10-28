@@ -156,7 +156,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
         studentList.forEach(column
                 -> {
             Object[] row = new Object[5];
-            row[0] = column.getUniqueId();
+            row[0] = column.getUnique_ID();
             row[1] = column.getNames();
             row[2] = column.getFirstLastname();
             row[3] = column.getFirstLastname();

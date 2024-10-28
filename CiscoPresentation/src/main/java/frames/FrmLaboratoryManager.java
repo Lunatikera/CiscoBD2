@@ -26,6 +26,7 @@ import dto.AcademyDTO;
 import dto.LaboratoryDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
+
 import interfaces.IAcademyUnityDAO;
 import interfaces.IBlockReportBO;
 import interfaces.IBlockReportDAO;
@@ -58,8 +59,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     private int page = 1;
     private int limit = 10;
-    IStudentBO studentBO;
-    IDegreeBO degreeBO;
     ILaboratoryBO laboratoryBO;
     IAcademyUnityBO academyBO;
     AcademyDTO academyDTO;
@@ -69,10 +68,10 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
      * Creates new form FrmStudentManager
      */
     public FrmLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO) {
+        initComponents();
         this.academyBO = academyBO;
         this.laboratoryBO = laboratoryBO;
         this.academyList = new ArrayList<>();
-        initComponents();
         this.loadFrame();
     }
 
@@ -159,8 +158,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblLaboratory.getModel();
             int idIndexRow = 0;
-            Long idSelectedLaboratory = (Long) model.getValueAt(selectedIndex, idIndexRow);
-            return idSelectedLaboratory;
+            Long idSelectedStudent = (Long) model.getValueAt(selectedIndex, idIndexRow);
+            return idSelectedStudent;
         } else {
             return null;
         }
@@ -246,9 +245,9 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         lblAcademyFilter = new javax.swing.JLabel();
         cbAcademy = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
+        btnAdd = new utilities.MenuButton();
         btnEdit = new utilities.MenuButton();
         btnDelete = new utilities.MenuButton();
-        btnAdd = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
@@ -265,11 +264,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         btnMenuStudents.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuStudents.setText("Estudiantes");
         btnMenuStudents.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMenuStudents.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuStudentsActionPerformed(evt);
-            }
-        });
         panelMenu2.add(btnMenuStudents);
 
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
@@ -449,6 +443,11 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
         cbAcademy.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         cbAcademy.setForeground(new java.awt.Color(0, 9, 0));
+        cbAcademy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAcademyActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -473,6 +472,15 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
 
+        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnAdd);
+
         btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
         btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -490,15 +498,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnDelete);
-
-        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdd);
 
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
@@ -664,10 +663,21 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
             FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO, laboratoryDTO);
             laboratory.setVisible(true);
+//        if (this.getSelectedIdTableLaboratory() == null) {
+//            return;
+//        }
+//        try {
+//            // TODO add your handling code here:
+//            LaboratoryDTO laboratory = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
+//            System.out.println(laboratory.getLabName());
+//        } catch (BusinessException ex) {
+//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         } catch (BusinessException ex) {
             Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
 
     private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
   IConnectionBD connection = new ConnectionDB();
