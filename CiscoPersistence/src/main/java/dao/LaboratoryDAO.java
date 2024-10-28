@@ -25,6 +25,20 @@ public class LaboratoryDAO implements ILaboratoryDAO {
     public LaboratoryDAO(IConnectionBD connectionBD) {
         this.connectionBD = connectionBD;
     }
+    
+    @Override
+    public List<LaboratoryEntity> getAllLaboratorys() throws PersistenceException {
+        EntityManager entityManager = connectionBD.getEntityManager(); // Obtain the EntityManager
+        try {
+            // Create a query to retrieve all DegreeEntity instances
+            return entityManager.createQuery("SELECT l FROM LaboratoryEntity l", LaboratoryEntity.class)
+                    .getResultList(); // Execute the query and return the results
+        } catch (Exception e) {
+            throw new PersistenceException("Error retrieving all laboratory", e); // Handle any exceptions that may occur
+        } finally {
+            entityManager.close(); // Ensure the EntityManager is closed to free resources
+        }
+    }
 
     @Override
     public List<LaboratoryEntity> laboratoryListByAcademyPaginated(Long academyID, int limit, int offset) throws PersistenceException {
