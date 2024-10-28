@@ -23,4 +23,6 @@ public interface IStudentDAO {
 
     public void updateStudent(StudentEntity student) throws PersistenceException;
     
+    public StudentEntity findStudentByID(Long studentId) throws PersistenceException;
+    
 }
