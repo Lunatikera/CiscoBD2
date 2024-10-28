@@ -22,10 +22,12 @@ import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
 import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.AcademyDTO;
 import dto.LaboratoryDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
+
 import interfaces.IAcademyUnityDAO;
 import interfaces.IBlockReportBO;
 import interfaces.IBlockReportDAO;
@@ -41,6 +43,8 @@ import interfaces.ISoftwareBO;
 import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeBO;
+import interfaces.IStudentDegreeDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -58,8 +62,6 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     private int page = 1;
     private int limit = 10;
-    IStudentBO studentBO;
-    IDegreeBO degreeBO;
     ILaboratoryBO laboratoryBO;
     IAcademyUnityBO academyBO;
     AcademyDTO academyDTO;
@@ -69,10 +71,10 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
      * Creates new form FrmStudentManager
      */
     public FrmLaboratoryManager(ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO) {
+        initComponents();
         this.academyBO = academyBO;
         this.laboratoryBO = laboratoryBO;
         this.academyList = new ArrayList<>();
-        initComponents();
         this.loadFrame();
     }
 
@@ -159,8 +161,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblLaboratory.getModel();
             int idIndexRow = 0;
-            Long idSelectedLaboratory = (Long) model.getValueAt(selectedIndex, idIndexRow);
-            return idSelectedLaboratory;
+            Long idSelectedStudent = (Long) model.getValueAt(selectedIndex, idIndexRow);
+            return idSelectedStudent;
         } else {
             return null;
         }
@@ -589,7 +591,8 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
          IConnectionBD connection = new ConnectionDB();
          IDegreeDAO degreeDAO = new DegreeDAO(connection);
-         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+         IStudentDegreeDAO studentDegreeDAO=new StudentDegreeDAO(connection);
+         IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
          FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
          this.dispose();
          frmDegreeManager.setVisible(true);
@@ -664,17 +667,29 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
             LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
             FrmUpdateLaboratoryManager laboratory = new FrmUpdateLaboratoryManager(laboratoryBO, academyBO, laboratoryDTO);
             laboratory.setVisible(true);
+//        if (this.getSelectedIdTableLaboratory() == null) {
+//            return;
+//        }
+//        try {
+//            // TODO add your handling code here:
+//            LaboratoryDTO laboratory = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
+//            System.out.println(laboratory.getLabName());
+//        } catch (BusinessException ex) {
+//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         } catch (BusinessException ex) {
             Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
 
     private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
   IConnectionBD connection = new ConnectionDB();
         IStudentDAO studentDAO = new StudentDAO(connection);
         IStudentBO studentBO = new StudentBO(studentDAO);
         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+        IStudentDegreeDAO studentDegreeDAO= new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO,studentDegreeDAO);
        
         FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
         this.dispose();

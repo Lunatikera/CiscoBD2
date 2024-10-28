@@ -34,7 +34,7 @@ public class ComputerEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ipAdress", nullable = false, length = 25, unique = true)
+    @Column(name = "ipAdress", nullable = false, length = 50, unique = true)
     private String ipAdress;
 
     @Column(name = "machineNumber", nullable = false, length = 25)

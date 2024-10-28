@@ -54,7 +54,7 @@ public class FrmAddRule extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel1.setBackground(new java.awt.Color(208, 216, 232));
 
         jScrollPane2.setViewportView(txtRuleDesc);
 
@@ -193,8 +193,6 @@ public class FrmAddRule extends javax.swing.JFrame {
     private javax.swing.JRadioButton btnAddRuleToAllLaboratories;
     private javax.swing.JButton btnCancel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblStudent1;

@@ -41,7 +41,7 @@ public class FrmAddStudent extends javax.swing.JFrame {
     }
     
     private void llenarComboClasificaciones() {
-        for (enrollmentStatus clasi : enrollmentStatus.values()) {
+        for (EnrollmentStatus clasi : enrollmentStatus.values()) {
             cbStatus.addItem(clasi);
         }
     }
@@ -82,27 +82,22 @@ public class FrmAddStudent extends javax.swing.JFrame {
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
         lbNewStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lbNewStudent.setForeground(new java.awt.Color(0, 0, 0));
         lbNewStudent.setText("Agregar Estudiante");
         jPanel4.add(lbNewStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 340, -1));
 
         lblSecondLastName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblSecondLastName.setForeground(new java.awt.Color(0, 0, 0));
         lblSecondLastName.setText("Apelldio Materno:");
         jPanel4.add(lblSecondLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, -1, -1));
 
         lblLastName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblLastName.setForeground(new java.awt.Color(0, 0, 0));
         lblLastName.setText("Apellido Paterno:");
         jPanel4.add(lblLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblPassword.setForeground(new java.awt.Color(0, 0, 0));
         lblPassword.setText("Contraseña:");
         jPanel4.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
 
         lblNameStudent.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblNameStudent.setForeground(new java.awt.Color(0, 0, 0));
         lblNameStudent.setText("Nombre:");
         jPanel4.add(lblNameStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
 
@@ -132,11 +127,9 @@ public class FrmAddStudent extends javax.swing.JFrame {
         jPanel4.add(btnReturn, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, 180, 40));
         jPanel4.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 280, 250, 30));
 
-        cbStatus.setForeground(new java.awt.Color(0, 0, 0));
         jPanel4.add(cbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, 250, 30));
 
         lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblStatus.setForeground(new java.awt.Color(0, 0, 0));
         lblStatus.setText("Estado:");
         jPanel4.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, -1, -1));
 
@@ -211,7 +204,7 @@ public class FrmAddStudent extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnContinue;
     private javax.swing.JButton btnReturn;
-    private javax.swing.JComboBox<String> cbStatus;
+    private javax.swing.JComboBox<EnrollmentStatus> cbStatus;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

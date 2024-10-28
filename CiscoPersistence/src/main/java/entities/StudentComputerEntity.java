@@ -30,6 +30,12 @@ public class StudentComputerEntity implements Serializable {
 
     @Column(name = "startDateTime", nullable = false)
     private LocalDateTime startDateTime;
+    
+    @Column(name = "selectedDateTime", nullable = false)
+    private LocalDateTime selectedDateTime;
+    
+    @Column(name = "degreeName", nullable =  true)
+    private String degreeName;
 
     @Column(name = "endDateTime", nullable =  true)
     private LocalDateTime endDateTime;

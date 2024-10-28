@@ -14,13 +14,13 @@ import java.util.List;
  */
 public interface IStudentDegreeDAO {
 
-    void save(StudentDegreeEntity studentDegree) throws PersistenceException;
+    public void save(StudentDegreeEntity studentDegree) throws PersistenceException;
 
-    void update(StudentDegreeEntity studentDegree) throws PersistenceException;
+    public void update(StudentDegreeEntity studentDegree) throws PersistenceException;
 
-    void delete(Long studentDegreeId) throws PersistenceException;
+    public void delete(Long studentDegreeId) throws PersistenceException;
 
-    List<StudentDegreeEntity> findByStudentId(Long studentId) throws PersistenceException;
+    public List<StudentDegreeEntity> findByStudentId(Long studentId) throws PersistenceException;
 
-    List<StudentDegreeEntity> findByDegreeId(Long degreeId) throws PersistenceException;
+    public List<StudentDegreeEntity> findByDegreeId(Long degreeId) throws PersistenceException;
 }

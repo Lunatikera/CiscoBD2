@@ -8,6 +8,7 @@ import dao.StudentDAO;
 import dto.LogInDTO;
 import dto.StudentDTO;
 import entities.StudentEntity;
+import enums.EnrollmentStatus;
 import exception.BusinessException;
 import exception.PersistenceException;
 import interfaces.IStudentBO;
@@ -52,17 +53,16 @@ public class StudentBO implements IStudentBO {
     @Override
     public StudentDTO findStudentByUniqueID(Long studentId) throws BusinessException {
         if (studentId <= 0) {
-            throw new BusinessException("Invalid student ID.");
+            throw new BusinessException("El ID tiene que estar en un formato valido");
         }
 
         try {
             StudentEntity student = studentDAO.findStudentByUniqueID(studentId);
             if (student == null) {
-                throw new BusinessException("Student not found.");
+                throw new BusinessException("Por favor Ingresa una ID Correcta");
             }
             return StudentMapper.toDTO(student);
         } catch (PersistenceException ex) {
-            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new BusinessException("Error finding student by unique ID.");
         }
     }
@@ -72,8 +72,7 @@ public class StudentBO implements IStudentBO {
         if (offset < 0 || limit <= 0) {
             throw new BusinessException("Invalid pagination parameters.");
         }
-       offset = tools.Tools.ReturnOFFSETMySQL(limit, offset);
-        
+        offset = tools.Tools.ReturnOFFSETMySQL(limit, offset);
 
         try {
             List<StudentEntity> students = studentDAO.studentListByDegreePaginated(degreeId, offset, limit);
@@ -86,7 +85,7 @@ public class StudentBO implements IStudentBO {
 
     @Override
     public void updateStudent(StudentDTO student) throws BusinessException {
-        if (student == null || student.getUniqueId() == null || student.getUniqueId() <= 0) {
+        if (student == null || student.getUnique_ID()== null || student.getUnique_ID()<= 0) {
             throw new BusinessException("Invalid student data.");
         }
 
@@ -112,8 +111,6 @@ public class StudentBO implements IStudentBO {
 //            throw new BusinessException("Error deleting student.");
 //        }
 //    }
-    
-
     @Override
     public StudentDTO login(LogInDTO loginDTO) throws BusinessException {
         try {
@@ -129,6 +126,28 @@ public class StudentBO implements IStudentBO {
             }
 
             return StudentMapper.toDTO(student);
+
+        } catch (PersistenceException ex) {
+            Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Login failed", ex);
+            throw new BusinessException("An error occurred while logging in. Please try again later."); // Wrap the exception for higher-level handling
+        }
+    }
+
+    @Override
+    public boolean verifyID(Long uniqueID) throws BusinessException {
+        try {
+
+            StudentEntity student = studentDAO.findStudentByUniqueID(uniqueID);
+
+            if (student == null) {
+                throw new BusinessException("ID No Valido"); // Changed to BusinessException for consistency
+            }
+            if (student.getEnrollmentStatus() == EnrollmentStatus.No_Inscrito) {
+                throw new BusinessException("El estudiante no esta Inscrito"); // Changed to BusinessException for consistency
+
+            }
+
+            return true;
 
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Login failed", ex);

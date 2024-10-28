@@ -4,7 +4,7 @@
  */
 package frames;
 
-
+import businessObjects.AcademyUnityBO;
 import businessObjects.BlockReportBO;
 import businessObjects.DegreeBO;
 import businessObjects.RuleBO;
@@ -17,6 +17,7 @@ import dao.DegreeDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
 import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.AcademyDTO;
 import dto.ComputerDTO;
 import dto.DegreeDTO;
@@ -35,6 +36,7 @@ import interfaces.ISoftwareBO;
 import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
 import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeDAO;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,22 +49,22 @@ import javax.swing.table.DefaultTableModel;
  * @author carli
  */
 public class FrmComputerManager extends javax.swing.JFrame {
-    
+
     private IComputerBO computerBO;
     private ILaboratoryBO laboratoryBO;
     private LaboratoryDTO laboratoryDTO;
     private AcademyDTO academyDTO;
     private IAcademyUnityBO academyBO;
     private List<LaboratoryDTO> laboratoryList;
-    private List<AcademyDTO> academyList;
     private int page = 1;
     private int limit = 10;
     private Long lab = 1L;
     private Long academy = 1L;
+
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmComputerManager(IComputerBO computerBO,ILaboratoryBO laboratoryBO,IAcademyUnityBO academyBO) {
+    public FrmComputerManager(IComputerBO computerBO, ILaboratoryBO laboratoryBO, IAcademyUnityBO academyBO) {
         initComponents();
         this.computerBO = computerBO;
         this.laboratoryBO = laboratoryBO;
@@ -78,35 +80,20 @@ public class FrmComputerManager extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.loadTableComputer();
         this.pageStatus();
-        this.fillLaboratoryComboBox();
-        this.fillAcademyComboBox();
     }
-    
+
     private void fillLaboratoryComboBox() {
-        try {
-            cbLaboratory.removeAllItems();
-            laboratoryList = laboratoryBO.laboratoryListByAcademy(academy);
-
-            for (LaboratoryDTO laboratory : laboratoryList) {
-                cbLaboratory.addItem(laboratory);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            laboratoryList = laboratoryBO.findLaboratoryByID(lab);
+//
+//            for (LaboratoryDTO laboratory : laboratoryList) {
+//                cbLaboratory.addItem(laboratory);
+//            }
+//        } catch (BusinessException ex) {
+//            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
-    
-     private void fillAcademyComboBox() {
-        try {
-            academyList = academyBO.getAllAcademies();
 
-            for (AcademyDTO academy : academyList) {
-                cbAcademy.addItem(academy);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     private void deleteInfoTableComputers() {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblComputer.getModel();
         if (modeloTabla.getRowCount() > 0) {
@@ -115,6 +102,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
             }
         }
     }
+
     private void leftButonStatus() {
         if (page > 1) {
             btnLeft.setEnabled(true);
@@ -128,33 +116,32 @@ public class FrmComputerManager extends javax.swing.JFrame {
             // Borrar registros previos antes de cargar los nuevos
             deleteInfoTableComputers();
 
-
             // Obtén solo los clientes necesarios para la página actual
             List<ComputerDTO> computerList = this.computerBO.computerListByAcademyPaginated(page, limit, lab);
 
-         //Agrega los registros paginados a la tabla
+            //Agrega los registros paginados a la tabla
+            this.addInfoTable(computerList);
+            //Control de botones de navegación
+            btnLeft.setEnabled(page > 1);
 
-    this.addInfoTable(computerList);
-          //Control de botones de navegación
-                    btnLeft.setEnabled(page > 1);
-        
-                } catch (BusinessException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
-                }
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
     private void rightButonStatus() {
 
         try {
             btnRight.setEnabled(true);
             if (this.computerBO.computerListByAcademyPaginated(page, limit, lab) == null
-                    || this.computerBO.computerListByAcademyPaginated(page+1, limit, lab).isEmpty()) {
+                    || this.computerBO.computerListByAcademyPaginated(page + 1, limit, lab).isEmpty()) {
                 btnRight.setEnabled(false);
             }
         } catch (BusinessException ex) {
             System.out.println(ex);
         }
     }
-    
+
     public void pageStatus() {
         String pageNumber = String.valueOf(page);
         if (pageNumber.length() == 1) {
@@ -165,7 +152,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         leftButonStatus();
         rightButonStatus();
     }
-    
+
     private void addInfoTable(List<ComputerDTO> computerList) {
         if (computerList == null) {
             return;
@@ -183,11 +170,12 @@ public class FrmComputerManager extends javax.swing.JFrame {
             tableModel.addRow(row);
         });
     }
+
     private String getSelectedIdTableComputer() {
         int selectedIndex = this.tblComputer.getSelectedRow();
         if (selectedIndex != -1) {
             DefaultTableModel model = (DefaultTableModel) this.tblComputer.getModel();
-            int idIndexRow = 1;
+            int idIndexRow = 0;
             String idSelectedStudent = (String) model.getValueAt(selectedIndex,
                     idIndexRow);
             return idSelectedStudent;
@@ -195,10 +183,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
             return null;
         }
     }
-    
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -590,19 +575,11 @@ public class FrmComputerManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        
-        try {
-            FrmDeleteComputer deleteComputer = new FrmDeleteComputer(computerBO, laboratoryBO, getSelectedIdTableComputer());
-            deleteComputer.setVisible(true);
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmComputerManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        FrmAddComputer addComputer = new FrmAddComputer(computerBO, laboratoryBO, this.lab);
-        addComputer.setVisible(true);
-        
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
@@ -615,15 +592,17 @@ public class FrmComputerManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuComputersActionPerformed
 
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
-         IConnectionBD connection = new ConnectionDB();
-         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-         this.dispose();
-         frmDegreeManager.setVisible(true);
+        IConnectionBD connection = new ConnectionDB();
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+        this.dispose();
+        frmDegreeManager.setVisible(true);
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
+
         FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
         this.dispose();
         laboratory.setVisible(true);
@@ -638,10 +617,10 @@ public class FrmComputerManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuAcademiesActionPerformed
 
     private void btnMenuSoftwaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwaresActionPerformed
-          IConnectionBD connection = new ConnectionDB();
-         ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
-         ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
-        
+        IConnectionBD connection = new ConnectionDB();
+        ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
+        ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+
         FrmSoftwareManager frmSoftwareManager = new FrmSoftwareManager(softwareBO);
         this.dispose();
         frmSoftwareManager.setVisible(true);
@@ -651,7 +630,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         IConnectionBD connection = new ConnectionDB();
         IRuleDAO ruleDAO = new RuleDAO(connection);
         IRuleBO ruleBO = new RuleBO(ruleDAO);
-        
+
         FrmRulesManager frmRulesManager = new FrmRulesManager(ruleBO);
         this.dispose();
         frmRulesManager.setVisible(true);
@@ -666,10 +645,10 @@ public class FrmComputerManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
 
     private void btnMenuBlockReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportsActionPerformed
-         IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IBlockReportDAO blockReportDAO = new BlockReportDAO(connection);
         IBlockReportBO blockReportBO = new BlockReportBO(blockReportDAO);
-        
+
         FrmLocksReport frmLocksReport = new FrmLocksReport(blockReportBO);
         this.dispose();
         frmLocksReport.setVisible(true);
@@ -680,24 +659,24 @@ public class FrmComputerManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
 
     private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
-       page--;
-       this.pageStatus();
+        page--;
+        this.pageStatus();
     }//GEN-LAST:event_btnLeftActionPerformed
 
     private void btnGoLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoLabActionPerformed
-        if (cbLaboratory !=null) {
-            this.laboratoryDTO = (LaboratoryDTO)cbLaboratory.getSelectedItem();
+        if (cbLaboratory != null) {
+            this.laboratoryDTO = (LaboratoryDTO) cbLaboratory.getSelectedItem();
             this.lab = laboratoryDTO.getId();
             this.loadTableComputer();
         }
     }//GEN-LAST:event_btnGoLabActionPerformed
 
     private void btnGoAcademyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoAcademyActionPerformed
-        if (cbAcademy !=null) {
-            this.academyDTO = (AcademyDTO)cbAcademy.getSelectedItem();
+        if (cbAcademy != null) {
+            this.academyDTO = (AcademyDTO) cbAcademy.getSelectedItem();
             this.academy = academyDTO.getId();
             this.fillLaboratoryComboBox();
-            this.laboratoryDTO = (LaboratoryDTO)cbLaboratory.getSelectedItem();
+            this.laboratoryDTO = (LaboratoryDTO) cbLaboratory.getSelectedItem();
             this.lab = laboratoryDTO.getId();
             this.loadTableComputer();
         }
@@ -705,11 +684,11 @@ public class FrmComputerManager extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
-            
-            ComputerDTO com = computerBO.findByIPComputer(getSelectedIdTableComputer());
-            
-            FrmEditComputer editComputer = new FrmEditComputer(computerBO, laboratoryBO, com,this);
-            
+
+            ComputerDTO com = computerBO.findByIPComputer(this.getSelectedIdTableComputer());
+
+            FrmEditComputer editComputer = new FrmEditComputer(computerBO, laboratoryBO, com, this);
+
             editComputer.setVisible(true);
         } catch (BusinessException ex) {
             Logger.getLogger(FrmComputerManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -717,17 +696,17 @@ public class FrmComputerManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
-          IConnectionBD connection = new ConnectionDB();
+        IConnectionBD connection = new ConnectionDB();
         IStudentDAO studentDAO = new StudentDAO(connection);
         IStudentBO studentBO = new StudentBO(studentDAO);
         IDegreeDAO degreeDAO = new DegreeDAO(connection);
-        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-       
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+
         FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
         this.dispose();
         frmStudentManager.setVisible(true);
     }//GEN-LAST:event_btnMenuStudentsActionPerformed
- 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
