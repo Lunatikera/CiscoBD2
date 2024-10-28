@@ -4,19 +4,63 @@
  */
 package frames;
 
+import businessObjects.AcademyUnityBO;
+import businessObjects.ComputerBO;
 import businessObjects.DegreeBO;
+import businessObjects.LaboratoryBO;
+import businessObjects.RuleBO;
+import businessObjects.SoftwareBO;
+import businessObjects.StudentBO;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.AcademyUnityDAO;
+import dao.ComputerDAO;
+import dao.DegreeDAO;
+import dao.LaboratoryDAO;
+import dao.RuleDAO;
+import dao.SoftwareDAO;
+import dao.StudentDAO;
 import dto.DegreeDTO;
+import dto2.BlockReportDTO;
 import exception.BusinessException;
+import interfaces.IAcademyUnityBO;
+import interfaces.IAcademyUnityDAO;
+import interfaces.IBlockReportBO;
+import interfaces.IComputerBO;
+import interfaces.IComputerDAO;
 import interfaces.IDegreeBO;
+import interfaces.IDegreeDAO;
+import interfaces.ILaboratoryBO;
+import interfaces.ILaboratoryDAO;
+import interfaces.IRuleBO;
+import interfaces.IRuleDAO;
+import interfaces.ISoftwareBO;
+import interfaces.ISoftwareDAO;
+import interfaces.IStudentBO;
+import interfaces.IStudentDAO;
 import java.awt.Font;
 import java.awt.HeadlessException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.Document;
+
 
 /**
  *
@@ -26,16 +70,16 @@ public class FrmLocksReport extends javax.swing.JFrame {
 
     private int page = 1;
     private int LIMIT = 10;
-    IDegreeBO degreeBO;
+    IBlockReportBO blockReportBO;
 
     /**
      * Creates new form FrmStudentManager
      *
      * @param degreeBO
      */
-    public FrmLocksReport(IDegreeBO idegreeBO) {
+    public FrmLocksReport(IBlockReportBO blockReportBO) {
         initComponents();
-        this.degreeBO = idegreeBO;
+        this.blockReportBO = blockReportBO;
         this.loadInitialMethods();
 
     }
@@ -45,23 +89,20 @@ public class FrmLocksReport extends javax.swing.JFrame {
         this.setResizable(false);
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
-        this.loadTableDegree();
         
-        this.customizeTableHeader();
+        
+        
 
     }
     
-    private void customizeTableHeader() {
-        JTableHeader header = tblDegreeReport.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 10)); // Cambia el tipo, estilo y tamaño de fuente
-    }
+    
 
     
 
     
 
-    private void deleteInfoTableDegree() {
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblDegreeReport.getModel();
+    private void deleteInfoTableBlockReport() {
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblBlockReport.getModel();
         if (tableModel.getRowCount() > 0) {
             for (int row = tableModel.getRowCount() - 1; row > -1; row--) {
                 tableModel.removeRow(row);
@@ -69,46 +110,42 @@ public class FrmLocksReport extends javax.swing.JFrame {
         }
     }
 
-    private void addInfoTable(List<DegreeDTO> degreeList) {
-        if (degreeList == null) {
+    private void addInfoTable(List<BlockReportDTO> BlockReportList) {
+        if (BlockReportList == null) {
             return;
         }
 
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblDegreeReport.getModel();
-        degreeList.forEach(column
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblBlockReport.getModel();
+        BlockReportList.forEach(column
                 -> {
-            Object[] row = new Object[3];
-            row[0] = column.getId();
-            row[1] = column.getName();
-            row[2] = column.getTimeLimit();
+            String noReleaseDate = "N/A";
+            Object[] row = new Object[4];
+            row[0] = column.getStudentName();
+            row[1] = column.getBlockDate();
+            if(column.getReleaseDate() == null){
+                  row[2] = noReleaseDate;
+            }else{
+                row[2] = column.getReleaseDate();
+            }
+           
+            row[3] = column.getReason();
 
             tableModel.addRow(row);
         });
     }
 
-    private Long getSelectedIdTableDegree() {
-        int selectedIndex = this.tblDegreeReport.getSelectedRow();
-        if (selectedIndex != -1) {
-            DefaultTableModel model = (DefaultTableModel) this.tblDegreeReport.getModel();
-            int idIndexRow = 0;
-            Long idSelectedDegree = (Long) model.getValueAt(selectedIndex,
-                    idIndexRow);
-            return idSelectedDegree;
-        } else {
-            return null;
-        }
-    }
+    
 
     public void loadTableDegree() {
         try {
             // Borrar registros previos antes de cargar los nuevos
-            deleteInfoTableDegree();
+            deleteInfoTableBlockReport();
 
             // Obtén solo los clientes necesarios para la página actual
-            List<DegreeDTO> degreeList = this.degreeBO.obterCarrerasPaguinado(LIMIT, page);
+            List<BlockReportDTO> BlockReportList = this.blockReportBO.getBlockReport(dpStart.getDate(), dpEnd.getDate());
 
             //Agrega los registros paginados a la tabla
-            this.addInfoTable(degreeList);
+            this.addInfoTable(BlockReportList);
             //Control de botones de navegación
            
 
@@ -157,21 +194,17 @@ public class FrmLocksReport extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDegreeReport = new javax.swing.JTable();
+        tblBlockReport = new javax.swing.JTable();
         menuButton13 = new utilities.MenuButton();
         lblDegreeReport = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        cbxAddDegree = new javax.swing.JComboBox<>();
-        cbxDeleteDegree = new javax.swing.JComboBox<>();
-        lbDeleteDegree = new javax.swing.JLabel();
+        lbStart = new javax.swing.JLabel();
+        dpStart = new com.github.lgooddatepicker.components.DatePicker();
         jPanel2 = new javax.swing.JPanel();
         btnPrint = new javax.swing.JButton();
         btnCreate = new javax.swing.JButton();
-        LbAddDegree = new javax.swing.JLabel();
         lbEnd = new javax.swing.JLabel();
-        tpEnd = new com.github.lgooddatepicker.components.TimePicker();
-        lbStart = new javax.swing.JLabel();
-        tpStart = new com.github.lgooddatepicker.components.TimePicker();
+        dpEnd = new com.github.lgooddatepicker.components.DatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -183,17 +216,22 @@ public class FrmLocksReport extends javax.swing.JFrame {
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel18);
 
-        btnMenuStudents.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuStudents.setText("Estudiantes");
         btnMenuStudents.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuStudents.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenuStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuStudentsActionPerformed(evt);
+            }
+        });
         panelMenu2.add(btnMenuStudents);
 
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel24);
 
-        btnMenuComputers.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuComputers.setText("Computadora");
         btnMenuComputers.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuComputers.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuComputers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuComputersActionPerformed(evt);
@@ -337,7 +375,7 @@ public class FrmLocksReport extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(208, 216, 232));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblDegreeReport.setModel(new javax.swing.table.DefaultTableModel(
+        tblBlockReport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -345,36 +383,22 @@ public class FrmLocksReport extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Nombre Carrera", "Uso por dia (Min)", "Cantidad de alumnos", "Fecha"
+                "Nombre Alumno", "Fecha Bloqueo", "Fecha Liberacion", "Motivo"
             }
         ));
-        jScrollPane1.setViewportView(tblDegreeReport);
+        jScrollPane1.setViewportView(tblBlockReport);
 
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 1000, 440));
+        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 920, 410));
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
-        lblDegreeReport.setText("Reporte Carreras");
+        lblDegreeReport.setText("Reporte Bloqueos");
         lblDegreeReport.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jPanel4.add(lblDegreeReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
 
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
-        cbxAddDegree.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbxAddDegree.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxAddDegreeActionPerformed(evt);
-            }
-        });
-
-        cbxDeleteDegree.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbxDeleteDegree.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxDeleteDegreeActionPerformed(evt);
-            }
-        });
-
-        lbDeleteDegree.setText("Eliminar Carrera");
-        lbDeleteDegree.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbStart.setText("Fecha Inicio");
+        lbStart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -383,24 +407,20 @@ public class FrmLocksReport extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxAddDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxDeleteDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(83, 83, 83)
+                        .addComponent(lbStart))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(lbDeleteDegree)))
-                .addContainerGap(125, Short.MAX_VALUE))
+                        .addGap(34, 34, 34)
+                        .addComponent(dpStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cbxAddDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(lbDeleteDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(52, Short.MAX_VALUE)
+                .addComponent(lbStart)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbxDeleteDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dpStart, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -410,24 +430,25 @@ public class FrmLocksReport extends javax.swing.JFrame {
         jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 260));
 
         btnPrint.setText("Imprimir");
-        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 660, 140, 30));
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 660, 140, 30));
 
         btnCreate.setText("Generar");
-        jPanel4.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 660, 140, 30));
-
-        LbAddDegree.setText("Agregar Carrera");
-        LbAddDegree.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel4.add(LbAddDegree, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 100, 20));
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 660, 140, 30));
 
         lbEnd.setText("Fecha Fin");
         lbEnd.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jPanel4.add(lbEnd, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 100, -1, -1));
-        jPanel4.add(tpEnd, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 130, 180, 30));
-
-        lbStart.setText("Fecha Inicio");
-        lbStart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel4.add(lbStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, -1));
-        jPanel4.add(tpStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 50, 180, 30));
+        jPanel4.add(dpEnd, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 130, -1, 30));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -435,16 +456,15 @@ public class FrmLocksReport extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(panelMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1044, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1036, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 720, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(panelMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -454,7 +474,7 @@ public class FrmLocksReport extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1273, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1283, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -465,15 +485,40 @@ public class FrmLocksReport extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
-        // TODO add your handling code here:
+       IConnectionBD connection = new ConnectionDB();
+        IComputerDAO computerDAO = new ComputerDAO(connection);
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
+        IComputerBO computerBO =new ComputerBO(computerDAO, laboratoryDAO);
+        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
+        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
+        
+        
+        
+        FrmComputerManager frmComputerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
+        this.dispose();
+        frmComputerManager.setVisible(true);
     }//GEN-LAST:event_btnMenuComputersActionPerformed
 
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
-        // TODO add your handling code here:
+         IConnectionBD connection = new ConnectionDB();
+         IDegreeDAO degreeDAO = new DegreeDAO(connection);
+         IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+         this.dispose();
+         frmDegreeManager.setVisible(true);
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
-        // TODO add your handling code here:
+         IConnectionBD connection = new ConnectionDB();
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
+        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
+        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
+        
+        FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
+        this.dispose();
+        laboratory.setVisible(true);
     }//GEN-LAST:event_btnMenuLabsActionPerformed
 
     private void btnMenuBlocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlocksActionPerformed
@@ -485,11 +530,23 @@ public class FrmLocksReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuAcademiesActionPerformed
 
     private void btnMenuSoftwaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwaresActionPerformed
-        // TODO add your handling code here:
+          IConnectionBD connection = new ConnectionDB();
+         ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
+         ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+        
+        FrmSoftwareManager frmSoftwareManager = new FrmSoftwareManager(softwareBO);
+        this.dispose();
+        frmSoftwareManager.setVisible(true);
     }//GEN-LAST:event_btnMenuSoftwaresActionPerformed
 
     private void btnMenuRulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuRulesActionPerformed
-        // TODO add your handling code here:
+        IConnectionBD connection = new ConnectionDB();
+        IRuleDAO ruleDAO = new RuleDAO(connection);
+        IRuleBO ruleBO = new RuleBO(ruleDAO);
+        
+        FrmRulesManager frmRulesManager = new FrmRulesManager(ruleBO);
+        this.dispose();
+        frmRulesManager.setVisible(true);
     }//GEN-LAST:event_btnMenuRulesActionPerformed
 
     private void btnMenuLabReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabReportsActionPerformed
@@ -508,17 +565,95 @@ public class FrmLocksReport extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
 
-    private void cbxAddDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxAddDegreeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxAddDegreeActionPerformed
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        if (dpStart.getDate() == null || dpEnd.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "No se selecciono ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        this.loadTableDegree();
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btnCreateActionPerformed
 
-    private void cbxDeleteDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDeleteDegreeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxDeleteDegreeActionPerformed
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        String path = "";
+        JFileChooser j = new JFileChooser();
+        j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = j.showSaveDialog(this);
+        if (x == JFileChooser.APPROVE_OPTION) {
+            path = j.getSelectedFile().getPath();
+        }
+
+        if (path.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se seleccionó ninguna carpeta.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
+        try {
+            PdfWriter.getInstance(doc, new FileOutputStream(String.format("%s/ReporteBloqueos.pdf", path)));
+            doc.open();
+
+            // Descripción de los filtros
+            doc.add(new Paragraph("Reporte de Bloqueos por Fecha", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16)));
+            doc.add(new Paragraph("Filtros Aplicados:", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12)));
+            doc.add(new Paragraph("Fechas: " + dpStart.getText() + " a " + dpEnd.getText()));
+            doc.add(new Paragraph("\n")); // Espacio en blanco
+
+            // Tabla
+            PdfPTable tbl = new PdfPTable(4);
+            tbl.addCell("Nombre Del Alumno");
+            tbl.addCell("Fecha De Bloqueo");
+            tbl.addCell("Fecha De Liberacion");
+            tbl.addCell("Motivo");
+            BigDecimal suma = BigDecimal.ZERO;
+            for (int i = 0; i < tblBlockReport.getRowCount(); i++) {
+                String nombreAlumno = tblBlockReport.getValueAt(i, 0).toString();
+                String Bloqueo = tblBlockReport.getValueAt(i, 1).toString();
+                String Liberacion = tblBlockReport.getValueAt(i, 2).toString();
+                String Motivo = tblBlockReport.getValueAt(i, 3).toString();
+                tbl.addCell(nombreAlumno);
+                tbl.addCell(Bloqueo);
+                tbl.addCell(Liberacion);
+                tbl.addCell(Motivo);
+            }
+
+            doc.add(tbl);
+            
+            JOptionPane.showMessageDialog(this, "Se imprimió con éxito el documento!");
+
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Error al crear el archivo PDF: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DocumentException ex) {
+            Logger.getLogger(FrmLocksReport.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            doc.close(); // Asegúrate de cerrar el documento en el bloque finally
+        }
+                                                
+
+   
+        
+    }//GEN-LAST:event_btnPrintActionPerformed
+
+    private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
+        IConnectionBD connection = new ConnectionDB();
+        IStudentDAO studentDAO = new StudentDAO(connection);
+        IStudentBO studentBO = new StudentBO(studentDAO);
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
+       
+        FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
+        this.dispose();
+        frmStudentManager.setVisible(true);
+    }//GEN-LAST:event_btnMenuStudentsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LbAddDegree;
     private javax.swing.JButton btnCreate;
     private utilities.MenuButton btnMenuAcademies;
     private utilities.MenuButton btnMenuBlockReports;
@@ -533,8 +668,8 @@ public class FrmLocksReport extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuSoftwares;
     private utilities.MenuButton btnMenuStudents;
     private javax.swing.JButton btnPrint;
-    private javax.swing.JComboBox<String> cbxAddDegree;
-    private javax.swing.JComboBox<String> cbxDeleteDegree;
+    private com.github.lgooddatepicker.components.DatePicker dpEnd;
+    private com.github.lgooddatepicker.components.DatePicker dpStart;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
@@ -555,14 +690,11 @@ public class FrmLocksReport extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbDeleteDegree;
     private javax.swing.JLabel lbEnd;
     private javax.swing.JLabel lbStart;
     private javax.swing.JLabel lblDegreeReport;
     private utilities.MenuButton menuButton13;
     private panels.PanelMenu panelMenu2;
-    private javax.swing.JTable tblDegreeReport;
-    private com.github.lgooddatepicker.components.TimePicker tpEnd;
-    private com.github.lgooddatepicker.components.TimePicker tpStart;
+    private javax.swing.JTable tblBlockReport;
     // End of variables declaration//GEN-END:variables
 }
