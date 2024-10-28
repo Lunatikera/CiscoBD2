@@ -135,4 +135,15 @@ public class LaboratoryBO implements ILaboratoryBO {
         }
     }
     
+    public List<LaboratoryDTO> obtainAllLaboratory() throws BusinessException{
+        try {
+            List<LaboratoryEntity> laboratory = laboratoryDAO.obtainAllLaboratory();
+            
+            return LaboratoryMapper.toDTOList(laboratory);
+        } catch (PersistenceException ex) {
+            Logger.getLogger(LaboratoryBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BusinessException("Error retrieving laboratory list by academy.");
+        }
+    }
+    
 }
