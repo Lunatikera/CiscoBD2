@@ -28,9 +28,9 @@ public class ReportComputerBO implements IReportComputerBO{
     
     
     @Override
-    public List<ReportComputerDTO> obtenerDatosCentroComputo(LocalDate inicio, LocalDate fin) throws BusinessException {
+    public List<ReportComputerDTO> obtenerDatosCentroComputo(List<Integer> degreeIds,LocalDate startDate, LocalDate endDate) throws BusinessException {
         try{
-                return this.reportComputerDAO.obtenerDatosCentroComputo(inicio, fin);
+                return this.reportComputerDAO.obtenerDatosCentroComputo(degreeIds, startDate, endDate);
         }catch(PersistenceException ex) {
             Logger.getLogger(LaboratoryBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new BusinessException("Error retrieving ReportDegree list");
