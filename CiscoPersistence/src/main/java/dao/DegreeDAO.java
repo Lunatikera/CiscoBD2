@@ -32,7 +32,7 @@ public class DegreeDAO implements IDegreeDAO {
         EntityManager entityManager = connection.getEntityManager(); // Obtain the EntityManager
         try {
             // Create a query to retrieve all DegreeEntity instances
-            return entityManager.createQuery("SELECT d.id, d.degreeName, d.timeLimit FROM DegreeEntity d", DegreeEntity.class)
+            return entityManager.createQuery("SELECT d FROM DegreeEntity d", DegreeEntity.class)
                     .getResultList(); // Execute the query and return the results
         } catch (Exception e) {
             throw new PersistenceException("Error retrieving all degrees", e); // Handle any exceptions that may occur
