@@ -4,7 +4,7 @@
  */
 package interfaces;
 
-import entities.ComputerSoftwareEntity;
+import entities.StudentComputerEntity;
 import exception.PersistenceException;
 
 /**
@@ -12,6 +12,6 @@ import exception.PersistenceException;
  * @author carli
  */
 public interface IStudentComputerDAO {
-    public void saveComputerUse(ComputerSoftwareEntity computerSoftwareEntity)throws PersistenceException;
+    public void saveComputerUse(StudentComputerEntity computerSoftwareEntity)throws PersistenceException;
     
 }

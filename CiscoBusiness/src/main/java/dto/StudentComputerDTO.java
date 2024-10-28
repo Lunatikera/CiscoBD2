@@ -22,21 +22,11 @@ public class StudentComputerDTO {
 
     private LocalDateTime endDateTime;
 
-    private Long idstudent;
+    private Long unique_ID;
 
-    private Long idcomputer;
+    private String ipAdress;
 
     public StudentComputerDTO() {
-    }
-
-    public StudentComputerDTO(Long id, LocalDateTime startDateTime, LocalDateTime selectedDateTime, String degreeName, LocalDateTime endDateTime, Long idstudent, Long idcomputer) {
-        this.id = id;
-        this.startDateTime = startDateTime;
-        this.selectedDateTime = selectedDateTime;
-        this.degreeName = degreeName;
-        this.endDateTime = endDateTime;
-        this.idstudent = idstudent;
-        this.idcomputer = idcomputer;
     }
 
     public Long getId() {
@@ -79,20 +69,20 @@ public class StudentComputerDTO {
         this.endDateTime = endDateTime;
     }
 
-    public Long getIdstudent() {
-        return idstudent;
+    public Long getUnique_ID() {
+        return unique_ID;
     }
 
-    public void setIdstudent(Long idstudent) {
-        this.idstudent = idstudent;
+    public void setUnique_ID(Long unique_ID) {
+        this.unique_ID = unique_ID;
     }
 
-    public Long getIdcomputer() {
-        return idcomputer;
+    public String getIpAdress() {
+        return ipAdress;
     }
 
-    public void setIdcomputer(Long idcomputer) {
-        this.idcomputer = idcomputer;
+    public void setIpAdress(String ipAdress) {
+        this.ipAdress = ipAdress;
     }
-    
+
 }

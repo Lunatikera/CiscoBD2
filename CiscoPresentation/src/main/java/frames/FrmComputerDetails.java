@@ -4,19 +4,30 @@
  */
 package frames;
 
+import businessObjects.StudentBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.StudentDAO;
 import dto.ComputerDTO;
 import dto.LaboratoryDTO;
 import dto.SoftwareDTO;
+import dto.StudentComputerDTO;
 import dto.StudentDTO;
 import dto.StudentDegreeDTO;
+import enums.ComputerStatus;
 import exception.BusinessException;
 import interfaces.IComputerBO;
 import interfaces.ISoftwareBO;
+import interfaces.IStudentBO;
+import interfaces.IStudentComputerBO;
+import interfaces.IStudentDAO;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -25,6 +36,7 @@ import javax.swing.SpinnerNumberModel;
  */
 public class FrmComputerDetails extends javax.swing.JFrame {
 
+    IStudentComputerBO studentComputerBO;
     IComputerBO computerBO;
     ISoftwareBO softwareBO;
     ComputerDTO computerDTO;
@@ -33,9 +45,10 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     StudentDegreeDTO studentDegreeDTO;
     List<SoftwareDTO> softwarelist;
 
-    public FrmComputerDetails(ISoftwareBO softwareBO, IComputerBO computerBO, ComputerDTO computerDTO, StudentDTO studentDTO,
+    public FrmComputerDetails( IStudentComputerBO studentComputerBO,ISoftwareBO softwareBO, IComputerBO computerBO, ComputerDTO computerDTO, StudentDTO studentDTO,
             LaboratoryDTO laboratoryDTO, StudentDegreeDTO studentDegreeDTO) {
         initComponents();
+        this.studentComputerBO=studentComputerBO;
         this.softwareBO = softwareBO;
         this.computerBO = computerBO;
         this.computerDTO = computerDTO;
@@ -50,9 +63,9 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     private void loadFrame() {
         lblPcNumber.setText(computerDTO.getMachineNumber().toString());
         lblStudenName.setText(studentDTO.getNames() + " " + studentDTO.getFirstLastname() + " " + studentDTO.getSecondLastname());
-        lblRemainingTIme.setText(studentDegreeDTO.getRemainingTime().toString()+" Minutos");
+        lblRemainingTIme.setText(studentDegreeDTO.getRemainingTime().toString() + " Minutos");
         lblSelectedDegree.setText(studentDegreeDTO.getDegreeName());
-        lblLab.setText("Laboratorio: " +laboratoryDTO.getLabName());
+        lblLab.setText("Laboratorio: " + laboratoryDTO.getLabName());
         Jspinner.setModel(new SpinnerNumberModel(1, 1, studentDegreeDTO.getRemainingTime().intValue(), 1));
         loadSoftwares();
     }
@@ -60,10 +73,10 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     private void loadSoftwares() {
         try {
             softwarelist = softwareBO.getSoftwarebyComputer(computerDTO.getId(), true);
-        DefaultListModel<SoftwareDTO> listModel = new DefaultListModel<>();
-        for (SoftwareDTO software : softwarelist) {
-            listModel.addElement(software);
-        }
+            DefaultListModel<SoftwareDTO> listModel = new DefaultListModel<>();
+            for (SoftwareDTO software : softwarelist) {
+                listModel.addElement(software);
+            }
             jListSoftware.setModel(listModel);
         } catch (BusinessException ex) {
             Logger.getLogger(FrmComputerDetails.class.getName()).log(Level.SEVERE, null, ex);
@@ -437,9 +450,57 @@ public class FrmComputerDetails extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LiberarActionPerformed
-//        FrmChooseComputer frmChooseComputer = new FrmChooseComputer();
-//        frmChooseComputer.setVisible(true);
-        this.dispose();
+        int minutesToAdd = (Integer) Jspinner.getValue(); // Get the value as an Integer
+
+        // Validation: Check if the spinner value is non-negative
+        if (minutesToAdd < 0) {
+            JOptionPane.showMessageDialog(this, "Ingresa minutos validos", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        StudentComputerDTO studentComputerDTO = new StudentComputerDTO();
+        studentComputerDTO.setDegreeName(studentDegreeDTO.getDegreeName());
+        studentComputerDTO.setIpAdress(computerDTO.getIpAdress());
+        studentComputerDTO.setUnique_ID(studentDTO.getUnique_ID());
+
+        if (studentComputerDTO.getDegreeName() == null || studentComputerDTO.getDegreeName().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debes escoger una carrera.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        
+        LocalDateTime selectedDateTime = LocalDateTime.now().plusMinutes(minutesToAdd);
+        if (selectedDateTime.isBefore(LocalDateTime.now())) {
+            JOptionPane.showMessageDialog(this, "La fecha de seleccion debe ser en el futuro", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        studentComputerDTO.setSelectedDateTime(selectedDateTime);
+
+        int confirmation = JOptionPane.showConfirmDialog(this, "Confirmar Apartado de Computadora", "Confirm Action", JOptionPane.YES_NO_OPTION);
+        if (confirmation != JOptionPane.YES_OPTION) {
+            return; // User chose not to proceed
+        }
+
+        try {
+            studentComputerBO.saveComputerUse(studentComputerDTO);
+            JOptionPane.showMessageDialog(this, "La computadora fue apartada correctamente", "Enhorabuena!", JOptionPane.INFORMATION_MESSAGE);
+            computerDTO.setStatus(ComputerStatus.No_Disponible);
+            computerDTO.setLabId(laboratoryDTO.getId());
+            computerBO.updateComputer(computerDTO);
+                    
+            IConnectionBD connectionBD = new ConnectionDB();
+            IStudentDAO studentDAO = new StudentDAO(connectionBD);
+            IStudentBO studentBO = new StudentBO(studentDAO);
+            
+            FrmStudentStart frmStudentStart = new FrmStudentStart(computerBO, studentBO, computerDTO, laboratoryDTO);
+            frmStudentStart.setVisible(true);
+
+            this.dispose();
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar el apartado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_LiberarActionPerformed
 
 

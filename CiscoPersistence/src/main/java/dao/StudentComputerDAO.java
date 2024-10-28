@@ -5,7 +5,7 @@
 package dao;
 
 import connection.IConnectionBD;
-import entities.ComputerSoftwareEntity;
+import entities.StudentComputerEntity;
 import exception.PersistenceException;
 import interfaces.IStudentComputerDAO;
 import javax.persistence.EntityManager;
@@ -23,7 +23,7 @@ public class StudentComputerDAO implements IStudentComputerDAO {
     }
 
     @Override
-    public void saveComputerUse(ComputerSoftwareEntity computerSoftwareEntity) throws PersistenceException {
+    public void saveComputerUse(StudentComputerEntity computerSoftwareEntity) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
             entityManager.getTransaction().begin();

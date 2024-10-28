@@ -29,21 +29,21 @@ public class StudentComputerEntity implements Serializable {
     private Long id;
 
     @Column(name = "startDateTime", nullable = false)
-    private LocalDateTime startDateTime;
-    
+    private LocalDateTime startDateTime = LocalDateTime.now();
+
     @Column(name = "selectedDateTime", nullable = false)
     private LocalDateTime selectedDateTime;
-    
-    @Column(name = "degreeName", nullable =  true)
+
+    @Column(name = "degreeName", nullable = true)
     private String degreeName;
 
-    @Column(name = "endDateTime", nullable =  true)
+    @Column(name = "endDateTime", nullable = true)
     private LocalDateTime endDateTime;
 
     @ManyToOne
     @JoinColumn(name = "idStudent", nullable = false)
     private StudentEntity student;
-    
+
     @ManyToOne
     @JoinColumn(name = "idComputer", nullable = false)
     private ComputerEntity computer;
@@ -84,12 +84,26 @@ public class StudentComputerEntity implements Serializable {
         return computer;
     }
 
+    public LocalDateTime getSelectedDateTime() {
+        return selectedDateTime;
+    }
+
+    public void setSelectedDateTime(LocalDateTime selectedDateTime) {
+        this.selectedDateTime = selectedDateTime;
+    }
+
+    public String getDegreeName() {
+        return degreeName;
+    }
+
+    public void setDegreeName(String degreeName) {
+        this.degreeName = degreeName;
+    }
+
     public void setComputer(ComputerEntity computer) {
         this.computer = computer;
     }
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
