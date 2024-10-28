@@ -81,9 +81,9 @@ public class SoftwareDAO implements ISoftwareDAO {
         try {
             String jpql;
             if (has) {
-                jpql = "SELECT s FROM SoftwareEntity s JOIN s.softwareComputer sc WHERE cs.computer.id = :idCom";
+                jpql = "SELECT s FROM SoftwareEntity s JOIN s.computerSoftwares sc WHERE sc.computer.id = :idCom";
             } else {
-                jpql = "SELECT s FROM SoftwareEntity s WHERE s NOT IN (SELECT sc.software FROM ComputerSoftwareEntity sc WHERE cs.computer.id = :idCom)";
+                jpql = "SELECT s FROM SoftwareEntity s WHERE s.id NOT IN (SELECT sc.software.id FROM ComputerSoftwareEntity sc WHERE cs.computer.id = :idCom)";
             }
 
             TypedQuery<SoftwareEntity> query = entityManager.createQuery(jpql, SoftwareEntity.class);

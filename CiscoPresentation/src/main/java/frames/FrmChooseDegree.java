@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  * @author carli
  */
 public class FrmChooseDegree extends javax.swing.JFrame {
+
     IComputerBO computerBO;
     IDegreeBO degreeBO;
     StudentDTO studentDTO;
@@ -34,7 +35,7 @@ public class FrmChooseDegree extends javax.swing.JFrame {
      */
     public FrmChooseDegree(IComputerBO computerBO, IDegreeBO degreeBO, StudentDTO studentDTO, ComputerDTO computerDTO, LaboratoryDTO laboratoryDTO) {
         initComponents();
-        this.computerBO=computerBO;
+        this.computerBO = computerBO;
         this.degreeBO = degreeBO;
         this.studentDTO = studentDTO;
         this.computerDTO = computerDTO;
@@ -66,7 +67,10 @@ public class FrmChooseDegree extends javax.swing.JFrame {
             for (StudentDegreeDTO degree : degreeList) {
                 cbDegree.addItem(degree);
             }
-            cbDegree.setSelectedIndex(0);
+            if (cbDegree.getItemAt(0) != null) {
+                cbDegree.setSelectedIndex(0);
+
+            }
         } catch (BusinessException ex) {
             Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
         }

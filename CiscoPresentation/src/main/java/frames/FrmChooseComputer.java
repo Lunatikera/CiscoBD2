@@ -4,13 +4,28 @@
  */
 package frames;
 
+import businessObjects.SoftwareBO;
+import businessObjects.StudentComputerBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.ComputerDAO;
+import dao.SoftwareDAO;
+import dao.StudentComputerDAO;
+import dao.StudentDAO;
 import dto.ComputerDTO;
 import dto.LaboratoryDTO;
 import dto.StudentDTO;
 import dto.StudentDegreeDTO;
+import enums.ComputerStatus;
 import enums.ComputerTypes;
 import exception.BusinessException;
 import interfaces.IComputerBO;
+import interfaces.IComputerDAO;
+import interfaces.ISoftwareBO;
+import interfaces.ISoftwareDAO;
+import interfaces.IStudentComputerBO;
+import interfaces.IStudentComputerDAO;
+import interfaces.IStudentDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -58,7 +73,6 @@ public class FrmChooseComputer extends javax.swing.JFrame {
     public void loadComputers() {
         try {
             List<ComputerDTO> computerList = this.computerBO.computerListByAcademyPaginated(page, LIMITE, this.computerDTO.getLabId());
-            System.out.println(computerList);
             loadedPCs.clear();
             loadedPCs.addAll(computerList);
             this.fillFields(computerList);
@@ -73,7 +87,7 @@ public class FrmChooseComputer extends javax.swing.JFrame {
 
             botones[i].setEnabled(true);
             botones[i].setNumber(computerList.get(i).getMachineNumber());
-            if (computerList.get(i).getComputerType() == ComputerTypes.Administrativo) {
+            if (computerList.get(i).getComputerType() == ComputerTypes.Administrativo || computerList.get(i).getStatus()==ComputerStatus.No_Disponible) {
                 botones[i].setVisible(false);
 
             }
@@ -127,8 +141,14 @@ public class FrmChooseComputer extends javax.swing.JFrame {
     }
 
     private void openComputerDetails(ComputerDTO computer) {
-
-        FrmComputerDetails detalles = new FrmComputerDetails();
+        IConnectionBD connectionBD = new ConnectionDB();
+        ISoftwareDAO softwareDAO = new SoftwareDAO(connectionBD);
+        ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+        IStudentDAO studentDAO = new StudentDAO(connectionBD);
+        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
+        IStudentComputerDAO studentComputerDAO = new StudentComputerDAO(connectionBD);
+        IStudentComputerBO studentComputerBO = new StudentComputerBO(studentComputerDAO, studentDAO, computerDAO);
+        FrmComputerDetails detalles = new FrmComputerDetails(studentComputerBO, softwareBO, computerBO, computer, studentDTO, laboratoryDTO, studentDegreeDTO);
         detalles.setVisible(true);
         this.dispose();
     }

@@ -96,18 +96,19 @@ public class FrmComputerReport extends javax.swing.JFrame {
     }
 
     
-    private void loadDataOnTable(LocalDate startDate, LocalDate endDate) {
-        try {
+    private void loadDataOnTable(List<String> degreeList, LocalDate startDate, LocalDate endDate) {
+//        try {
+//
+//            // Obtén solo los clientes necesarios para la página actual
+//            List<ReportComputerDTO> reporteLista = this.reportComputerBO.obtenerDatosCentroComputo(startDate, endDate);
+//
+//            // Agrega los registros paginados a la tabla
+//            this.addInfoTable(reporteLista);
+//
+//        } catch (BusinessException ex) {
+//            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
+//        }
 
-            // Obtén solo los clientes necesarios para la página actual
-            List<ReportComputerDTO> reporteLista = this.reportComputerBO.obtenerDatosCentroComputo(this.computerListName,startDate, endDate);
-
-            // Agrega los registros paginados a la tabla
-            this.addInfoTable(reporteLista);
-
-        } catch (BusinessException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
-        }
 
     }
     
@@ -122,23 +123,22 @@ public class FrmComputerReport extends javax.swing.JFrame {
     }
 
     private void addInfoTable(List<ReportComputerDTO> reportComputerList) {
-        if (reportComputerList == null) {
-            return;
-        }
+//        if (reportComputerList == null) {
+//            return;
+//        }
+//
+//        DefaultTableModel tableModel = (DefaultTableModel) this.tblComputerReport.getModel();
+//        degreeList.forEach(column
+//                -> {
+//            Object[] row = new Object[4];
+//            row[0] = column.getDegreeName();
+//            row[1] = column.getMinutesOfUsage();
+//            row[2] = column.getStudentCount();
+//            row[3] = column.getDate();
+//
+//            tableModel.addRow(row);
+//        });
 
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblComputerReport.getModel();
-        reportComputerList.forEach(column
-                -> {
-            Object[] row = new Object[6];
-            row[0] = column.getLabName();
-            row[1] = column.getMachineNumber();
-            row[2] = column.getStudentCount();
-            row[3] = column.getDate();
-            row[4] = column.getUsageMinutes();
-            row[5] = column.getInactivityMinutes();
-
-            tableModel.addRow(row);
-        });
     }
 
     private Long getSelectedIdTableDegree() {
@@ -674,21 +674,22 @@ public class FrmComputerReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteDegreeActionPerformed
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
-        if (dpStartDate.getDate() == null || dpFinishDate.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "No se selecciono ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        list.clear();
-        for (int i = 0; i < cbxDeleteComputer.getItemCount(); i++) {
-            ComputerDTO computer = cbxDeleteComputer.getItemAt(i);
-            this.list.add(computer.getIpAdress());  
-        }
-        computerListName = new ArrayList(list);
-        LocalDate fechaInicio = (LocalDate)dpStartDate.getDate();
-        LocalDate fechaFin = (LocalDate)dpFinishDate.getDate();
+//        if (dpStartDate.getDate() == null || dpFinishDate.getDate() == null) {
+//            JOptionPane.showMessageDialog(this, "No se selecciono ninguna fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
+//        list.clear();
+//        for (int i = 0; i < cbxDeleteComputer.getItemCount(); i++) {
+//            ComputerDTO computer = cbxDeleteComputer.getItemAt(i);
+//            this.list.add(computer.get);  
+//        }
+//        degreeListName = new ArrayList(list);
+//        LocalDate fechaInicio = (LocalDate)dpStartDate.getDate();
+//        LocalDate fechaFin = (LocalDate)dpFinishDate.getDate();
+//
+//        
+//        this.loadDataOnTable(degreeListName, fechaInicio, fechaFin);
 
-        
-        this.loadDataOnTable(fechaInicio, fechaFin);
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed

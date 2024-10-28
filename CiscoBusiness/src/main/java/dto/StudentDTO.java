@@ -110,6 +110,11 @@ public class StudentDTO {
         final StudentDTO other = (StudentDTO) obj;
         return Objects.equals(this.unique_ID, other.unique_ID);
     }
+
+    @Override
+    public String toString() {
+        return "StudentDTO{" + "unique_ID=" + unique_ID + ", names=" + names + ", firstLastname=" + firstLastname + ", secondLastname=" + secondLastName + ", password=" + password + ", enrollmentStatus=" + enrollmentStatus + '}';
+    }
     
     
 }

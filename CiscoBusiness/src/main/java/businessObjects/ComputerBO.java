@@ -87,7 +87,7 @@ public class ComputerBO implements IComputerBO {
 
         try {
             ComputerEntity computerEntity = ComputerMapper.toEntity(computer);
-            computerEntity.setLaboratory(laboratoryDAO.findLaboratoryByID(computer.getId()));
+            computerEntity.setLaboratory(laboratoryDAO.findLaboratoryByID(computer.getLabId()));
             computerDAO.updateComputer(computerEntity);
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, null, ex);
