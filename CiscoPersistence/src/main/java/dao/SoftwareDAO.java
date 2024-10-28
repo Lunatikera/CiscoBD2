@@ -100,6 +100,29 @@ public class SoftwareDAO implements ISoftwareDAO {
     }
 
     @Override
+    public SoftwareEntity getSoftwareById(Long softwareId) throws PersistenceException {
+        EntityManager entityManager = connectionBD.getEntityManager();
+        try {
+            // Define la consulta JPQL para buscar software por ID
+            String jpql = "SELECT s FROM SoftwareEntity s WHERE s.id = :softwareId";
+
+            TypedQuery<SoftwareEntity> query = entityManager.createQuery(jpql, SoftwareEntity.class);
+            query.setParameter("softwareId", softwareId);
+
+            return query.getSingleResult(); // Retorna el único resultado
+
+        } catch (NoResultException e) {
+            return null; // Maneja el caso en que no se encuentra el software
+        } catch (Exception e) {
+            throw new PersistenceException("Error retrieving software by ID", e);
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();  // Asegura que el EntityManager se cierra
+            }
+        }
+    }
+
+    @Override
     public List<SoftwareEntity> softwareListPaginated(int limit, int page) throws PersistenceException {
         EntityManager entityManager = connectionBD.getEntityManager();
         try {
@@ -119,6 +142,42 @@ public class SoftwareDAO implements ISoftwareDAO {
             if (entityManager != null && entityManager.isOpen()) {
                 entityManager.close();  // Asegúrate de cerrar el EntityManager
             }
+        }
+    }
+
+    public List<SoftwareEntity> getSoftwareInstalledByComputer(Long idCom) throws PersistenceException {
+        EntityManager entityManager = connectionBD.getEntityManager();
+
+        String jpql = """
+            SELECT sw FROM SoftwareEntity sw
+            JOIN  sw.computerSoftwares c
+            WHERE c.computer.id = :idCom
+        """;
+
+        TypedQuery<SoftwareEntity> query = entityManager.createQuery(jpql, SoftwareEntity.class);
+        query.setParameter("idCom", idCom);
+        return query.getResultList();
+    }
+
+    public List<SoftwareEntity> softwareNoInstall(Long idCom) throws PersistenceException {
+        EntityManager entityManager = connectionBD.getEntityManager();
+        try {
+            // Consulta JPQL
+            String jpql = """
+                SELECT s FROM SoftwareEntity s
+                WHERE s.id NOT IN (
+                    SELECT cs.software.id
+                    FROM ComputerSoftwareEntity cs
+                    WHERE cs.computer.id = :idCom
+                )
+            """;
+
+            TypedQuery<SoftwareEntity> query = entityManager.createQuery(jpql, SoftwareEntity.class);
+            query.setParameter("idCom", idCom);
+
+            return query.getResultList();
+        } finally {
+            entityManager.close();
         }
     }
 

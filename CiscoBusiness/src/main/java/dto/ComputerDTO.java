@@ -115,6 +115,11 @@ public class ComputerDTO {
         return Objects.equals(this.id, other.id);
     }
 
+    @Override
+    public String toString() {
+        return ipAdress;
+    }
+
     
     
 }

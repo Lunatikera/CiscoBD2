@@ -61,7 +61,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
     private List<LaboratoryDTO> laboratoryList;
     //private List<DegreeDTO> degreeList;
     private Set<String> list;
-    private List<String> computerListName;
+    private List<Integer> computerListName;
     private Long idLab;
     
 
@@ -86,8 +86,8 @@ public class FrmComputerReport extends javax.swing.JFrame {
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
         this.customizeTableHeader();
-        this.fillComboBoxComputer();
         this.fillComboBoxLaboratory();
+        this.fillComboBoxComputer();
     }
     
     private void customizeTableHeader() {
@@ -96,11 +96,11 @@ public class FrmComputerReport extends javax.swing.JFrame {
     }
 
     
-    private void loadDataOnTable(List<String> degreeList, LocalDate startDate, LocalDate endDate) {
+    private void loadDataOnTable(LocalDate startDate, LocalDate endDate) {
         try {
 
             // Obtén solo los clientes necesarios para la página actual
-            List<ReportComputerDTO> reporteLista = this.reportComputerBO.obtenerDatosCentroComputo(startDate, endDate);
+            List<ReportComputerDTO> reporteLista = this.reportComputerBO.obtenerDatosCentroComputo(this.computerListName,startDate, endDate);
 
             // Agrega los registros paginados a la tabla
             this.addInfoTable(reporteLista);
@@ -127,13 +127,15 @@ public class FrmComputerReport extends javax.swing.JFrame {
         }
 
         DefaultTableModel tableModel = (DefaultTableModel) this.tblComputerReport.getModel();
-        degreeList.forEach(column
+        reportComputerList.forEach(column
                 -> {
-            Object[] row = new Object[4];
-            row[0] = column.getDegreeName();
-            row[1] = column.getMinutesOfUsage();
+            Object[] row = new Object[6];
+            row[0] = column.getLabName();
+            row[1] = column.getMachineNumber();
             row[2] = column.getStudentCount();
             row[3] = column.getDate();
+            row[4] = column.getUsageMinutes();
+            row[5] = column.getInactivityMinutes();
 
             tableModel.addRow(row);
         });
@@ -169,10 +171,12 @@ public class FrmComputerReport extends javax.swing.JFrame {
     private void fillComboBoxLaboratory() {
         try {
             laboratoryList = laboratoryBO.obtainAllLaboratory();
+            
 
             for (LaboratoryDTO laboratory : laboratoryList) {
                 cbxLaboratory.addItem(laboratory);
             }
+            idLab = cbxLaboratory.getItemAt(1).getId();
         } catch (BusinessException ex) {
             Logger.getLogger(FrmComputerReport.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -433,7 +437,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre Carrera", "Uso por dia (Min)", "Cantidad de alumnos", "Fecha"
+                "Nombre Centro Computo", "Numero Computadora", "Cantidad de Alumnos ", "Fecha", "Minutos de uso por dia", "Minutos de inactividad por dia"
             }
         ));
         jScrollPane1.setViewportView(tblComputerReport);
@@ -677,14 +681,14 @@ public class FrmComputerReport extends javax.swing.JFrame {
         list.clear();
         for (int i = 0; i < cbxDeleteComputer.getItemCount(); i++) {
             ComputerDTO computer = cbxDeleteComputer.getItemAt(i);
-            this.list.add(computer.get);  
+            this.list.add(computer.getIpAdress());  
         }
-        degreeListName = new ArrayList(list);
+        computerListName = new ArrayList(list);
         LocalDate fechaInicio = (LocalDate)dpStartDate.getDate();
         LocalDate fechaFin = (LocalDate)dpFinishDate.getDate();
 
         
-        this.loadDataOnTable(degreeListName, fechaInicio, fechaFin);
+        this.loadDataOnTable(fechaInicio, fechaFin);
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
@@ -710,7 +714,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
             doc.add(new Paragraph("Reporte de Ganancias por Peliculas y Ciudades", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16)));
             doc.add(new Paragraph("Filtros Aplicados:", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12)));
             doc.add(new Paragraph("Fechas: " + dpStartDate.getText() + " a " + dpFinishDate.getText()));
-//            doc.add(new Paragraph("Carreras: " + obtainDegreeDataSeparatedByComas(cbxDeleteComputer))); // Asegúrate de convertir la lista a cadena
+            //doc.add(new Paragraph("Carreras: " + obtainDegreeDataSeparatedByComas(cbxDeleteComputer))); // Asegúrate de convertir la lista a cadena
             doc.add(new Paragraph("\n")); // Espacio en blanco
 
             // Tabla
