@@ -4,14 +4,35 @@
  */
 package frames;
 
+import businessObjects.BlockReportBO;
+import businessObjects.ComputerBO;
 import businessObjects.DegreeBO;
+import businessObjects.RuleBO;
+import businessObjects.SoftwareBO;
+import businessObjects.StudentBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.BlockReportDAO;
+import dao.ComputerDAO;
+import dao.LaboratoryDAO;
+import dao.RuleDAO;
+import dao.SoftwareDAO;
 import dto.DegreeDTO;
 import dto.StudentDTO;
 
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
+import interfaces.IBlockReportBO;
+import interfaces.IBlockReportDAO;
+import interfaces.IComputerBO;
+import interfaces.IComputerDAO;
 import interfaces.IDegreeBO;
 import interfaces.ILaboratoryBO;
+import interfaces.ILaboratoryDAO;
+import interfaces.IRuleBO;
+import interfaces.IRuleDAO;
+import interfaces.ISoftwareBO;
+import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -518,15 +539,29 @@ public class FrmStudentManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRightActionPerformed
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
-        // TODO add your handling code here:
+        IConnectionBD connection = new ConnectionDB();
+        IComputerDAO computerDAO = new ComputerDAO(connection);
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
+        IComputerBO computerBO =new ComputerBO(computerDAO, laboratoryDAO);
+        
+        
+        
+        FrmComputerManager frmComputerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
+        this.dispose();
+        frmComputerManager.setVisible(true);
     }//GEN-LAST:event_btnMenuComputersActionPerformed
 
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
-        // TODO add your handling code here:
+         IConnectionBD connection = new ConnectionDB();
+         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+         this.dispose();
+         frmDegreeManager.setVisible(true);
+    
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
         FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
+        this.dispose();
         laboratory.setVisible(true);
     }//GEN-LAST:event_btnMenuLabsActionPerformed
 
@@ -539,11 +574,23 @@ public class FrmStudentManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuAcademiesActionPerformed
 
     private void btnMenuSoftwaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwaresActionPerformed
-        // TODO add your handling code here:
+         IConnectionBD connection = new ConnectionDB();
+         ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
+         ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+        
+        FrmSoftwareManager frmSoftwareManager = new FrmSoftwareManager(softwareBO);
+        this.dispose();
+        frmSoftwareManager.setVisible(true);
     }//GEN-LAST:event_btnMenuSoftwaresActionPerformed
 
     private void btnMenuRulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuRulesActionPerformed
-        // TODO add your handling code here:
+        IConnectionBD connection = new ConnectionDB();
+        IRuleDAO ruleDAO = new RuleDAO(connection);
+        IRuleBO ruleBO = new RuleBO(ruleDAO);
+        
+        FrmRulesManager frmRulesManager = new FrmRulesManager(ruleBO);
+        this.dispose();
+        frmRulesManager.setVisible(true);
     }//GEN-LAST:event_btnMenuRulesActionPerformed
 
     private void btnMenuLabReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabReportsActionPerformed
@@ -555,7 +602,13 @@ public class FrmStudentManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
 
     private void btnMenuBlockReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportsActionPerformed
-        // TODO add your handling code here:
+        IConnectionBD connection = new ConnectionDB();
+        IBlockReportDAO blockReportDAO = new BlockReportDAO(connection);
+        IBlockReportBO blockReportBO = new BlockReportBO(blockReportDAO);
+        
+        FrmLocksReport frmLocksReport = new FrmLocksReport(blockReportBO);
+        this.dispose();
+        frmLocksReport.setVisible(true);
     }//GEN-LAST:event_btnMenuBlockReportsActionPerformed
 
     private void btnMenuLogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLogOffActionPerformed
