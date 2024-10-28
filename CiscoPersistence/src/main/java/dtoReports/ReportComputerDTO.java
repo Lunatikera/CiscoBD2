@@ -11,15 +11,15 @@ import java.time.LocalDate;
  * @author NaderCroft
  */
 public class ReportComputerDTO {
-    private String computerCenterName; // Name of the computer center
-    private Integer machineNumber;      // Computer number
+    private String labName; // Name of the computer center
+    private String machineNumber;      // Computer number
     private Long studentCount;          // Number of students who used it
     private LocalDate date;             // Date of usage
     private Long usageMinutes;           // Minutes of usage per day
     private Long inactivityMinutes;      // Minutes of inactivity per day
 
-    public ReportComputerDTO(String computerCenterName, Integer machineNumber, Long studentCount, LocalDate date, Long usageMinutes, Long inactivityMinutes) {
-        this.computerCenterName = computerCenterName;
+    public ReportComputerDTO(String labName, String machineNumber, Long studentCount, LocalDate date, Long usageMinutes, Long inactivityMinutes) {
+        this.labName = labName;
         this.machineNumber = machineNumber;
         this.studentCount = studentCount;
         this.date = date;
@@ -27,19 +27,19 @@ public class ReportComputerDTO {
         this.inactivityMinutes = inactivityMinutes;
     }
 
-    public String getComputerCenterName() {
-        return computerCenterName;
+    public String getLabName() {
+        return labName;
     }
 
-    public void setComputerCenterName(String computerCenterName) {
-        this.computerCenterName = computerCenterName;
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
 
-    public Integer getMachineNumber() {
+    public String getMachineNumber() {
         return machineNumber;
     }
 
-    public void setMachineNumber(Integer machineNumber) {
+    public void setMachineNumber(String machineNumber) {
         this.machineNumber = machineNumber;
     }
 
@@ -75,5 +75,7 @@ public class ReportComputerDTO {
         this.inactivityMinutes = inactivityMinutes;
     }
 
+    
+    
     
 }

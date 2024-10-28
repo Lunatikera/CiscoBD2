@@ -14,5 +14,5 @@ import java.util.List;
  * @author NaderCroft
  */
 public interface IReportComputerBO {
-    List<ReportComputerDTO> obtenerDatosCentroComputo(LocalDate inicio, LocalDate fin) throws BusinessException;
+    public List<ReportComputerDTO> obtenerDatosCentroComputo(List<Integer> degreeIds,LocalDate startDate, LocalDate endDate) throws BusinessException;
 }
