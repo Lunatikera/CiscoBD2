@@ -4,29 +4,42 @@
  */
 package frames;
 
+import businessObjects.AcademyUnityBO;
+import businessObjects.BlockBO;
 import businessObjects.BlockReportBO;
 import businessObjects.ComputerBO;
 import businessObjects.DegreeBO;
+import businessObjects.LaboratoryBO;
 import businessObjects.RuleBO;
 import businessObjects.SoftwareBO;
 import businessObjects.StudentBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
+import dao.AcademyUnityDAO;
 import dao.BlockReportDAO;
 import dao.ComputerDAO;
+import dao.DegreeDAO;
 import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
-import dto.DegreeDTO;
+import dao.StudentDAO;
+import dao.StudentDegreeDAO;
+import dto.AcademyDTO;
+import dto.BlockDTO;
+import dto.LaboratoryDTO;
+import dto.RuleDTO;
 import dto.StudentDTO;
-
+import dto2.BlockReportDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
+import interfaces.IAcademyUnityDAO;
+import interfaces.IBlockBO;
 import interfaces.IBlockReportBO;
 import interfaces.IBlockReportDAO;
 import interfaces.IComputerBO;
 import interfaces.IComputerDAO;
 import interfaces.IDegreeBO;
+import interfaces.IDegreeDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
 import interfaces.IRuleBO;
@@ -34,55 +47,56 @@ import interfaces.IRuleDAO;
 import interfaces.ISoftwareBO;
 import interfaces.ISoftwareDAO;
 import interfaces.IStudentBO;
+import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeBO;
+import interfaces.IStudentDegreeDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author carli
+ * @author aleja
  */
-public class FrmStudentManager extends javax.swing.JFrame {
+public class FrmBlockManager extends javax.swing.JFrame {
 
     private int page = 1;
     private int limit = 10;
+    IBlockBO blockBO;
     IStudentBO studentBO;
-    IDegreeBO degreeBO;
-    DegreeDTO degreeDTO;
-    ILaboratoryBO laboratoryBO;
-    IAcademyUnityBO academyBO;
-    List<DegreeDTO> listDegree;
+    IRuleBO ruleBO;
+    RuleDTO ruleDTO;
+    List<RuleDTO> ruleList;
 
     /**
      * Creates new form FrmStudentManager
      */
-    public FrmStudentManager(IStudentBO studentBO, IDegreeBO degreeBO) {
-        initComponents();
-        this.academyBO = academyBO;
-        this.laboratoryBO = laboratoryBO;
+    public FrmBlockManager(IBlockBO blockBO, IRuleBO ruleBO, IStudentBO studentBO) {
+        this.blockBO = blockBO;
+        this.ruleBO = ruleBO;
         this.studentBO = studentBO;
-        this.degreeBO = degreeBO;
-        this.listDegree = new ArrayList<>();
+        this.ruleList = new ArrayList<>();
+        initComponents();
         this.loadFrame();
     }
 
     public void loadFrame() {
-        this.fillDegreeComboBox();
-        this.degreeDTO = (DegreeDTO)cbDegree.getItemAt(0);
-        this.setTitle("Administracion de Estudiantes ");
+        this.fillRuleComboBox();
+        this.ruleDTO = cbRule.getItemAt(0);
+        this.setTitle("Administracion de Bloqueos ");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
-        this.loadTableStudents();
+        this.loadRuleLaboratory();
         this.pageStatus();
-        this.cbDegree.addActionListener(new ActionListener() {
+        this.cbRule.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 refreshFilter();
@@ -90,54 +104,33 @@ public class FrmStudentManager extends javax.swing.JFrame {
         });
     }
 
-    private void deleteInfoTableStudents() {
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblStudent.getModel();
-        if (tableModel.getRowCount() > 0) {
-            for (int row = tableModel.getRowCount() - 1; row > -1; row--) {
-                tableModel.removeRow(row);
-            }
-        }
-    }
-
-//    
-
     private void refreshFilter() {
-        if (cbDegree.getSelectedItem() != null) {
-            this.degreeDTO = (DegreeDTO) cbDegree.getSelectedItem();
+        if (cbRule.getSelectedItem() != null) {
+            this.ruleDTO = (RuleDTO) cbRule.getSelectedItem();
             this.page = 1;
-            this.loadTableStudents();
+            this.loadRuleLaboratory();
+            this.lblBlock.setText(ruleDTO.getRuleDescription());
             this.pageStatus();
             return;
         }
         JOptionPane.showMessageDialog(this, "Error al buscar el catalogo, Intente de nuevo ", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    private void fillDegreeComboBox() {
+    private void loadRuleLaboratory() {
 
-        try {
-            listDegree = degreeBO.getAllDegrees();
-
-            for (DegreeDTO degree : listDegree) {
-                cbDegree.addItem(degree);
-            }
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void loadTableStudents() {
-        if (degreeDTO == null) {
+        if (ruleDTO == null) {
             return;
         }
         try {
             // Borrar registros previos antes de cargar los nuevos
-            deleteInfoTableStudents();
+            deleteInfoTableBlock();
+            Long idRule = ruleDTO.getId();
 
             // Obtén solo los clientes necesarios para la página actual
-            List<StudentDTO> studentList = this.studentBO.studentListByDegreePaginated(degreeDTO.getId(), page, limit);
+            List<BlockDTO> blockList = this.blockBO.blockListByRulePaginated(page, limit, idRule);
 
 //         Agrega los registros paginados a la tabla
-            this.addInfoTable(studentList);
+            this.addInfoTable(blockList);
 //         Control de botones de navegación
             btnLeft.setEnabled(page > 1);
 
@@ -146,35 +139,73 @@ public class FrmStudentManager extends javax.swing.JFrame {
         }
     }
 
-    private void addInfoTable(List<StudentDTO> studentList) {
-        if (studentList == null) {
-            return;
+    private void deleteInfoTableBlock() {
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblBlock.getModel();
+        if (tableModel.getRowCount() > 0) {
+            for (int row = tableModel.getRowCount() - 1; row > -1; row--) {
+                tableModel.removeRow(row);
+            }
         }
+    }
 
-        DefaultTableModel tableModel = (DefaultTableModel) this.tblStudent.getModel();
-        studentList.forEach(column
-                -> {
+    private void addInfoTable(List<BlockDTO> blockList) {
+
+        DefaultTableModel tableModel = (DefaultTableModel) this.tblBlock.getModel();
+        blockList.forEach(column -> {
             Object[] row = new Object[5];
-            row[0] = column.getUnique_ID();
-            row[1] = column.getNames();
-            row[2] = column.getFirstLastname();
-            row[3] = column.getFirstLastname();
-            row[4] = column.getEnrollmentStatus();
+            row[0] = column.getId();
+            row[1] = column.getBlockDate();
+            row[2] = column.getMotive();
+            row[3] = column.getWithdrawalDate();
+            row[4] = column.getstudentName();
+
             tableModel.addRow(row);
         });
     }
 
-    private Long getSelectedIdTableStudent() {
-        int selectedIndex = this.tblStudent.getSelectedRow();
+    private Long getSelectedIdTableLaboratory() {
+        int selectedIndex = this.tblBlock.getSelectedRow();
         if (selectedIndex != -1) {
-            DefaultTableModel model = (DefaultTableModel) this.tblStudent.getModel();
+            DefaultTableModel model = (DefaultTableModel) this.tblBlock.getModel();
             int idIndexRow = 0;
-            Long idSelectedStudent = (Long) model.getValueAt(selectedIndex,
-                    idIndexRow);
-            return idSelectedStudent;
+            Long idSelectedLaboratory = (Long) model.getValueAt(selectedIndex, idIndexRow);
+            return idSelectedLaboratory;
         } else {
             return null;
         }
+    }
+
+    private void fillRuleComboBox() {
+        try {
+            ruleList = ruleBO.getRules();
+
+            for (RuleDTO rule : ruleList) {
+                cbRule.addItem(rule);
+            }
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmBlockManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void removeLaboratory() {
+        Long id = this.getSelectedIdTableLaboratory();
+        if (id == null) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el laboratorio seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                // Retirar el bloque y establecer la fecha de hoy como fecha de retiro
+                this.blockBO.deleteBlock(id, LocalDate.now());
+                // Recargar la tabla después de retirar el bloque
+                loadRuleLaboratory();
+            } catch (BusinessException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
     }
 
     /**
@@ -217,20 +248,19 @@ public class FrmStudentManager extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblStudent = new javax.swing.JTable();
+        tblBlock = new javax.swing.JTable();
         menuButton13 = new utilities.MenuButton();
-        lblStudent = new javax.swing.JLabel();
+        lblBlock = new javax.swing.JLabel();
         lblPage = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        lblDegreeFilter = new javax.swing.JLabel();
-        cbDegree = new javax.swing.JComboBox<>();
+        lblAcademyFilter = new javax.swing.JLabel();
+        cbRule = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        btnAdd = new utilities.MenuButton();
-        btnEdit = new utilities.MenuButton();
+        btnDelete = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -243,13 +273,18 @@ public class FrmStudentManager extends javax.swing.JFrame {
         btnMenuStudents.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuStudents.setText("Estudiantes");
         btnMenuStudents.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuStudentsActionPerformed(evt);
+            }
+        });
         panelMenu2.add(btnMenuStudents);
 
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel24);
 
         btnMenuComputers.setForeground(new java.awt.Color(255, 255, 255));
-        btnMenuComputers.setText("Computadoras");
+        btnMenuComputers.setText("Computadora");
         btnMenuComputers.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnMenuComputers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -394,22 +429,30 @@ public class FrmStudentManager extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(208, 216, 232));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblStudent.setModel(new javax.swing.table.DefaultTableModel(
+        tblBlock.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Estatus de Inscripcion"
+                "ID", "Dia Bloqueo", "Motivo", "Dia de desbaneo", "ID del Alumno"
             }
-        ));
-        jScrollPane1.setViewportView(tblStudent);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblBlock);
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 710, 440));
         jPanel4.add(menuButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 857, -1, -1));
 
-        lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblStudent.setText("Estudiantes");
-        jPanel4.add(lblStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, -1, -1));
+        lblBlock.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblBlock.setText("Bloqueos");
+        jPanel4.add(lblBlock, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 700, -1));
 
         lblPage.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblPage.setText("Pagina 01");
@@ -417,14 +460,14 @@ public class FrmStudentManager extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(208, 216, 232));
 
-        lblDegreeFilter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDegreeFilter.setText("Filtrar por Carrera");
+        lblAcademyFilter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblAcademyFilter.setText("Filtrar por Reglas");
 
-        cbDegree.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        cbDegree.setForeground(new java.awt.Color(0, 0, 0));
-        cbDegree.addActionListener(new java.awt.event.ActionListener() {
+        cbRule.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbRule.setForeground(new java.awt.Color(0, 9, 0));
+        cbRule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbDegreeActionPerformed(evt);
+                cbRuleActionPerformed(evt);
             }
         });
 
@@ -433,47 +476,34 @@ public class FrmStudentManager extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cbDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(lblDegreeFilter)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAcademyFilter)
+                    .addComponent(cbRule, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblDegreeFilter)
+                .addComponent(lblAcademyFilter)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbDegree, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addComponent(cbRule, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 36, Short.MAX_VALUE))
         );
 
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(208, 216, 232));
 
-        btnAdd.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAdd.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/addNormal.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
+        btnDelete.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/deleteNormal.png"))); // NOI18N
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
-        jPanel2.add(btnAdd);
+        jPanel2.add(btnDelete);
 
-        btnEdit.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
-        btnEdit.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editNormal.png"))); // NOI18N
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnEdit);
-
-        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 170));
+        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 340, 70, 260));
 
         btnLeft.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leftSelected.png"))); // NOI18N
         btnLeft.setSimpleIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left.png"))); // NOI18N
@@ -528,41 +558,43 @@ public class FrmStudentManager extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        FrmAddStudent frmAddStudent = new FrmAddStudent(studentBO, degreeBO);
-        frmAddStudent.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnAddActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        this.removeLaboratory();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightActionPerformed
         // TODO add your handling code here:
+        page++;
+        this.pageStatus();
     }//GEN-LAST:event_btnRightActionPerformed
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
         IConnectionBD connection = new ConnectionDB();
         IComputerDAO computerDAO = new ComputerDAO(connection);
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
-        IComputerBO computerBO =new ComputerBO(computerDAO, laboratoryDAO);
-        
-        
-        
+        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
+        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
+        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
+
         FrmComputerManager frmComputerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
         this.dispose();
         frmComputerManager.setVisible(true);
     }//GEN-LAST:event_btnMenuComputersActionPerformed
 
     private void btnMenuDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeActionPerformed
-         IConnectionBD connection = new ConnectionDB();
-         FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
-         this.dispose();
-         frmDegreeManager.setVisible(true);
-    
+        IConnectionBD connection = new ConnectionDB();
+
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        FrmDegreeManager frmDegreeManager = new FrmDegreeManager(degreeBO);
+        this.dispose();
+        frmDegreeManager.setVisible(true);
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
-        FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
-        this.dispose();
-        laboratory.setVisible(true);
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuLabsActionPerformed
 
     private void btnMenuBlocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlocksActionPerformed
@@ -574,10 +606,10 @@ public class FrmStudentManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuAcademiesActionPerformed
 
     private void btnMenuSoftwaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSoftwaresActionPerformed
-         IConnectionBD connection = new ConnectionDB();
-         ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
-         ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
-        
+        IConnectionBD connection = new ConnectionDB();
+        ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
+        ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+
         FrmSoftwareManager frmSoftwareManager = new FrmSoftwareManager(softwareBO);
         this.dispose();
         frmSoftwareManager.setVisible(true);
@@ -587,7 +619,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
         IConnectionBD connection = new ConnectionDB();
         IRuleDAO ruleDAO = new RuleDAO(connection);
         IRuleBO ruleBO = new RuleBO(ruleDAO);
-        
+
         FrmRulesManager frmRulesManager = new FrmRulesManager(ruleBO);
         this.dispose();
         frmRulesManager.setVisible(true);
@@ -605,7 +637,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
         IConnectionBD connection = new ConnectionDB();
         IBlockReportDAO blockReportDAO = new BlockReportDAO(connection);
         IBlockReportBO blockReportBO = new BlockReportBO(blockReportDAO);
-        
+
         FrmLocksReport frmLocksReport = new FrmLocksReport(blockReportBO);
         this.dispose();
         frmLocksReport.setVisible(true);
@@ -616,27 +648,29 @@ public class FrmStudentManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuLogOffActionPerformed
 
     private void btnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftActionPerformed
-        // TODO add your handling code here:
+        page--;
+        this.pageStatus();
+
     }//GEN-LAST:event_btnLeftActionPerformed
 
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        try {
-            if (this.getSelectedIdTableStudent() == null) {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            StudentDTO studentDTO = studentBO.findStudentByUniqueID(this.getSelectedIdTableStudent());
-            FrmUpdateStudentManager Study = new FrmUpdateStudentManager(studentDTO, studentBO,degreeBO);
-            Study.setVisible(true);
-            this.dispose();
-        } catch (BusinessException ex) {
-            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEditActionPerformed
+    private void btnMenuStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudentsActionPerformed
+        IConnectionBD connection = new ConnectionDB();
+        IStudentDAO studentDAO = new StudentDAO(connection);
+        IStudentBO studentBO = new StudentBO(studentDAO);
 
-    private void cbDegreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDegreeActionPerformed
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+
+        FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
+        this.dispose();
+        frmStudentManager.setVisible(true);
+    }//GEN-LAST:event_btnMenuStudentsActionPerformed
+
+    private void cbRuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRuleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbDegreeActionPerformed
+    }//GEN-LAST:event_cbRuleActionPerformed
+
     public void pageStatus() {
         String pageNumber = String.valueOf(page);
         if (pageNumber.length() == 1) {
@@ -658,14 +692,14 @@ public class FrmStudentManager extends javax.swing.JFrame {
 
     private void rightButonStatus() {
 
-        if (degreeDTO == null) {
+        if (ruleDTO == null) {
             btnRight.setEnabled(false);
             return;
         }
         try {
             btnRight.setEnabled(true);
-            if (this.studentBO.studentListByDegreePaginated(degreeDTO.getId(), page + 1, limit) == null
-                    || this.studentBO.studentListByDegreePaginated(degreeDTO.getId(), page + 1, limit).isEmpty()) {
+            if (this.blockBO.blockListByRulePaginated(page + 1, limit, ruleDTO.getId()) == null
+                    || this.blockBO.blockListByRulePaginated(page + 1, limit, ruleDTO.getId()).isEmpty()) {
                 btnRight.setEnabled(false);
             }
         } catch (BusinessException ex) {
@@ -673,9 +707,9 @@ public class FrmStudentManager extends javax.swing.JFrame {
         }
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private utilities.MenuButton btnAdd;
-    private utilities.MenuButton btnEdit;
+    private utilities.MenuButton btnDelete;
     private utilities.MenuButton btnLeft;
     private utilities.MenuButton btnMenuAcademies;
     private utilities.MenuButton btnMenuBlockReports;
@@ -690,7 +724,7 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private utilities.MenuButton btnMenuSoftwares;
     private utilities.MenuButton btnMenuStudents;
     private utilities.MenuButton btnRight;
-    private javax.swing.JComboBox<DegreeDTO> cbDegree;
+    private javax.swing.JComboBox<RuleDTO> cbRule;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
@@ -711,11 +745,11 @@ public class FrmStudentManager extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblDegreeFilter;
+    private javax.swing.JLabel lblAcademyFilter;
+    private javax.swing.JLabel lblBlock;
     private javax.swing.JLabel lblPage;
-    private javax.swing.JLabel lblStudent;
     private utilities.MenuButton menuButton13;
     private panels.PanelMenu panelMenu2;
-    private javax.swing.JTable tblStudent;
+    private javax.swing.JTable tblBlock;
     // End of variables declaration//GEN-END:variables
 }

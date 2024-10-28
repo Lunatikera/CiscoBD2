@@ -61,7 +61,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
     private List<LaboratoryDTO> laboratoryList;
     //private List<DegreeDTO> degreeList;
     private Set<String> list;
-    private List<String> computerListName;
+    private List<Integer> computerListName;
     private Long idLab;
     
 
@@ -86,8 +86,8 @@ public class FrmComputerReport extends javax.swing.JFrame {
         this.setSize(1280, 780);
         this.setLocationRelativeTo(null);
         this.customizeTableHeader();
-        this.fillComboBoxComputer();
         this.fillComboBoxLaboratory();
+        this.fillComboBoxComputer();
     }
     
     private void customizeTableHeader() {
@@ -108,6 +108,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
 //        } catch (BusinessException ex) {
 //            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
 //        }
+
 
     }
     
@@ -137,6 +138,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
 //
 //            tableModel.addRow(row);
 //        });
+
     }
 
     private Long getSelectedIdTableDegree() {
@@ -169,10 +171,12 @@ public class FrmComputerReport extends javax.swing.JFrame {
     private void fillComboBoxLaboratory() {
         try {
             laboratoryList = laboratoryBO.obtainAllLaboratory();
+            
 
             for (LaboratoryDTO laboratory : laboratoryList) {
                 cbxLaboratory.addItem(laboratory);
             }
+            idLab = cbxLaboratory.getItemAt(1).getId();
         } catch (BusinessException ex) {
             Logger.getLogger(FrmComputerReport.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -433,7 +437,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre Carrera", "Uso por dia (Min)", "Cantidad de alumnos", "Fecha"
+                "Nombre Centro Computo", "Numero Computadora", "Cantidad de Alumnos ", "Fecha", "Minutos de uso por dia", "Minutos de inactividad por dia"
             }
         ));
         jScrollPane1.setViewportView(tblComputerReport);
@@ -685,6 +689,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
 //
 //        
 //        this.loadDataOnTable(degreeListName, fechaInicio, fechaFin);
+
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
@@ -710,7 +715,7 @@ public class FrmComputerReport extends javax.swing.JFrame {
             doc.add(new Paragraph("Reporte de Ganancias por Peliculas y Ciudades", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16)));
             doc.add(new Paragraph("Filtros Aplicados:", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12)));
             doc.add(new Paragraph("Fechas: " + dpStartDate.getText() + " a " + dpFinishDate.getText()));
-//            doc.add(new Paragraph("Carreras: " + obtainDegreeDataSeparatedByComas(cbxDeleteComputer))); // Asegúrate de convertir la lista a cadena
+            //doc.add(new Paragraph("Carreras: " + obtainDegreeDataSeparatedByComas(cbxDeleteComputer))); // Asegúrate de convertir la lista a cadena
             doc.add(new Paragraph("\n")); // Espacio en blanco
 
             // Tabla

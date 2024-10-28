@@ -13,7 +13,7 @@ import java.util.List;
  * @author aleja
  */
 public interface ILaboratoryBO {
-    
+
     public List<LaboratoryDTO> laboratoryListByAcademyPaginated(Long academyID, int limit, int offset) throws BusinessException;
 
     public LaboratoryDTO findLaboratoryByID(Long LaboratoryId) throws BusinessException;
@@ -23,8 +23,10 @@ public interface ILaboratoryBO {
     public void updateLaboratory(LaboratoryDTO laboratory) throws BusinessException;
 
     public void deleteLaboratory(Long LaboratoryId) throws BusinessException;
-    
+
     public List<LaboratoryDTO> laboratoryListByAcademy(Long academyID) throws BusinessException;
-    
+    public List<LaboratoryDTO> getAllLaboratory() throws BusinessException;
+
     public List<LaboratoryDTO> obtainAllLaboratory() throws BusinessException;
+
 }

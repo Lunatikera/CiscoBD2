@@ -21,7 +21,8 @@ import javax.persistence.NoResultException;
  *
  * @author carli
  */
-public class ComputerDAO implements IComputerDAO{
+public class ComputerDAO implements IComputerDAO {
+
     IConnectionBD connection;
 
     public ComputerDAO(IConnectionBD conection) {
@@ -29,8 +30,22 @@ public class ComputerDAO implements IComputerDAO{
     }
 
     @Override
+    public List<ComputerEntity> getAllComputer() throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager(); // Obtain the EntityManager
+        try {
+            // Create a query to retrieve all DegreeEntity instances
+            return entityManager.createQuery("SELECT c FROM ComputerEntity c", ComputerEntity.class)
+                    .getResultList(); // Execute the query and return the results
+        } catch (Exception e) {
+            throw new PersistenceException("Error retrieving all laboratory", e); // Handle any exceptions that may occur
+        } finally {
+            entityManager.close(); // Ensure the EntityManager is closed to free resources
+        }
+    }
+
+    @Override
     public ComputerEntity saveComputer(ComputerEntity computer) throws PersistenceException {
-       EntityManager entityManager = connection.getEntityManager();
+        EntityManager entityManager = connection.getEntityManager();
         try {
             entityManager.getTransaction().begin();
             // Guardar el laboratorio en la base de datos
@@ -50,30 +65,30 @@ public class ComputerDAO implements IComputerDAO{
     @Override
     public void deleteComputer(String computerIp) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
-    
-    try {
-        entityManager.getTransaction().begin(); // Start the transaction
 
-        ComputerEntity computerDelete = this.findByIPComputer(computerIp);
-        if (computerDelete != null) {
-            computerDelete.setMachineNumber(0);
-            entityManager.merge(computerDelete); // Merge the changes
-            entityManager.flush(); // Ensure changes are flushed to the database
-        } else {
-            throw new PersistenceException("Computer not found.");
+        try {
+            entityManager.getTransaction().begin(); // Start the transaction
+
+            ComputerEntity computerDelete = this.findByIPComputer(computerIp);
+            if (computerDelete != null) {
+                computerDelete.setMachineNumber(0);
+                entityManager.merge(computerDelete); // Merge the changes
+                entityManager.flush(); // Ensure changes are flushed to the database
+            } else {
+                throw new PersistenceException("Computer not found.");
+            }
+
+            entityManager.getTransaction().commit(); // Commit the transaction
+        } catch (NoResultException e) {
+            throw new PersistenceException("Computer not found.", e);
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); // Rollback in case of an error
+            }
+            throw new PersistenceException("Error while deleting computer.", e);
+        } finally {
+            entityManager.close(); // Always close the entity manager
         }
-        
-        entityManager.getTransaction().commit(); // Commit the transaction
-    } catch (NoResultException e) {
-        throw new PersistenceException("Computer not found.", e);
-    } catch (Exception e) {
-        if (entityManager.getTransaction().isActive()) {
-            entityManager.getTransaction().rollback(); // Rollback in case of an error
-        }
-        throw new PersistenceException("Error while deleting computer.", e);
-    } finally {
-        entityManager.close(); // Always close the entity manager
-    }
     }
 
     @Override
@@ -82,10 +97,9 @@ public class ComputerDAO implements IComputerDAO{
         try {
             entityManager.getTransaction().begin(); // Start the transaction
 
-                // Add other fields to update as necessary
-
-                entityManager.merge(computer); // Update the entity
-                //entityManager.flush();
+            // Add other fields to update as necessary
+            entityManager.merge(computer); // Update the entity
+            //entityManager.flush();
 
             entityManager.getTransaction().commit(); // Commit the transaction
         } catch (NoResultException e) {
@@ -111,21 +125,36 @@ public class ComputerDAO implements IComputerDAO{
     }
 
     @Override
-    public List<ComputerEntity> computerListByAcademyPaginated(int offset, int limit,Long IdLab) throws PersistenceException {
+    public ComputerEntity findByIdComputer(Long id) throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager();
+        try {
+            return entityManager.createQuery(
+                    "SELECT c FROM ComputerEntity c WHERE c.id = :computerId", ComputerEntity.class)
+                    .setParameter("computerId", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Manejar el caso donde no se encuentra la computadora
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
+    public List<ComputerEntity> computerListByAcademyPaginated(int offset, int limit, Long IdLab) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
 //            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l.id,l.labName,l.masterPassword,l.startTime,l.endTime,l.isDeleted FROM LaboratoryEntity l WHERE l.id = :labId", LaboratoryEntity.class)
 //                    .setParameter("labId", IdLab)
 //                    .getSingleResult();
             if (offset == 0) {
-            return entityManager.createQuery("SELECT c FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
+                return entityManager.createQuery("SELECT c FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
                         .setParameter("laboratory", IdLab).getResultList();
-            }else{
-            return entityManager.createQuery("SELECT new entities.ComputerEntity(c.id,c.ipAdress,c.machineNumber,c.status,c.computerType) FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
-                    .setParameter("laboratory", IdLab)
-                    .setFirstResult(offset)
-                    .setMaxResults(limit)
-                    .getResultList();
+            } else {
+                return entityManager.createQuery("SELECT new entities.ComputerEntity(c.id,c.ipAdress,c.machineNumber,c.status,c.computerType) FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
+                        .setParameter("laboratory", IdLab)
+                        .setFirstResult(offset)
+                        .setMaxResults(limit)
+                        .getResultList();
             }
         } catch (NoResultException e) {
             throw new PersistenceException("Laboratory not found", e);
@@ -135,7 +164,7 @@ public class ComputerDAO implements IComputerDAO{
             entityManager.close();
         }
     }
-    
+
     @Override
     public List<ComputerEntity> computerListByAcademy(Long IdLab) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
@@ -143,10 +172,10 @@ public class ComputerDAO implements IComputerDAO{
 //            LaboratoryEntity laboratory = entityManager.createQuery("SELECT l.id,l.labName,l.masterPassword,l.startTime,l.endTime,l.isDeleted FROM LaboratoryEntity l WHERE l.id = :labId", LaboratoryEntity.class)
 //                    .setParameter("labId", IdLab)
 //                    .getSingleResult();
-            
+
             return entityManager.createQuery("SELECT c FROM ComputerEntity c WHERE c.laboratory.id = :laboratory AND c.machineNumber >0", ComputerEntity.class)
-                        .setParameter("laboratory", IdLab).getResultList();
-            
+                    .setParameter("laboratory", IdLab).getResultList();
+
         } catch (NoResultException e) {
             throw new PersistenceException("Laboratory not found", e);
         } catch (Exception e) {
@@ -155,6 +184,5 @@ public class ComputerDAO implements IComputerDAO{
             entityManager.close();
         }
     }
-    
 
 }

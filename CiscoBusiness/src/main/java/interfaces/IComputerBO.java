@@ -13,15 +13,20 @@ import java.util.List;
  * @author NaderCroft
  */
 public interface IComputerBO {
-    public ComputerDTO saveComputer(ComputerDTO computer)throws BusinessException;
-    
-    public void deleteComputer(String computerIp)throws BusinessException;
-    
-    public void updateComputer(ComputerDTO computer)throws BusinessException;
-    
-    public ComputerDTO findByIPComputer(String computerIp)throws BusinessException;
-    
-    public List<ComputerDTO> computerListByAcademyPaginated(int offset,int limit,Long IdLab)throws BusinessException;
-    
+
+    public ComputerDTO saveComputer(ComputerDTO computer) throws BusinessException;
+
+    public void deleteComputer(String computerIp) throws BusinessException;
+
+    public void updateComputer(ComputerDTO computer) throws BusinessException;
+
+    public ComputerDTO findByIPComputer(String computerIp) throws BusinessException;
+
+    public List<ComputerDTO> computerListByAcademyPaginated(int offset, int limit, Long IdLab) throws BusinessException;
+
     public List<ComputerDTO> computerListByAcademy(Long IdLab) throws BusinessException;
+
+    public List<ComputerDTO> getAllComputer() throws BusinessException;
+    
+     public ComputerDTO findComputerByID(Long Idcomp) throws BusinessException;
 }

@@ -80,6 +80,55 @@ public class SoftwareBO implements ISoftwareBO {
         }
     }
 
+    public SoftwareDTO getSoftwareById(Long softwareId) throws BusinessException {
+    if (softwareId == null || softwareId <= 0) {
+        throw new BusinessException("Invalid software ID.");
+    }
+
+    try {
+        SoftwareEntity softwareEntity = softwareDAO.getSoftwareById(softwareId);
+        
+        if (softwareEntity == null) {
+            throw new BusinessException("Software not found.");
+        }
+
+        // Convert SoftwareEntity to SoftwareDTO
+        return SoftwareMapper.toDTO(softwareEntity);
+        
+    } catch (PersistenceException e) {
+        throw new BusinessException("Error retrieving software by ID", e);
+    }
+}
+    @Override
+    public List<SoftwareDTO> getSoftwareNotInstalledByComputer(Long idCom) throws BusinessException {
+        if (idCom == null || idCom <= 0) {
+            throw new BusinessException("Invalid computer ID.");
+        }
+
+        try {
+            List<SoftwareEntity> softwareEntities = softwareDAO.softwareNoInstall(idCom);
+            // Convertir List<SoftwareEntity> a List<SoftwareDTO>
+            return SoftwareMapper.toDTOList(softwareEntities);
+        } catch (PersistenceException e) {
+            throw new BusinessException("Error retrieving software not installed on computer", e);
+        }
+    }
+    
+    @Override
+     public List<SoftwareDTO> getSoftwareInstalledByComputer(Long idCom) throws BusinessException {
+        if (idCom == null || idCom <= 0) {
+            throw new BusinessException("Invalid computer ID.");
+        }
+
+        try {
+            List<SoftwareEntity> softwareEntities = softwareDAO.getSoftwareInstalledByComputer(idCom);
+            // Convertir List<SoftwareEntity> a List<SoftwareDTO>
+            return SoftwareMapper.toDTOList(softwareEntities);
+        } catch (PersistenceException e) {
+            throw new BusinessException("Error retrieving software installed on computer", e);
+        }
+    }
+     
     @Override
     public List<SoftwareDTO> softwareListPaginated(int limit, int page) throws BusinessException {
         if (page < 0 || limit <= 0) {

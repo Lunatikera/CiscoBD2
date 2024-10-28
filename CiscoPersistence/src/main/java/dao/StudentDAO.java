@@ -115,6 +115,25 @@ public class StudentDAO implements IStudentDAO {
             entityManager.close(); // Close the EntityManager
         }
     }
-}
+
+    @Override
+    public StudentEntity findStudentByID(Long studentId) throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager();
+
+         try {
+        if (studentId == null) {
+            throw new PersistenceException("El ID del estudiante no puede ser nulo.");
+        }
+       
+            // Buscar el estudiante por ID usando el método find de EntityManager
+            return entityManager.find(StudentEntity.class, studentId);
+        } catch (PersistenceException e) {
+            throw new PersistenceException("Error al buscar el estudiante: " + e.getMessage());
+        }finally {
+            entityManager.close(); // Close the EntityManager
+        }
+    }
+    }
+
 
    
