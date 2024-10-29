@@ -13,6 +13,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -62,13 +63,24 @@ public class LaboratoryDAO implements ILaboratoryDAO {
 
     public LaboratoryEntity findLaboratoryByID(Long LaboratoryId) throws PersistenceException {
         EntityManager entityManager = connectionBD.getEntityManager();
+         try {
+            // Define la consulta JPQL para buscar software por ID
+            String jpql = "SELECT l FROM LaboratoryEntity l WHERE l.id = :LaboratoryId";
 
-        try {
-            return entityManager.find(LaboratoryEntity.class, LaboratoryId);
+            TypedQuery<LaboratoryEntity> query = entityManager.createQuery(jpql, LaboratoryEntity.class);
+            query.setParameter("LaboratoryId", LaboratoryId);
+
+            return query.getSingleResult(); // Retorna el único resultado
+
+        } catch (NoResultException e) {
+            return null; // Maneja el caso en que no se encuentra el software
         } catch (Exception e) {
-            throw new PersistenceException("Error finding Laboratory by ID", e);
+            throw new PersistenceException("Error retrieving software by ID", e);
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();  // Asegura que el EntityManager se cierra
+            }
         }
-
     }
 
     @Override

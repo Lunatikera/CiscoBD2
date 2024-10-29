@@ -81,4 +81,15 @@ public class RuleBO implements IRuleBO {
     }
 }
     
+    @Override
+    public RuleDTO findDegreeForId(Long ruleId) throws BusinessException {
+        try {
+            RuleEntity rulesEntity = ruleDAO.getRuleById(ruleId);  // Busca la entidad por ID
+            return RuleMapper.toDTO(rulesEntity);  // Convierte la entidad en DTO
+            
+        } catch (PersistenceException e) {
+            throw new BusinessException("Error finding degree by ID", e);
+        }
+    }
+    
 }

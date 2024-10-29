@@ -14,9 +14,9 @@ import java.util.List;
  */
 public interface ILaboratoryRulesDAO {
 
-    public List<LaboratoryRulesEntity> getSoftwareInstalledByComputer(Long idCom) throws PersistenceException;
+    public List<LaboratoryRulesEntity> getRulesAppliedByLaboratory(Long idCom) throws PersistenceException;
 
-    public List<LaboratoryRulesEntity> softwareNoInstall(Long idLab) throws PersistenceException;
+    public List<LaboratoryRulesEntity> getRulesNotAppliedByLaboratory(Long idLab) throws PersistenceException;
 
     public void saveSoftwareRule(LaboratoryRulesEntity laboratoryRulesEntity) throws PersistenceException;
 

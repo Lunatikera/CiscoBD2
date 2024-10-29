@@ -16,6 +16,7 @@ import interfaces.ILaboratoryDAO;
 import interfaces.ILaboratoryRulesBO;
 import interfaces.ILaboratoryRulesDAO;
 import interfaces.IRuleDAO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,10 +86,21 @@ public class LaboratoryRulesBO implements ILaboratoryRulesBO {
             throw new BusinessException("Invalid laboratory ID.");
         }
 
+        
         try {
-            List<LaboratoryRulesEntity> ruleEntities = laboratoryRulesDAO.softwareNoInstall(labId);
+            List<LaboratoryRulesDTO> rulesDTO = new ArrayList<>();
+            List<LaboratoryRulesEntity> ruleEntities = laboratoryRulesDAO.getRulesNotAppliedByLaboratory(labId);
             // Convertir List<RuleEntity> a List<RuleDTO>
-            return LaboratoryRuleMapper.toDTOList(ruleEntities);
+            System.out.println(ruleEntities);
+            for (LaboratoryRulesEntity ruleEntity : ruleEntities) {
+                LaboratoryRulesDTO laboratoryRuleDTO = LaboratoryRuleMapper.toDTO(ruleEntity);
+                laboratoryRuleDTO.setRule(ruleEntity.getRule().getId());
+                laboratoryRuleDTO.setLaboratory(ruleEntity.getLaboratory().getId());
+                rulesDTO.add(laboratoryRuleDTO);
+                
+            }
+            System.out.println(rulesDTO);
+            return rulesDTO;
         } catch (PersistenceException e) {
             throw new BusinessException("Error retrieving rules not applied to laboratory", e);
         }
@@ -101,9 +113,19 @@ public class LaboratoryRulesBO implements ILaboratoryRulesBO {
         }
 
         try {
-            List<LaboratoryRulesEntity> ruleEntities = laboratoryRulesDAO.getSoftwareInstalledByComputer(labId);
-            // Convertir List<RuleEntity> a List<RuleDTO>
-            return LaboratoryRuleMapper.toDTOList(ruleEntities);
+            List<LaboratoryRulesDTO> rulesDTO = new ArrayList<>();
+            List<LaboratoryRulesEntity> ruleEntities = laboratoryRulesDAO.getRulesAppliedByLaboratory(labId);
+            // Convertir List<RuleEtity> a List<RuleDTO>
+            System.out.println(ruleEntities);
+            for (LaboratoryRulesEntity ruleEntity : ruleEntities) {
+                LaboratoryRulesDTO laboratoryRuleDTO = LaboratoryRuleMapper.toDTO(ruleEntity);
+                laboratoryRuleDTO.setRule(ruleEntity.getRule().getId());
+                laboratoryRuleDTO.setLaboratory(ruleEntity.getLaboratory().getId());
+                rulesDTO.add(laboratoryRuleDTO);
+                
+            }
+            System.out.println(rulesDTO);
+            return rulesDTO;
         } catch (PersistenceException e) {
             throw new BusinessException("Error retrieving rules applied to laboratory", e);
         }

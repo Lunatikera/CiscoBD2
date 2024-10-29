@@ -46,6 +46,31 @@ public class RuleEntity implements Serializable {
         this.id = id;
     }
 
+    public String getRuleDescription() {
+        return ruleDescription;
+    }
+
+    public void setRuleDescription(String ruleDescription) {
+        this.ruleDescription = ruleDescription;
+    }
+
+    public List<LaboratoryRulesEntity> getLaboratorieRules() {
+        return laboratorieRules;
+    }
+
+    public void setLaboratorieRules(List<LaboratoryRulesEntity> laboratorieRules) {
+        this.laboratorieRules = laboratorieRules;
+    }
+
+    public List<BlockEntity> getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(List<BlockEntity> blocks) {
+        this.blocks = blocks;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
