@@ -13,16 +13,15 @@ import java.util.List;
  * @author carli
  */
 public interface IStudentDAO {
-    
-    
+
     public StudentEntity saveStudent(StudentEntity student) throws PersistenceException;
 
-    public StudentEntity findStudentByUniqueID(Long studentId) throws PersistenceException ;
+    public StudentEntity findStudentByUniqueID(Long studentId) throws PersistenceException;
 
     public List<StudentEntity> studentListByDegreePaginated(Long degreeId, int offset, int limit) throws PersistenceException;
 
     public void updateStudent(StudentEntity student) throws PersistenceException;
-    
-    public StudentEntity findStudentByID(Long studentId) throws PersistenceException;
-    
+
+    public StudentEntity getStudentByComputerSession(Long idComputer) throws PersistenceException;
+
 }

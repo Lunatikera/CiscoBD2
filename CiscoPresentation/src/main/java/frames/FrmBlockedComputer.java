@@ -4,10 +4,12 @@
  */
 package frames;
 
-import businessObjects.ComputerBO;
 import dto.ComputerDTO;
+import dto.StudentDTO;
 import enums.ComputerStatus;
 import exception.BusinessException;
+import interfaces.IComputerBO;
+import interfaces.IStudentBO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -21,11 +23,17 @@ import utilities.IpGetter;
  */
 public class FrmBlockedComputer extends javax.swing.JFrame {
 
-    private ComputerBO computerBO;
+    private IStudentBO studentBO;
+    private IComputerBO computerBO;
     private Timer methodTimer;
+    private ComputerDTO computerDTO;
 
-    public FrmBlockedComputer() {
+    public FrmBlockedComputer(IStudentBO studentBO, IComputerBO computerBO, ComputerDTO computerDTO) {
         initComponents();
+        this.studentBO = studentBO;
+        this.computerBO = computerBO;
+        this.computerDTO = computerDTO;
+
         startMethodTimer();
     }
 
@@ -40,22 +48,24 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
     }
 
     private void verifyComputerStatus() {
-//        try {
-//            ComputerDTO computerDTO = computerBO.findByIPComputer(IpGetter.getLocalIPAddress());
-            System.out.println(IpGetter.getLocalIPAddress());
-//
-//            if (computerDTO.getStatus() == ComputerStatus.No_Disponible) {
-//                if (methodTimer != null) {
-//                    methodTimer.stop(); // Stop the method timer
-//                } 
-//                FrmUnlockComputer unlockComputer= new FrmUnlockComputer();
-//                unlockComputer.setVisible(true);
-//                this.dispose();
-//                
-////            }
-//        } catch (BusinessException ex) {
-//            Logger.getLogger(FrmBlockedComputer.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            computerDTO = computerBO.findByIPComputer(computerDTO.getIpAdress());
+
+            if (computerDTO.getStatus() == ComputerStatus.No_Disponible) {
+                if (methodTimer != null) {
+                    methodTimer.stop(); // Stop the method timer
+                }
+
+                StudentDTO student = studentBO.getStudentByComputerSession(computerDTO.getId());
+                FrmUnlockComputer unlockComputer = new FrmUnlockComputer(studentBO, student, computerDTO);
+                unlockComputer.setVisible(true);
+                this.dispose();
+
+            }
+
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmBlockedComputer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -171,41 +181,6 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmBlockedComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmBlockedComputer().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

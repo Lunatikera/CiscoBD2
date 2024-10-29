@@ -36,8 +36,9 @@ public class StudentBO implements IStudentBO {
         if (student == null) {
             throw new BusinessException("StudentDTO cannot be null.");
         }
+
         StudentEntity studentEntity = StudentMapper.toEntity(student);
-        
+
         try {
 
             studentEntity = studentDAO.saveStudent(studentEntity);
@@ -84,7 +85,7 @@ public class StudentBO implements IStudentBO {
 
     @Override
     public void updateStudent(StudentDTO student) throws BusinessException {
-        if (student == null || student.getUnique_ID()== null || student.getUnique_ID()<= 0) {
+        if (student == null || student.getUnique_ID() == null || student.getUnique_ID() <= 0) {
             throw new BusinessException("Invalid student data.");
         }
 
@@ -155,26 +156,19 @@ public class StudentBO implements IStudentBO {
     }
 
     @Override
-    public StudentDTO findStudentByID(Long studentId) throws BusinessException {
-        if (studentId == null || studentId <= 0) {
-        throw new BusinessException("El ID del estudiante tiene que estar en un formato válido.");
-    }
-
-    try {
-        // Registro de depuración
-        Logger.getLogger(StudentBO.class.getName()).log(Level.INFO, "Buscando estudiante con ID: {0}", studentId);
-        
-        StudentEntity student = studentDAO.findStudentByID(studentId);
-        
-        if (student == null) {
-            throw new BusinessException("Estudiante no encontrado con el ID proporcionado.");
+    public StudentDTO getStudentByComputerSession(Long idComputer) throws BusinessException {
+        if (idComputer <= 0) {
+            throw new BusinessException("El ID tiene que estar en un formato valido");
         }
-        
-        return StudentMapper.toDTO(student);
-    } catch (PersistenceException ex) {
-        Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Error al buscar el estudiante por ID", ex);
-        throw new BusinessException("Error al buscar el estudiante por ID. Por favor, inténtelo de nuevo más tarde.");
+
+        try {
+            StudentEntity student = studentDAO.getStudentByComputerSession(idComputer);
+            if (student == null) {
+                throw new BusinessException("No se encontro a ningun estudiante");
+            }
+            return StudentMapper.toDTO(student);
+        } catch (PersistenceException ex) {
+            throw new BusinessException("Error finding student by unique ID.");
+        }
     }
-    }
-      
 }
