@@ -85,7 +85,7 @@ public class StudentBO implements IStudentBO {
 
     @Override
     public void updateStudent(StudentDTO student) throws BusinessException {
-        if (student == null || student.getUnique_ID()== null || student.getUnique_ID()<= 0) {
+        if (student == null || student.getUnique_ID() == null || student.getUnique_ID() <= 0) {
             throw new BusinessException("Invalid student data.");
         }
 
@@ -152,6 +152,23 @@ public class StudentBO implements IStudentBO {
         } catch (PersistenceException ex) {
             Logger.getLogger(StudentBO.class.getName()).log(Level.SEVERE, "Login failed", ex);
             throw new BusinessException("An error occurred while logging in. Please try again later."); // Wrap the exception for higher-level handling
+        }
+    }
+
+    @Override
+    public StudentDTO getStudentByComputerSession(Long idComputer) throws BusinessException {
+        if (idComputer <= 0) {
+            throw new BusinessException("El ID tiene que estar en un formato valido");
+        }
+
+        try {
+            StudentEntity student = studentDAO.getStudentByComputerSession(idComputer);
+            if (student == null) {
+                throw new BusinessException("No se encontro a ningun estudiante");
+            }
+            return StudentMapper.toDTO(student);
+        } catch (PersistenceException ex) {
+            throw new BusinessException("Error finding student by unique ID.");
         }
     }
 }

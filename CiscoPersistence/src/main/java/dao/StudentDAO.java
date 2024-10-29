@@ -51,11 +51,11 @@ public class StudentDAO implements IStudentDAO {
     public StudentEntity findStudentByUniqueID(Long studentId) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-             return entityManager.createQuery(
-                "SELECT s FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
-                .setParameter("uniqueID", studentId)
-                .getSingleResult();
-            
+            return entityManager.createQuery(
+                    "SELECT s FROM StudentEntity s WHERE s.unique_ID = :uniqueID", StudentEntity.class)
+                    .setParameter("uniqueID", studentId)
+                    .getSingleResult();
+
         } catch (NoResultException e) {
             return null; // Handle case where no student is found
         } finally {
@@ -67,17 +67,17 @@ public class StudentDAO implements IStudentDAO {
     public List<StudentEntity> studentListByDegreePaginated(Long degreeId, int offset, int limit) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
         try {
-            
+
             DegreeEntity degree = entityManager.createQuery("SELECT d FROM DegreeEntity d WHERE d.id = :degreeId", DegreeEntity.class)
                     .setParameter("degreeId", degreeId)
                     .getSingleResult();
-            
+
             return entityManager.createQuery("SELECT s FROM StudentEntity s  inner join s.studentDegrees sd inner join sd.degree d where d.id = :degree", StudentEntity.class)
                     .setParameter("degree", degree.getId())
                     .setFirstResult(offset)
                     .setMaxResults(limit)
                     .getResultList();
-            
+
         } catch (NoResultException e) {
             throw new PersistenceException("Degree not found", e);
         } catch (Exception e) {
@@ -115,6 +115,20 @@ public class StudentDAO implements IStudentDAO {
             entityManager.close(); // Close the EntityManager
         }
     }
-}
 
-   
+    @Override
+    public StudentEntity getStudentByComputerSession(Long idComputer) throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager();
+        try {
+            return entityManager.createQuery(
+                    "SELECT s FROM StudentEntity s JOIN s.studentComputers sc WHERE sc.computer.id = :idComputer AND sc.endDateTime IS NULL", StudentEntity.class)
+                    .setParameter("idComputer", idComputer)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+            return null; // Handle case where no student is found
+        } finally {
+            entityManager.close();
+        }
+    }
+}

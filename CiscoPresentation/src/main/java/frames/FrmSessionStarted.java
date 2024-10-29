@@ -197,10 +197,10 @@ public class FrmSessionStarted extends javax.swing.JFrame {
     }
 
     private void FinishSesion() {
-        System.out.println("Tiempo" + lblTime.getText());
-        FrmBlockedComputer blockedComputer = new FrmBlockedComputer();
-        blockedComputer.setVisible(true);
-        this.dispose();
+//        System.out.println("Tiempo" + lblTime.getText());
+//        FrmBlockedComputer blockedComputer = new FrmBlockedComputer();
+//        blockedComputer.setVisible(true);
+//        this.dispose();
     }
 
     private void deleteIcon() {

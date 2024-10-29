@@ -16,7 +16,9 @@ import dao.LaboratoryDAO;
 import dao.StudentDAO;
 import dto.ComputerDTO;
 import dto.LaboratoryDTO;
+import enums.ComputerTypes;
 import exception.BusinessException;
+import frames.FrmBlockedComputer;
 import frames.FrmSessionStarted;
 import frames.FrmStudentManager;
 import frames.FrmStudentStart;
@@ -37,29 +39,36 @@ import java.util.logging.Logger;
  * @author carli
  */
 public class CiscoPresentation {
-
+    
     public static void main(String[] args) {
-
+        
         IConnectionBD conexion = new ConnectionDB();
-
+        
         IStudentDAO studentDAO = new StudentDAO(conexion);
         IComputerDAO computerDAO = new ComputerDAO(conexion);
         IAcademyUnityDAO academyUnityDAO = new AcademyUnityDAO(conexion);
         ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(conexion);
         IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyUnityDAO);
-
+        
         try {
-            ComputerDTO computerDTO = computerBO.findByIPComputer("192.168.4.9");
+            ComputerDTO computerDTO = computerBO.findByIPComputer("192.168.4.8");
             LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(computerDTO.getLabId());
-
             IStudentBO studentBO = new StudentBO(studentDAO);
-            FrmStudentStart sessionStarted = new FrmStudentStart(computerBO,studentBO, computerDTO, laboratoryDTO);
-
-            sessionStarted.setVisible(true);
+            
+            if (computerDTO.getComputerType() == ComputerTypes.Administrativo) {
+                FrmStudentStart sessionStarted = new FrmStudentStart(computerBO, studentBO, computerDTO, laboratoryDTO);
+                sessionStarted.setVisible(true);
+                
+            }
+            
+            if (computerDTO.getComputerType() == ComputerTypes.Estudiante) {
+                FrmBlockedComputer blockedComputer = new FrmBlockedComputer(studentBO, computerBO,computerDTO);
+            }
+            
         } catch (BusinessException ex) {
             Logger.getLogger(CiscoPresentation.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
 }

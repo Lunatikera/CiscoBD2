@@ -4,17 +4,41 @@
  */
 package frames;
 
+import dto.ComputerDTO;
+import dto.LogInDTO;
+import dto.StudentDTO;
+import exception.BusinessException;
+import interfaces.IStudentBO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author carli
  */
 public class FrmUnlockComputer extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmStudentStart
-     */
-    public FrmUnlockComputer() {
+    StudentDTO student;
+    ComputerDTO computer;
+    IStudentBO studentBO;
+    int turnos = 3;
+
+    public FrmUnlockComputer(IStudentBO studentBO, StudentDTO student, ComputerDTO computer) {
         initComponents();
+        this.studentBO = studentBO;
+        this.student = student;
+        this.computer = computer;
+        System.out.println(computer.getIpAdress());
+        System.out.println(student.getNames());
+        loadFrame();
+    }
+
+    private void loadFrame() {
+        this.setLocationRelativeTo(null);
+        this.setTitle("Bienvenida " + student.getNames() + " Por favor Ingresa tu Contrasena para Continurar");
+        this.lblStudentName.setText(student.getNames() + " " + student.getFirstLastname() + " " + student.getSecondLastname());
+        this.setSize(1280, 720);
     }
 
     /**
@@ -31,11 +55,11 @@ public class FrmUnlockComputer extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        lblStudent = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        lblStudentName = new javax.swing.JLabel();
         lblStudent1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         lblStudent2 = new javax.swing.JLabel();
+        pTextPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,19 +94,18 @@ public class FrmUnlockComputer extends javax.swing.JFrame {
                 .addContainerGap(197, Short.MAX_VALUE))
         );
 
-        lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblStudent.setText(" Nombre ApellidoPaterno ApellidoMaterno ");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        lblStudentName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblStudentName.setText(" Nombre ApellidoPaterno ApellidoMaterno ");
 
         lblStudent1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblStudent1.setText("Password");
 
         jButton1.setText("Ingresar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         lblStudent2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         lblStudent2.setText("Bienvenido,");
@@ -97,19 +120,19 @@ public class FrmUnlockComputer extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblStudentName, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblStudent2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(29, 29, 29))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(180, 180, 180)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(142, 142, 142)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblStudent1)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(180, 180, 180)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(pTextPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblStudent1))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -119,12 +142,12 @@ public class FrmUnlockComputer extends javax.swing.JFrame {
                 .addGap(88, 88, 88)
                 .addComponent(lblStudent2)
                 .addGap(18, 18, 18)
-                .addComponent(lblStudent)
+                .addComponent(lblStudentName)
                 .addGap(36, 36, 36)
                 .addComponent(lblStudent1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
+                .addComponent(pTextPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -145,45 +168,36 @@ public class FrmUnlockComputer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String password = pTextPassword.getText().trim();
+
+        if (password.isBlank() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor ingresa una contrasena", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+
+        }
+        LogInDTO logInDTO = new LogInDTO();
+        logInDTO.setUniqueID(student.getUnique_ID());
+        logInDTO.setPassword(password);
+        try {
+            studentBO.login(logInDTO);
+            JOptionPane.showMessageDialog(this, "Inicio de Sesion Exitoso", "Enhorabuena!", JOptionPane.INFORMATION_MESSAGE);
+            FrmSessionStarted frmSessionStarted = new FrmSessionStarted();
+            frmSessionStarted.setVisible(true);
+            this.dispose();
+
+        } catch (BusinessException ex) {
+            turnos--;
+            JOptionPane.showMessageDialog(this, "Contrasena Invalida, Por favor Intenta de Nuevo. Intentos Restantes " + turnos, "Error", JOptionPane.ERROR_MESSAGE);
+            if (turnos == 0) {
+                this.dispose();
+            }
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmUnlockComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmUnlockComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmUnlockComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmUnlockComputer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmUnlockComputer().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -192,9 +206,9 @@ public class FrmUnlockComputer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel lblStudent;
     private javax.swing.JLabel lblStudent1;
     private javax.swing.JLabel lblStudent2;
+    private javax.swing.JLabel lblStudentName;
+    private javax.swing.JPasswordField pTextPassword;
     // End of variables declaration//GEN-END:variables
 }
