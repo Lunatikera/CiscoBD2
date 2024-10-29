@@ -6,6 +6,7 @@ package frames;
 
 import businessObjects.AcademyUnityBO;
 import businessObjects.BlockReportBO;
+import businessObjects.ComputerSoftwareBO;
 import businessObjects.DegreeBO;
 import businessObjects.RuleBO;
 import businessObjects.SoftwareBO;
@@ -13,6 +14,8 @@ import businessObjects.StudentBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
 import dao.BlockReportDAO;
+import dao.ComputerDAO;
+import dao.ComputerSoftwareDAO;
 import dao.DegreeDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
@@ -27,6 +30,9 @@ import interfaces.IAcademyUnityBO;
 import interfaces.IBlockReportBO;
 import interfaces.IBlockReportDAO;
 import interfaces.IComputerBO;
+import interfaces.IComputerDAO;
+import interfaces.IComputerSoftwareBO;
+import interfaces.IComputerSoftwareDAO;
 import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
 import interfaces.ILaboratoryBO;
@@ -171,6 +177,18 @@ public class FrmComputerManager extends javax.swing.JFrame {
         });
     }
 
+    private Long getSelectedIdTableLaboratoryLong() {
+        int selectedIndex = this.tblComputer.getSelectedRow();
+        if (selectedIndex != -1) {
+            DefaultTableModel model = (DefaultTableModel) this.tblComputer.getModel();
+            int idIndexRow = 0;
+            Long idSelectedStudent = (Long) model.getValueAt(selectedIndex, idIndexRow);
+            return idSelectedStudent;
+        } else {
+            return null;
+        }
+    }
+
     private String getSelectedIdTableComputer() {
         int selectedIndex = this.tblComputer.getSelectedRow();
         if (selectedIndex != -1) {
@@ -241,6 +259,7 @@ public class FrmComputerManager extends javax.swing.JFrame {
         cbLaboratory = new javax.swing.JComboBox<>();
         btnGoLab = new javax.swing.JButton();
         btnGoAcademy = new javax.swing.JButton();
+        btnAddSoftware = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -539,6 +558,15 @@ public class FrmComputerManager extends javax.swing.JFrame {
         });
         jPanel4.add(btnGoAcademy, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, -1, -1));
 
+        btnAddSoftware.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnAddSoftware.setText("Agregar Software");
+        btnAddSoftware.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddSoftwareActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnAddSoftware, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 10, -1, -1));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -708,9 +736,30 @@ public class FrmComputerManager extends javax.swing.JFrame {
         frmStudentManager.setVisible(true);
     }//GEN-LAST:event_btnMenuStudentsActionPerformed
 
+    private void btnAddSoftwareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSoftwareActionPerformed
+        try {
+            if (this.getSelectedIdTableLaboratoryLong() == null) {
+                JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            IConnectionBD connection = new ConnectionDB();
+            ComputerDTO computerDTO = computerBO.findComputerByID(this.getSelectedIdTableLaboratoryLong());
+            IComputerDAO computerDAO = new ComputerDAO(connection);
+            ISoftwareDAO softwareDAO = new SoftwareDAO(connection);
+            ISoftwareBO softwareBO = new SoftwareBO(softwareDAO);
+            IComputerSoftwareDAO computerSoftwareDAO = new ComputerSoftwareDAO(connection);
+            IComputerSoftwareBO computerSoftwareBO = new ComputerSoftwareBO(computerDAO, softwareDAO, computerSoftwareDAO);
+            FrmAvailableSoftware software = new FrmAvailableSoftware(computerSoftwareBO, softwareBO, computerDTO);
+            software.setVisible(true);
+        } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddSoftwareActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private utilities.MenuButton btnAdd;
+    private javax.swing.JButton btnAddSoftware;
     private utilities.MenuButton btnDelete;
     private utilities.MenuButton btnEdit;
     private javax.swing.JButton btnGoAcademy;

@@ -23,6 +23,7 @@ public class FrmAddSoftware extends javax.swing.JFrame {
         initComponents();
         this.softwareBO=softwareBO;
         this.frmSoftwareManager=frmSoftwareManager;
+        this.loadFrame();
     }
 
     public void loadFrame() {

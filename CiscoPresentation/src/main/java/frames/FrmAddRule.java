@@ -24,12 +24,13 @@ public class FrmAddRule extends javax.swing.JFrame {
         initComponents();
         this.frmRulesManager = frmRulesManager;
         this.ruleBO = ruleBO;
+        this.loadFrame();
     }
 
     public void loadFrame() {
         this.setTitle("Agregar Regla ");
         this.setResizable(false);
-        this.setSize(1280, 780);
+        this.setSize(401, 500);
         this.setLocationRelativeTo(null);
     }
 

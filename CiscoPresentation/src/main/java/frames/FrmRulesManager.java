@@ -113,15 +113,24 @@ public class FrmRulesManager extends javax.swing.JFrame {
         });
     }
 
-    private RuleDTO getSelectedRuleTableRules() {
-        int selectedIndex = this.tblRules.getSelectedRow();
-        if (selectedIndex != -1) {
-            DefaultTableModel model = (DefaultTableModel) this.tblRules.getModel();
-            RuleDTO selectedRule = (RuleDTO) model.getValueAt(selectedIndex, 0);
-            return selectedRule;
+    private Long getSelectedRuleTableRules() {
+         int selectedIndex = this.tblRules.getSelectedRow();
+    if (selectedIndex != -1) {
+        DefaultTableModel model = (DefaultTableModel) this.tblRules.getModel();
+        int idIndexRow = 0; // Cambia esto al índice correcto donde se encuentra el ID
+        Object value = model.getValueAt(selectedIndex, idIndexRow);
+
+        // Verificamos que el valor sea un Long
+        if (value instanceof Long) {
+            return (Long) value; // Hacemos el casting seguro
         } else {
+            // Manejo del caso en que el valor no es un Long
+            System.err.println("El valor en la celda no es un Long: " + value);
             return null;
         }
+    } else {
+        return null;
+    }
     }
 
     /**
@@ -434,11 +443,27 @@ public class FrmRulesManager extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        Long id = this.getSelectedRuleTableRules();
+        if (id == null) {
+            JOptionPane.showMessageDialog(this, "Por favor selecciona una regla", "Información", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar la regla seleccionado?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                this.ruleBO.deleteRule(id);
+                // Recargar la tabla después de eliminar
+                loadTableRules();
+            } catch (BusinessException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        FrmAddRule rule = new FrmAddRule(this, ruleBO);
+        rule.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnMenuComputersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuComputersActionPerformed
