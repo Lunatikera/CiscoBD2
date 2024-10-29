@@ -22,4 +22,5 @@ public interface IRuleBO {
 
     public List<RuleDTO> getRules() throws BusinessException;
 
+    public RuleDTO findDegreeForId(Long ruleId) throws BusinessException;
 }

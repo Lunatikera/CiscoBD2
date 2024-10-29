@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *
  * @author aleja
  */
-public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
+public class LaboratoryRulesDAO implements ILaboratoryRulesDAO {
 
     IConnectionBD connectionBD;
 
@@ -26,13 +26,12 @@ public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
         this.connectionBD = connectionBD;
     }
 
-    public List<LaboratoryRulesEntity> getSoftwareInstalledByComputer(Long idCom) throws PersistenceException {
+    public List<LaboratoryRulesEntity> getRulesAppliedByLaboratory(Long idCom) throws PersistenceException {
         EntityManager entityManager = connectionBD.getEntityManager();
 
         String jpql = """
-            SELECT r FROM RuleEntity r
-            JOIN  r.laboratorieRules lr
-            WHERE lr.laboratory.id = :idCom
+            SELECT r FROM LaboratoryRulesEntity r
+            WHERE r.laboratory.id = :idCom
         """;
 
         TypedQuery<LaboratoryRulesEntity> query = entityManager.createQuery(jpql, LaboratoryRulesEntity.class);
@@ -40,14 +39,14 @@ public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
         return query.getResultList();
     }
 
-    public List<LaboratoryRulesEntity> softwareNoInstall(Long idLab) throws PersistenceException {
+    public List<LaboratoryRulesEntity> getRulesNotAppliedByLaboratory(Long idLab) throws PersistenceException {
         EntityManager entityManager = connectionBD.getEntityManager();
         try {
             // Consulta JPQL
             String jpql = """
-                SELECT r FROM RuleEntity r
-                WHERE r.id NOT IN (
-                    SELECT lr.software.id
+                SELECT r FROM LaboratoryRulesEntity r
+                WHERE r.rule.id NOT IN (
+                    SELECT lr.rule.id 
                     FROM LaboratoryRulesEntity lr
                     WHERE lr.laboratory.id = :idLab
                 )
@@ -64,20 +63,24 @@ public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
 
     public void saveSoftwareRule(LaboratoryRulesEntity laboratoryRulesEntity) throws PersistenceException {
         EntityManager entityManager = connectionBD.getEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityTransaction transaction = null;
+        
 
         try {
+            transaction = entityManager.getTransaction();
             transaction.begin(); // Iniciar la transacción
+
             entityManager.persist(laboratoryRulesEntity); // Persistir la entidad
+
             transaction.commit(); // Confirmar la transacción
         } catch (Exception e) {
-            if (transaction.isActive()) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback(); // Revertir cambios en caso de error
             }
             throw new PersistenceException("Error al guardar la regla de software: " + e.getMessage(), e); // Lanzar excepción personalizada
         } finally {
-            if (entityManager != null && entityManager.isOpen()) {
-                entityManager.close(); // Cerrar el EntityManager
+            if (entityManager != null) {
+                entityManager.close(); // Cerrar EntityManager
             }
         }
     }
@@ -91,8 +94,8 @@ public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
 
             // Buscar la entidad `SoftwareRuleEntity` por `softwareId` y `ruleId`
             LaboratoryRulesEntity softwareRuleEntity = entityManager.createQuery(
-                    "SELECT sr FROM SoftwareRuleEntity sr "
-                    + "WHERE sr.software.id = :softwareId AND sr.rule.id = :ruleId",
+                    "SELECT sr FROM LaboratoryRulesEntity sr "
+                    + "WHERE sr.rule.id = :ruleId AND sr.laboratory.id = :softwareId",
                     LaboratoryRulesEntity.class)
                     .setParameter("softwareId", softwareId)
                     .setParameter("ruleId", ruleId)
@@ -118,7 +121,4 @@ public class LaboratoryRulesDAO implements ILaboratoryRulesDAO{
         }
     }
 
-    
-
-    
 }

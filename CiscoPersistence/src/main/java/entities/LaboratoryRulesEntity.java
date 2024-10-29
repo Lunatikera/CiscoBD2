@@ -52,6 +52,15 @@ public class LaboratoryRulesEntity implements Serializable {
         this.rule = rule;
     }
 
+    public LaboratoryEntity getLaboratory() {
+        return laboratory;
+    }
+
+    public void setLaboratory(LaboratoryEntity laboratory) {
+        this.laboratory = laboratory;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -77,8 +86,5 @@ public class LaboratoryRulesEntity implements Serializable {
         return "entities.LaboratoryRulesEntity[ id=" + id + " ]";
     }
 
-    public void setLaboratory(LaboratoryEntity laboratory) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+   
 }

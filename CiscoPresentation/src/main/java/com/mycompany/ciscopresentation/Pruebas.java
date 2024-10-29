@@ -6,6 +6,7 @@ package com.mycompany.ciscopresentation;
 
 import businessObjects.LaboratoryBO;
 import businessObjects.LaboratoryRulesBO;
+import businessObjects.RuleBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
 import dao.AcademyUnityDAO;
@@ -21,6 +22,7 @@ import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
 import interfaces.ILaboratoryRulesBO;
 import interfaces.ILaboratoryRulesDAO;
+import interfaces.IRuleBO;
 import interfaces.IRuleDAO;
 
 /**
@@ -43,9 +45,10 @@ public class Pruebas {
         ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
         RuleDTO rulesDTO = new RuleDTO();
         LaboratoryDTO laboratoryDTO = new LaboratoryDTO();
+        IRuleBO rulesBO = new RuleBO(ruleDAO);
 
         laboratoryDTO.setId(1L);
-        FrmLaboratoryRules repor = new FrmLaboratoryRules(laboratoryRulesBO, laboratoryBO, laboratoryDTO, rulesDTO);
+        FrmLaboratoryRules repor = new FrmLaboratoryRules(laboratoryRulesBO, laboratoryDTO, rulesDTO, rulesBO);
         repor.setVisible(true);
 
     }
