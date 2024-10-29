@@ -1,6 +1,66 @@
 Create database CiscoJPA;
 use CiscoJPA;
-drop database CiscoJpa;
+SET GLOBAL event_scheduler = ON;
+
+DELIMITER //
+
+
+CREATE TRIGGER before_insert_student_degrees
+BEFORE INSERT ON tblStudent_Degrees
+FOR EACH ROW
+BEGIN
+    DECLARE v_timeLimit INT;
+
+    -- Obtener el timeLimit de la tabla tblDegrees
+    SELECT timeLimit INTO v_timeLimit
+    FROM tblDegrees
+    WHERE idDegree = NEW.idDegree;
+
+    -- Asignar el valor de timeLimit al campo remainingTime antes de la inserción
+    SET NEW.remainingTime = v_timeLimit;
+END;
+
+CREATE TRIGGER check_degree_association
+BEFORE INSERT ON tblStudent_Computers
+FOR EACH ROW
+BEGIN
+    DECLARE degreeExists INT;
+
+    -- Verificar si existe una asociación válida entre el estudiante y el degreeName
+    SELECT COUNT(*) INTO degreeExists
+    FROM tblStudent_Degrees sd
+    JOIN tblDegrees d ON sd.idDegree = d.idDegree
+    WHERE sd.idStudent = NEW.idStudent AND d.degreeName = NEW.degreeName;
+
+    -- Si no existe, lanzar un error
+    IF degreeExists = 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'El degreeName no está asociado al estudiante.';
+    END IF;
+END;
+
+CREATE FUNCTION TimeDiffInMinutes(start DATETIME, end DATETIME)
+RETURNS INT
+DETERMINISTIC  -- Agregar esta línea
+BEGIN
+    RETURN TIMESTAMPDIFF(MINUTE, start, end);
+END;
+
+CREATE EVENT IF NOT EXISTS reset_remainingTime_daily
+ON SCHEDULE EVERY 1 DAY
+DO
+BEGIN
+    -- Actualizar el campo remainingTime con el valor original de timeLimit cada día
+    UPDATE tblStudent_Degrees sd
+    INNER JOIN tblDegrees d ON sd.idDegree = d.idDegree
+    SET sd.remainingTime = d.timeLimit;
+END;
+
+//
+
+DELIMITER ;
+
+
 INSERT INTO tblDegrees (degreeName, timeLimit) VALUES 
 ('Licenciatura en Administración', 4),
 ('Licenciatura en Administración de Empresas Turísticas', 4),
@@ -129,7 +189,7 @@ INSERT INTO tblStudents (unique_ID, password, names, firstLastname, secondLastNa
 (4005, 'password20', 'Camila', 'Ponce', 'Vasquez', 'Inscrito');
 
 INSERT INTO tblStudent_Degrees (idDegree, idStudent) VALUES 
-(1, 1),  -- Estudiante 1 se relaciona con Carrera 1
+(1, 6),  -- Estudiante 1 se relaciona con Carrera 1
 (1, 2),  -- Estudiante 2 se relaciona con Carrera 1
 (2, 3),  -- Estudiante 3 se relaciona con Carrera 2
 (2, 4),  -- Estudiante 4 se relaciona con Carrera 2
@@ -149,3 +209,25 @@ INSERT INTO tblStudent_Degrees (idDegree, idStudent) VALUES
 (3, 18), -- Estudiante 18 se relaciona con Carrera 3
 (4, 19), -- Estudiante 19 se relaciona con Carrera 4
 (1, 20); -- Estudiante 20 se relaciona con Carrera 1
+
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (1, 'Microsoft Office');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (2, 'Adobe Photoshop');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (3, 'Visual Studio Code');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (4, 'Eclipse IDE');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (5, 'MySQL Workbench');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (6, 'Slack');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (7, 'Zoom');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (8, 'Notepad++');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (9, 'Postman');
+INSERT INTO tblSoftwares (idSoftware, softwareName) VALUES (10, 'Git');
+
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 1);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 2);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 3);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 4);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 5);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 6);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 7);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 8);
+INSERT INTO tblComputer_Softwares (idComputer, idSoftware) VALUES (35, 9);
+show triggers
