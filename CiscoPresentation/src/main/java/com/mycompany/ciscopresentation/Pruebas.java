@@ -4,26 +4,40 @@
  */
 package com.mycompany.ciscopresentation;
 
+import businessObjects.AcademyUnityBO;
+import businessObjects.DegreeBO;
 import businessObjects.LaboratoryBO;
 import businessObjects.LaboratoryRulesBO;
 import businessObjects.RuleBO;
+import businessObjects.StudentBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
 import dao.AcademyUnityDAO;
+import dao.DegreeDAO;
 import dao.LaboratoryDAO;
 import dao.LaboratoryRulesDAO;
 import dao.RuleDAO;
+import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import dto.LaboratoryDTO;
 import dto.RuleDTO;
 import frames.FrmDegreeReport;
+import frames.FrmLaboratoryManager;
 import frames.FrmLaboratoryRules;
+import frames.FrmStudentManager;
+import interfaces.IAcademyUnityBO;
 import interfaces.IAcademyUnityDAO;
+import interfaces.IDegreeBO;
+import interfaces.IDegreeDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
 import interfaces.ILaboratoryRulesBO;
 import interfaces.ILaboratoryRulesDAO;
 import interfaces.IRuleBO;
 import interfaces.IRuleDAO;
+import interfaces.IStudentBO;
+import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeDAO;
 
 /**
  *
@@ -46,10 +60,19 @@ public class Pruebas {
         RuleDTO rulesDTO = new RuleDTO();
         LaboratoryDTO laboratoryDTO = new LaboratoryDTO();
         IRuleBO rulesBO = new RuleBO(ruleDAO);
+        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
 
-        laboratoryDTO.setId(1L);
-        FrmLaboratoryRules repor = new FrmLaboratoryRules(laboratoryRulesBO, laboratoryDTO, rulesDTO, rulesBO);
+//        laboratoryDTO.setId(1L);
+        FrmLaboratoryManager repor = new FrmLaboratoryManager(laboratoryBO, academyBO);
         repor.setVisible(true);
+
+        IStudentDAO studentDAO = new StudentDAO(connectionBD);
+        IStudentBO studentBO = new StudentBO(studentDAO);
+        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connectionBD);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+//        FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
+//        frmStudentManager.setVisible(true);
 
     }
 

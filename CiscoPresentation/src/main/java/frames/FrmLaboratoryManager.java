@@ -9,6 +9,7 @@ import businessObjects.BlockReportBO;
 import businessObjects.ComputerBO;
 import businessObjects.DegreeBO;
 import businessObjects.LaboratoryBO;
+import businessObjects.LaboratoryRulesBO;
 import businessObjects.RuleBO;
 import businessObjects.SoftwareBO;
 import businessObjects.StudentBO;
@@ -19,12 +20,14 @@ import dao.BlockReportDAO;
 import dao.ComputerDAO;
 import dao.DegreeDAO;
 import dao.LaboratoryDAO;
+import dao.LaboratoryRulesDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
 import dao.StudentDAO;
 import dao.StudentDegreeDAO;
 import dto.AcademyDTO;
 import dto.LaboratoryDTO;
+import dto.RuleDTO;
 import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
 
@@ -37,6 +40,8 @@ import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
+import interfaces.ILaboratoryRulesBO;
+import interfaces.ILaboratoryRulesDAO;
 import interfaces.IRuleBO;
 import interfaces.IRuleDAO;
 import interfaces.ISoftwareBO;
@@ -253,6 +258,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         btnAdd = new utilities.MenuButton();
         btnLeft = new utilities.MenuButton();
         btnRight = new utilities.MenuButton();
+        btnAddRule = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -522,6 +528,15 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         });
         jPanel4.add(btnRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 630, -1, -1));
 
+        btnAddRule.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnAddRule.setText("Agregar Reglas");
+        btnAddRule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddRuleActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnAddRule, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 60, 140, 30));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -696,6 +711,29 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
         frmStudentManager.setVisible(true);       
     }//GEN-LAST:event_btnMenuStudentsActionPerformed
 
+    private void btnAddRuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRuleActionPerformed
+          IConnectionBD connectionBD = new ConnectionDB();
+        ILaboratoryRulesDAO laboratoryRulesDAO = new LaboratoryRulesDAO(connectionBD);
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
+        IRuleDAO ruleDAO = new RuleDAO(connectionBD);
+        ILaboratoryRulesBO laboratoryRulesBO = new LaboratoryRulesBO(laboratoryDAO, ruleDAO, laboratoryRulesDAO);
+        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connectionBD);
+        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+        RuleDTO rulesDTO = new RuleDTO();
+        IRuleBO rulesBO = new RuleBO(ruleDAO);
+        try {
+            if (this.getSelectedIdTableLaboratory() == null) {
+                JOptionPane.showMessageDialog(this, "Por favor selecciona un Laboratorio", "Información", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            LaboratoryDTO laboratoryDTO = laboratoryBO.findLaboratoryByID(this.getSelectedIdTableLaboratory());
+            FrmLaboratoryRules laboratory = new FrmLaboratoryRules(laboratoryRulesBO, laboratoryDTO, rulesDTO, rulesBO);
+            laboratory.setVisible(true);
+             } catch (BusinessException ex) {
+            Logger.getLogger(FrmLaboratoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddRuleActionPerformed
+
     public void pageStatus() {
         String pageNumber = String.valueOf(page);
         if (pageNumber.length() == 1) {
@@ -735,6 +773,7 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private utilities.MenuButton btnAdd;
+    private javax.swing.JButton btnAddRule;
     private utilities.MenuButton btnDelete;
     private utilities.MenuButton btnEdit;
     private utilities.MenuButton btnLeft;
