@@ -26,6 +26,8 @@ public interface IStudentBO {
     public StudentDTO login(LogInDTO loginDTO) throws BusinessException;
 
     public boolean verifyID(Long uniqueID) throws BusinessException;
+    
+    public StudentDTO findStudentByID(Long studentId) throws BusinessException;
 
     public StudentDTO getStudentByComputerSession(Long idComputer) throws BusinessException;
 

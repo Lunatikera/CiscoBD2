@@ -36,50 +36,57 @@ public class ReportComputerDAO implements IReportComputerDAO {
     }
 
     @Override
-    public List<ReportComputerDTO> obtenerDatosCentroComputo(LocalDate inicio, LocalDate fin) throws PersistenceException {
-        try {
-            EntityManager entityManager = connection.getEntityManager();
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<ReportComputerDTO> query = cb.createQuery(ReportComputerDTO.class);
-            Root<StudentComputerEntity> sc = query.from(StudentComputerEntity.class);
+    public List<ReportComputerDTO> obtenerDatosCentroComputo(List<Integer> degreeIds,LocalDate startDate, LocalDate endDate) throws PersistenceException {
+        EntityManager entityManager = connection.getEntityManager();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ReportComputerDTO> query = cb.createQuery(ReportComputerDTO.class);
 
-            Join<StudentComputerEntity, ComputerEntity> c = sc.join("computer");
-            Join<ComputerEntity, LaboratoryEntity> l = c.join("laboratory");
-            Join<StudentEntity, StudentDegreeEntity> sb = sc.join("student").join("studentDegrees");
-            Join<StudentDegreeEntity, DegreeEntity> d = sb.join("degree");
+        // Define the root and joins
+        Root<StudentComputerEntity> sc = query.from(StudentComputerEntity.class);
+        Join<StudentComputerEntity, ComputerEntity> c = sc.join("computer");
+        Join<ComputerEntity, LaboratoryEntity> l = c.join("laboratory");
+        Join<StudentComputerEntity, StudentEntity> s = sc.join("student");
+        Join<StudentEntity, StudentDegreeEntity> sb = s.join("degrees");
+        Join<StudentDegreeEntity, DegreeEntity> d = sb.join("degree");
 
-            // Select
-            query.select(cb.construct(
-                    ReportComputerDTO.class,
-                    l.get("labName"),
-                    c.get("machineNumber"),
-                    cb.count(sc.get("student").get("id")), // Count distinct students
-                    cb.function("DATE", LocalDate.class, sc.get("startDateTime")),
-                    cb.sum(cb.function("TIMESTAMPDIFF", Integer.class,
-                            cb.literal("MINUTE"), sc.get("startDateTime"), sc.get("endDateTime"))),
-                    cb.diff(
-                            cb.function("TIMESTAMPDIFF", Integer.class, cb.literal("MINUTE"), l.get("startTime"), l.get("endTime")),
-                            cb.nullif(cb.sum(cb.function("TIMESTAMPDIFF", Integer.class,
-                                    cb.literal("MINUTE"), sc.get("startDateTime"), sc.get("endDateTime"))), 0)
-                    )
-            ));
+        // Select fields
+        query.select(cb.construct(ReportComputerDTO.class,
+                l.get("labName"),
+                c.get("machineNumber"),
+                //cb.count(cb.distinct(s.get("id"))),
+                cb.function("DATE", LocalDate.class, sc.get("startDateTime")),
+                cb.sum(cb.function("TimeDiffInMinutes", Integer.class, sc.get("startDateTime"), sc.get("endDateTime"))),
+                cb.diff(
+                        cb.function("TimeDiffInMinutes", Integer.class, l.get("startTime"), l.get("endTime")),
+                        cb.coalesce(cb.sum(cb.function("TimeDiffInMinutes", Integer.class, sc.get("startDateTime"), sc.get("endDateTime"))), 0)
+                )
+        ));
 
-            // Where
-            Predicate degreePredicate = d.get("id").in(1, 2, 3, 4);
-            Predicate datePredicate = cb.between(cb.function("DATE", LocalDate.class, sc.get("startDateTime")), inicio, fin);
-            query.where(cb.and(degreePredicate, datePredicate));
+        // Apply filters
+        Predicate degreePredicate = d.get("id").in(degreeIds); // Dynamic degree IDs
+        Predicate datePredicate = cb.between(cb.function("DATE", LocalDate.class, sc.get("startDateTime")), startDate, endDate);
+        Predicate typePredicate = cb.equal(c.get("computerType"), "Estudiante");
 
-            // Group by
-            query.groupBy(l.get("labName"), c.get("machineNumber"), cb.function("DATE", LocalDate.class, sc.get("startDateTime")), l.get("startTime"), l.get("endTime"));
+        query.where(cb.and(degreePredicate, datePredicate, typePredicate));
 
-            // Order by
-            query.orderBy(cb.asc(c.get("machineNumber")), cb.asc(cb.function("DATE", LocalDate.class, sc.get("startDateTime"))), cb.asc(l.get("labName")));
+        // Grouping
+        query.groupBy(
+                l.get("labName"),
+                c.get("machineNumber"),
+                cb.function("DATE", LocalDate.class, sc.get("startDateTime")),
+                l.get("startTime"),
+                l.get("endTime")
+        );
 
-            return entityManager.createQuery(query).getResultList();
-        } catch (Exception e) {
-            // Log the exception (you might want to use a logging framework)
-            System.err.println("Error fetching data: " + e.getMessage());
-            throw new RuntimeException("Error fetching computer center data", e);
-        }
+        // Ordering
+        query.orderBy(
+                cb.asc(c.get("machineNumber")),
+                cb.asc(cb.function("DATE", LocalDate.class, sc.get("startDateTime"))),
+                cb.asc(l.get("labName"))
+        );
+
+        // Execute query
+        return entityManager.createQuery(query).getResultList();
     }
+
 }

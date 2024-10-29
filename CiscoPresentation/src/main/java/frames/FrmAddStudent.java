@@ -37,14 +37,16 @@ public class FrmAddStudent extends javax.swing.JFrame {
         this.setSize(598, 600);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
+        this.llenarComboClasificaciones();
     }
     
+
     private void llenarComboClasificaciones() {
         for (EnrollmentStatus clasi : enrollmentStatus.values()) {
             cbStatus.addItem(clasi);
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,6 +74,8 @@ public class FrmAddStudent extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         cbStatus = new javax.swing.JComboBox<>();
         lblStatus = new javax.swing.JLabel();
+        lblNameStudent1 = new javax.swing.JLabel();
+        txtUniqueID = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,8 +102,8 @@ public class FrmAddStudent extends javax.swing.JFrame {
         jPanel4.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
 
         lblNameStudent.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        lblNameStudent.setText("Nombre:");
-        jPanel4.add(lblNameStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
+        lblNameStudent.setText("ID Unico:");
+        jPanel4.add(lblNameStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
 
         btnContinue.setText("Continuar");
         btnContinue.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +136,17 @@ public class FrmAddStudent extends javax.swing.JFrame {
         lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblStatus.setText("Estado:");
         jPanel4.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, -1, -1));
+
+        lblNameStudent1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblNameStudent1.setText("Nombre:");
+        jPanel4.add(lblNameStudent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
+
+        txtUniqueID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUniqueIDActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txtUniqueID, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 250, 30));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -173,6 +188,7 @@ public class FrmAddStudent extends javax.swing.JFrame {
             String studentLastName = txtLastName.getText().trim();
             String studentSecondLastName = txtSecondLastName.getText().trim();
             String Password = txtPassword.getText().trim();
+            
 
             if (studentName.isEmpty() || studentLastName.isEmpty() || studentSecondLastName.isEmpty() || Password.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -180,9 +196,13 @@ public class FrmAddStudent extends javax.swing.JFrame {
             }
             // Crear el objeto Clientes y establecer los valores
             StudentDTO studentDTO = new StudentDTO();
+            studentDTO.setUnique_ID(Long.valueOf(txtUniqueID.getText()));
             studentDTO.setNames(studentName);
             studentDTO.setFirstLastname(studentLastName);
             studentDTO.setSecondLastname(studentSecondLastName);
+            studentDTO.setPassword(Password);
+            studentDTO.setEnrollmentStatus((EnrollmentStatus) cbStatus.getSelectedItem());
+            
 
             studentBO.saveStudent(studentDTO);
 
@@ -197,8 +217,12 @@ public class FrmAddStudent extends javax.swing.JFrame {
     }//GEN-LAST:event_btnContinueActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        
+        this.dispose();
     }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void txtUniqueIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUniqueIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUniqueIDActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -210,6 +234,7 @@ public class FrmAddStudent extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lbNewStudent;
     private javax.swing.JLabel lblNameStudent;
+    private javax.swing.JLabel lblNameStudent1;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblSecondLastName;
     private javax.swing.JLabel lblStatus;
@@ -218,5 +243,6 @@ public class FrmAddStudent extends javax.swing.JFrame {
     private javax.swing.JTextField txtNameStudent;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtSecondLastName;
+    private javax.swing.JTextField txtUniqueID;
     // End of variables declaration//GEN-END:variables
 }
