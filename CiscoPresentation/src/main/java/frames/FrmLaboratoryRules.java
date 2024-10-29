@@ -65,7 +65,6 @@ public class FrmLaboratoryRules extends javax.swing.JFrame {
         this.loadTableInstalados();
         this.loadTableDisponibles();
 
-        this.lblIdComputer.setText("Laboratorio " + laboratoryDTO.getLabName() + toString());
     }
 
     private void deleteInfoTableInstalados() {
