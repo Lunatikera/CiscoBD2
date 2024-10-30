@@ -9,6 +9,7 @@ import businessObjects.ComputerBO;
 import businessObjects.DegreeBO;
 import businessObjects.DegreeReportBO;
 import businessObjects.LaboratoryBO;
+import businessObjects.StudentBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
 import dao.AcademyUnityDAO;
@@ -16,8 +17,11 @@ import dao.ComputerDAO;
 import dao.DegreeDAO;
 import dao.DegreeReportDAO;
 import dao.LaboratoryDAO;
+import dao.StudentDAO;
+import dao.StudentDegreeDAO;
 import frames.FrmComputerManager;
 import frames.FrmDegreeReport;
+import frames.FrmStudentManager;
 import interfaces.IAcademyUnityBO;
 import interfaces.IAcademyUnityDAO;
 import interfaces.IComputerBO;
@@ -28,6 +32,9 @@ import interfaces.IDegreeReportBO;
 import interfaces.IDegreeReportDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
+import interfaces.IStudentBO;
+import interfaces.IStudentDAO;
+import interfaces.IStudentDegreeDAO;
 
 /**
  *
@@ -51,5 +58,17 @@ public class PruebaEdu {
 //        IDegreeReportBO reportDegreeBO = new DegreeReportBO(reportDegreeDAO);
 //        FrmDegreeReport repor = new FrmDegreeReport(degreeBO, reportDegreeBO);
 //        repor.setVisible(true);
+
+ IConnectionBD connection = new ConnectionDB();
+        IStudentDAO studentDAO = new StudentDAO(connection);
+        IStudentBO studentBO = new StudentBO(studentDAO);
+
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+
+        FrmStudentManager frmStudentManager = new FrmStudentManager(studentBO, degreeBO);
+        
+        frmStudentManager.setVisible(true);
     }
 }

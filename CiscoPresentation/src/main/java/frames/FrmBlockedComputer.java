@@ -4,12 +4,22 @@
  */
 package frames;
 
+import businessObjects.ComputerBO;
+import businessObjects.StudentBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.ComputerDAO;
+import dao.LaboratoryDAO;
+import dao.StudentDAO;
 import dto.ComputerDTO;
 import dto.StudentDTO;
 import enums.ComputerStatus;
 import exception.BusinessException;
 import interfaces.IComputerBO;
+import interfaces.IComputerDAO;
+import interfaces.ILaboratoryDAO;
 import interfaces.IStudentBO;
+import interfaces.IStudentDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -49,15 +59,22 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
 
     private void verifyComputerStatus() {
         try {
+             IConnectionBD connectionBD=new ConnectionDB();
+                IStudentDAO studentDAO=new StudentDAO(connectionBD);
+                IComputerDAO computerDAO= new ComputerDAO(connectionBD);
+                ILaboratoryDAO laboratoryDAO= new LaboratoryDAO(connectionBD);
+                IComputerBO computerBO=new ComputerBO(computerDAO, laboratoryDAO);
+                IStudentBO newstudentBO=new StudentBO(studentDAO);
+                
             computerDTO = computerBO.findByIPComputer(computerDTO.getIpAdress());
-
+            System.out.println("aaaaaa");
             if (computerDTO.getStatus() == ComputerStatus.No_Disponible) {
                 if (methodTimer != null) {
                     methodTimer.stop(); // Stop the method timer
                 }
-
-                StudentDTO student = studentBO.getStudentByComputerSession(computerDTO.getId());
-                FrmUnlockComputer unlockComputer = new FrmUnlockComputer(studentBO, student, computerDTO);
+               
+                StudentDTO student = newstudentBO.getStudentByComputerSession(computerDTO.getId());
+                FrmUnlockComputer unlockComputer = new FrmUnlockComputer(newstudentBO, student, computerDTO);
                 unlockComputer.setVisible(true);
                 this.dispose();
 

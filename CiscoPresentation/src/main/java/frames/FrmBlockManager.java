@@ -9,6 +9,7 @@ import businessObjects.BlockBO;
 import businessObjects.BlockReportBO;
 import businessObjects.ComputerBO;
 import businessObjects.DegreeBO;
+import businessObjects.DegreeReportBO;
 import businessObjects.LaboratoryBO;
 import businessObjects.RuleBO;
 import businessObjects.SoftwareBO;
@@ -19,6 +20,7 @@ import dao.AcademyUnityDAO;
 import dao.BlockReportDAO;
 import dao.ComputerDAO;
 import dao.DegreeDAO;
+import dao.DegreeReportDAO;
 import dao.LaboratoryDAO;
 import dao.RuleDAO;
 import dao.SoftwareDAO;
@@ -40,6 +42,8 @@ import interfaces.IComputerBO;
 import interfaces.IComputerDAO;
 import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
+import interfaces.IDegreeReportBO;
+import interfaces.IDegreeReportDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
 import interfaces.IRuleBO;
@@ -594,7 +598,15 @@ public class FrmBlockManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuDegreeActionPerformed
 
     private void btnMenuLabsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabsActionPerformed
-        // TODO add your handling code here:
+       IConnectionBD connection = new ConnectionDB();
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connection);
+        IAcademyUnityDAO academyDAO = new AcademyUnityDAO(connection);
+        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO, academyDAO);
+        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDAO);
+        
+        FrmLaboratoryManager laboratory = new FrmLaboratoryManager(laboratoryBO, academyBO);
+        this.dispose();
+        laboratory.setVisible(true);
     }//GEN-LAST:event_btnMenuLabsActionPerformed
 
     private void btnMenuBlocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlocksActionPerformed
@@ -626,12 +638,29 @@ public class FrmBlockManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuRulesActionPerformed
 
     private void btnMenuLabReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabReportsActionPerformed
-        // TODO add your handling code here:
+       IConnectionBD connection = new ConnectionDB();
+       IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        
+       
+        FrmLaboratoryReport frmLaboratoryReport = new FrmLaboratoryReport(degreeBO);
+        this.dispose();
+        frmLaboratoryReport.setVisible(true);
     }//GEN-LAST:event_btnMenuLabReportsActionPerformed
 
     private void btnMenuDegreeReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeReportsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
+ IConnectionBD connection = new ConnectionDB();
+        IDegreeReportDAO degreeReportDAO = new DegreeReportDAO(connection);
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        
+        IDegreeReportBO degreeReportBO = new DegreeReportBO(degreeReportDAO);
+        
+        FrmDegreeReport degreeReport = new FrmDegreeReport(degreeBO, degreeReportBO);
+        this.dispose();
+        degreeReport.setVisible(true);    }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
 
     private void btnMenuBlockReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportsActionPerformed
         IConnectionBD connection = new ConnectionDB();

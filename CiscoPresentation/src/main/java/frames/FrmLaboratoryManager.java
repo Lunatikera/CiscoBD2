@@ -5,9 +5,11 @@
 package frames;
 
 import businessObjects.AcademyUnityBO;
+import businessObjects.BlockBO;
 import businessObjects.BlockReportBO;
 import businessObjects.ComputerBO;
 import businessObjects.DegreeBO;
+import businessObjects.DegreeReportBO;
 import businessObjects.LaboratoryBO;
 import businessObjects.LaboratoryRulesBO;
 import businessObjects.RuleBO;
@@ -16,9 +18,11 @@ import businessObjects.StudentBO;
 import connection.ConnectionDB;
 import connection.IConnectionBD;
 import dao.AcademyUnityDAO;
+import dao.BlockDAO;
 import dao.BlockReportDAO;
 import dao.ComputerDAO;
 import dao.DegreeDAO;
+import dao.DegreeReportDAO;
 import dao.LaboratoryDAO;
 import dao.LaboratoryRulesDAO;
 import dao.RuleDAO;
@@ -32,12 +36,16 @@ import exception.BusinessException;
 import interfaces.IAcademyUnityBO;
 
 import interfaces.IAcademyUnityDAO;
+import interfaces.IBlockBO;
+import interfaces.IBlockDAO;
 import interfaces.IBlockReportBO;
 import interfaces.IBlockReportDAO;
 import interfaces.IComputerBO;
 import interfaces.IComputerDAO;
 import interfaces.IDegreeBO;
 import interfaces.IDegreeDAO;
+import interfaces.IDegreeReportBO;
+import interfaces.IDegreeReportDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
 import interfaces.ILaboratoryRulesBO;
@@ -618,7 +626,19 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuLabsActionPerformed
 
     private void btnMenuBlocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlocksActionPerformed
-        // TODO add your handling code here:
+        IConnectionBD connection = new ConnectionDB();
+        IStudentDAO studentDAO = new StudentDAO(connection);
+        IStudentBO studentBO = new StudentBO(studentDAO);
+        IRuleDAO ruleDAO = new RuleDAO(connection);
+        IRuleBO ruleBO = new RuleBO(ruleDAO);
+        IBlockDAO blockDAO = new BlockDAO(connection);
+        IBlockBO blockBO = new BlockBO(blockDAO);
+        
+        
+        
+        FrmBlockManager blockManager = new FrmBlockManager(blockBO, ruleBO, studentBO);
+        this.dispose();
+        blockManager.setVisible(true);
     }//GEN-LAST:event_btnMenuBlocksActionPerformed
 
     private void btnMenuAcademiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuAcademiesActionPerformed
@@ -646,11 +666,31 @@ public class FrmLaboratoryManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuRulesActionPerformed
 
     private void btnMenuLabReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLabReportsActionPerformed
-        // TODO add your handling code here:
+         IConnectionBD connection = new ConnectionDB();
+        IDegreeReportDAO degreeReportDAO = new DegreeReportDAO(connection);
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        
+        IDegreeReportBO degreeReportBO = new DegreeReportBO(degreeReportDAO);
+        
+        FrmDegreeReport degreeReport = new FrmDegreeReport(degreeBO, degreeReportBO);
+        this.disable();
+        degreeReport.setVisible(true);
     }//GEN-LAST:event_btnMenuLabReportsActionPerformed
 
     private void btnMenuDegreeReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDegreeReportsActionPerformed
-        // TODO add your handling code here:
+        IConnectionBD connection = new ConnectionDB();
+        IDegreeReportDAO degreeReportDAO = new DegreeReportDAO(connection);
+        IDegreeDAO degreeDAO = new DegreeDAO(connection);
+        IStudentDegreeDAO studentDegreeDAO = new StudentDegreeDAO(connection);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO, studentDegreeDAO);
+        
+        IDegreeReportBO degreeReportBO = new DegreeReportBO(degreeReportDAO);
+        
+        FrmDegreeReport degreeReport = new FrmDegreeReport(degreeBO, degreeReportBO);
+        this.dispose();
+        degreeReport.setVisible(true);
     }//GEN-LAST:event_btnMenuDegreeReportsActionPerformed
 
     private void btnMenuBlockReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBlockReportsActionPerformed
