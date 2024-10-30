@@ -5,7 +5,9 @@
 package dao;
 
 import connection.IConnectionBD;
+import entities.ComputerEntity;
 import entities.DegreeEntity;
+import entities.StudentComputerEntity;
 import entities.StudentEntity;
 import exception.PersistenceException;
 import interfaces.IStudentDAO;
@@ -119,6 +121,12 @@ public class StudentDAO implements IStudentDAO {
     @Override
     public StudentEntity getStudentByComputerSession(Long idComputer) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
+        StudentEntity newEntity=  entityManager.createQuery(
+                    "SELECT s FROM StudentEntity s JOIN s.studentComputers sc WHERE sc.computer.id = :idComputer AND sc.endDateTime IS NULL", StudentEntity.class)
+                    .setParameter("idComputer", idComputer)
+                    .getSingleResult();
+        entityManager.refresh(newEntity);
+
         try {
             return entityManager.createQuery(
                     "SELECT s FROM StudentEntity s JOIN s.studentComputers sc WHERE sc.computer.id = :idComputer AND sc.endDateTime IS NULL", StudentEntity.class)

@@ -286,9 +286,9 @@ public class FrmComputerReport extends javax.swing.JFrame {
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lineaBlanca.png"))); // NOI18N
         panelMenu2.add(jLabel24);
 
-        btnMenuComputers.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuComputers.setText("Computadora");
         btnMenuComputers.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMenuComputers.setForeground(new java.awt.Color(255, 255, 255));
         btnMenuComputers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuComputersActionPerformed(evt);

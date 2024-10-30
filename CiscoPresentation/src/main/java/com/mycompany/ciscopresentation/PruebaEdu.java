@@ -16,6 +16,8 @@ import dao.ComputerDAO;
 import dao.DegreeDAO;
 import dao.DegreeReportDAO;
 import dao.LaboratoryDAO;
+import dao.StudentComputerDAO;
+import dao.StudentDegreeDAO;
 import frames.FrmComputerManager;
 import frames.FrmDegreeReport;
 import interfaces.IAcademyUnityBO;
@@ -28,6 +30,9 @@ import interfaces.IDegreeReportBO;
 import interfaces.IDegreeReportDAO;
 import interfaces.ILaboratoryBO;
 import interfaces.ILaboratoryDAO;
+import interfaces.IStudentComputerDAO;
+import interfaces.IStudentDegreeBO;
+import interfaces.IStudentDegreeDAO;
 
 /**
  *
@@ -35,21 +40,21 @@ import interfaces.ILaboratoryDAO;
  */
 public class PruebaEdu {
     public static void main(String[] args) {
-//        IConnectionBD connectionBD = new ConnectionDB();
-//        IAcademyUnityDAO academyDao = new AcademyUnityDAO(connectionBD);
-//        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDao);
-//        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
-//        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO,academyDao);
-//        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
-//        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
-//
-//        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
-//        IDegreeBO degreeBO = new DegreeBO(degreeDAO);
-////        FrmComputerManager computerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
-////        computerManager.setVisible(true);
-//        IDegreeReportDAO reportDegreeDAO = new DegreeReportDAO(connectionBD);
-//        IDegreeReportBO reportDegreeBO = new DegreeReportBO(reportDegreeDAO);
-//        FrmDegreeReport repor = new FrmDegreeReport(degreeBO, reportDegreeBO);
-//        repor.setVisible(true);
+        IConnectionBD connectionBD = new ConnectionDB();
+        IAcademyUnityDAO academyDao = new AcademyUnityDAO(connectionBD);
+        IAcademyUnityBO academyBO = new AcademyUnityBO(academyDao);
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
+        ILaboratoryBO laboratoryBO = new LaboratoryBO(laboratoryDAO,academyDao);
+        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
+        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
+        IStudentDegreeDAO studentDegreeDAO= new StudentDegreeDAO(connectionBD);
+        IDegreeDAO degreeDAO = new DegreeDAO(connectionBD);
+        IDegreeBO degreeBO = new DegreeBO(degreeDAO,studentDegreeDAO);
+        FrmComputerManager computerManager = new FrmComputerManager(computerBO, laboratoryBO, academyBO);
+        computerManager.setVisible(true);
+        IDegreeReportDAO reportDegreeDAO = new DegreeReportDAO(connectionBD);
+        IDegreeReportBO reportDegreeBO = new DegreeReportBO(reportDegreeDAO);
+        FrmDegreeReport repor = new FrmDegreeReport(degreeBO, reportDegreeBO);
+        repor.setVisible(true);
     }
 }

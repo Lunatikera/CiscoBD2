@@ -9,6 +9,7 @@ import connection.IConnectionBD;
 import entities.ComputerEntity;
 import entities.LaboratoryEntity;
 import entities.SoftwareEntity;
+import entities.StudentComputerEntity;
 import enums.ComputerStatus;
 import exception.PersistenceException;
 import interfaces.IComputerDAO;
@@ -112,6 +113,12 @@ public class ComputerDAO implements IComputerDAO {
     @Override
     public ComputerEntity findByIPComputer(String computerIp) throws PersistenceException {
         EntityManager entityManager = connection.getEntityManager();
+        ComputerEntity newEntity= entityManager.createQuery(
+                    "SELECT c FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)
+                    .setParameter("ipAdress", computerIp)
+                    .getSingleResult();
+        entityManager.refresh(newEntity);
+
         try {
             return entityManager.createQuery(
                     "SELECT c FROM ComputerEntity c WHERE c.ipAdress = :ipAdress", ComputerEntity.class)

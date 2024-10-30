@@ -181,7 +181,8 @@ public class FrmUnlockComputer extends javax.swing.JFrame {
         try {
             studentBO.login(logInDTO);
             JOptionPane.showMessageDialog(this, "Inicio de Sesion Exitoso", "Enhorabuena!", JOptionPane.INFORMATION_MESSAGE);
-            FrmSessionStarted frmSessionStarted = new FrmSessionStarted();
+            
+            FrmSessionStarted frmSessionStarted = new FrmSessionStarted(studentBO, computer, student);
             frmSessionStarted.setVisible(true);
             this.dispose();
 

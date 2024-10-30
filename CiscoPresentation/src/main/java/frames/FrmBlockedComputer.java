@@ -33,7 +33,7 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
         this.studentBO = studentBO;
         this.computerBO = computerBO;
         this.computerDTO = computerDTO;
-
+        lblpc.setText(computerDTO.getMachineNumber().toString());
         startMethodTimer();
     }
 
@@ -83,7 +83,7 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblStudent = new javax.swing.JLabel();
-        lblStudent1 = new javax.swing.JLabel();
+        lblpc = new javax.swing.JLabel();
         lblStudent2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -122,8 +122,8 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
 
         lblStudent.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
 
-        lblStudent1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        lblStudent1.setText("01");
+        lblpc.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        lblpc.setText("01");
 
         lblStudent2.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblStudent2.setText("Maquina Bloqueada");
@@ -147,7 +147,7 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(137, 137, 137))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblStudent1)
+                        .addComponent(lblpc)
                         .addGap(304, 304, 304))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -161,7 +161,7 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblStudent1)
+                .addComponent(lblpc)
                 .addGap(181, 181, 181))
         );
 
@@ -190,7 +190,7 @@ public class FrmBlockedComputer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblStudent;
-    private javax.swing.JLabel lblStudent1;
     private javax.swing.JLabel lblStudent2;
+    private javax.swing.JLabel lblpc;
     // End of variables declaration//GEN-END:variables
 }

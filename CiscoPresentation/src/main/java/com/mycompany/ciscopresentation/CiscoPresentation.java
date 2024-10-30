@@ -64,6 +64,7 @@ public class CiscoPresentation {
             
             if (computerDTO.getComputerType() == ComputerTypes.Estudiante) {
                 FrmBlockedComputer blockedComputer = new FrmBlockedComputer(studentBO, computerBO,computerDTO);
+                blockedComputer.setVisible(true);
             }
             
         } catch (BusinessException ex) {

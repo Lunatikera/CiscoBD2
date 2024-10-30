@@ -4,6 +4,17 @@
  */
 package frames;
 
+import businessObjects.ComputerBO;
+import connection.ConnectionDB;
+import connection.IConnectionBD;
+import dao.ComputerDAO;
+import dao.LaboratoryDAO;
+import dto.ComputerDTO;
+import dto.StudentDTO;
+import interfaces.IComputerBO;
+import interfaces.IComputerDAO;
+import interfaces.ILaboratoryDAO;
+import interfaces.IStudentBO;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Image;
@@ -28,11 +39,17 @@ import javax.swing.Timer;
  */
 public class FrmSessionStarted extends javax.swing.JFrame {
 
+    StudentDTO student;
+    ComputerDTO computer;
+    IStudentBO studentBO;
     private int seconds = 0; // Contador de segundos
     private Timer timer; // Timer para el cronómetro
     private TrayIcon trayIcon; // Icono de la bandeja del sistema
 
-    public FrmSessionStarted() {
+    public FrmSessionStarted(IStudentBO studentBO, ComputerDTO computer, StudentDTO student) {
+        this.studentBO = studentBO;
+        this.computer = computer;
+        this.student = student;
         initComponents();
 
         // Listener para minimizar la ventana
@@ -71,7 +88,6 @@ public class FrmSessionStarted extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         lblTime = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,27 +96,21 @@ public class FrmSessionStarted extends javax.swing.JFrame {
         lblTime.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         lblTime.setText("00:00");
 
-        jButton1.setText("Terminar");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTime))
-                .addContainerGap(65, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
+                .addComponent(lblTime)
+                .addGap(63, 63, 63))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(23, 23, 23)
                 .addComponent(lblTime)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,10 +207,14 @@ public class FrmSessionStarted extends javax.swing.JFrame {
     }
 
     private void FinishSesion() {
-//        System.out.println("Tiempo" + lblTime.getText());
-//        FrmBlockedComputer blockedComputer = new FrmBlockedComputer();
-//        blockedComputer.setVisible(true);
-//        this.dispose();
+        System.out.println("Tiempo" + lblTime.getText());
+        IConnectionBD connectionBD = new ConnectionDB();
+        IComputerDAO computerDAO = new ComputerDAO(connectionBD);
+        ILaboratoryDAO laboratoryDAO = new LaboratoryDAO(connectionBD);
+        IComputerBO computerBO = new ComputerBO(computerDAO, laboratoryDAO);
+        FrmBlockedComputer blockedComputer = new FrmBlockedComputer(studentBO, computerBO, computer);
+        blockedComputer.setVisible(true);
+        this.dispose();
     }
 
     private void deleteIcon() {
@@ -215,43 +229,9 @@ public class FrmSessionStarted extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmSessionStarted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmSessionStarted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmSessionStarted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmSessionStarted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmSessionStarted().setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblTime;
     // End of variables declaration//GEN-END:variables
